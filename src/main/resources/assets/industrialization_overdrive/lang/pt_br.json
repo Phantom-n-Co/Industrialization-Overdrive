@@ -1,0 +1,21 @@
+{
+  "block.industrialization_overdrive.multi_processing_array": "Matriz de Processamento Múltiplo",
+  "block.industrialization_overdrive.pyrolyse_oven": "Forno de Pirolisa",
+  "item.industrialization_overdrive.terminal": "Terminal",
+  "itemGroup.industrialization_overdrive.industrialization_overdrive": "Industrialization Overdrive",
+  "pyro_tier.industrialization_overdrive.modern_industrialization.cupronickel_coil": "Cuproníquel",
+  "pyro_tier.industrialization_overdrive.modern_industrialization.kanthal_coil": "Kanthal",
+  "rei_categories.industrialization_overdrive.pyrolyse_oven": "Forno de Pirolisa",
+  "text.industrialization_overdrive.coils_pyro_tier": "Opera o Forno de Pirolisa em lotes de até %d com %s do custo de EU.",
+  "text.industrialization_overdrive.machine_batcher_coils": "Tamanho do lote e custo são determinados pela bobina usada.",
+  "text.industrialization_overdrive.multi_processing_array_batch_size": "O tamanho do lote é determinado pela quantidade de máquinas fornecidas.",
+  "text.industrialization_overdrive.multi_processing_array_eu_cost_multiplier": "Opera com %s do custo de EU.",
+  "text.industrialization_overdrive.multi_processing_array_machine_input": "Insira multiblocos de fabricação elétrica para operarem em paralelo.",
+  "text.industrialization_overdrive.multi_processing_array_recipe": "Pode executar receitas de qualquer multibloco de fabricação elétrica fornecido em lotes.",
+  "text.industrialization_overdrive.multi_processing_array_size": "Máquinas: %d",
+  "text.industrialization_overdrive.terminal_help_1": "- Pressione %s + %s em um multibloco do MI para construí-lo automaticamente.",
+  "text.industrialization_overdrive.terminal_help_2": "- Requer que as peças estejam no seu inventário.",
+  "text.industrialization_overdrive.terminal_help_2_alt": "- Requer que as peças estejam no seu inventário ou em um sistema ME vinculado.",
+  "text.industrialization_overdrive.terminal_link_info": "Vinculado a um sistema ME em %s.",
+  "text.industrialization_overdrive.terminal_link_not_linked": "Não vinculado a um sistema ME."
+}
