@@ -8,7 +8,7 @@ import aztech.modern_industrialization.machines.BEP;
 import aztech.modern_industrialization.machines.init.MIMachineRecipeTypes;
 import aztech.modern_industrialization.machines.init.MachineTier;
 import aztech.modern_industrialization.machines.multiblocks.HatchFlags;
-import aztech.modern_industrialization.machines.multiblocks.HatchType;
+import aztech.modern_industrialization.machines.multiblocks.HatchTypes;
 import aztech.modern_industrialization.machines.multiblocks.ShapeTemplate;
 import aztech.modern_industrialization.machines.multiblocks.SimpleMember;
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType;
@@ -71,9 +71,9 @@ public final class PyrolyseOvenBlockEntity extends AbstractElectricMultipliedCra
         );
     }
 
-    private static List<Tier>                  TIERS           = List.of();
-    private static Map<ResourceLocation, Tier> TIERS_BY_COIL   = Collections.unmodifiableMap(Maps.newHashMap());
-    private static ShapeTemplate[]             SHAPE_TEMPLATES = new ShapeTemplate[0];
+    private static List<Tier> TIERS = List.of();
+    private static Map<ResourceLocation, Tier> TIERS_BY_COIL = Collections.unmodifiableMap(Maps.newHashMap());
+    private static ShapeTemplate[] SHAPE_TEMPLATES = new ShapeTemplate[0];
 
     public static List<Tier> getTiers() {
         return TIERS;
@@ -105,17 +105,17 @@ public final class PyrolyseOvenBlockEntity extends AbstractElectricMultipliedCra
         SHAPE_TEMPLATES = new ShapeTemplate[TIERS.size()];
 
         SimpleMember casing = SimpleMember.forBlock(MIBlock.BLOCK_DEFINITIONS.get(MI.id("bronze_plated_bricks")));
-        HatchFlags hatches = new HatchFlags.Builder().with(HatchType.FLUID_OUTPUT, HatchType.ITEM_INPUT, HatchType.ITEM_OUTPUT, HatchType.ENERGY_INPUT).build();
+        HatchFlags hatches = new HatchFlags.Builder().with(HatchTypes.FLUID_OUTPUT, HatchTypes.ITEM_INPUT, HatchTypes.ITEM_OUTPUT, HatchTypes.ENERGY_INPUT).build();
 
-        for(int i = 0; i < TIERS.size(); i++){
+        for (int i = 0; i < TIERS.size(); i++) {
             Tier tier = TIERS.get(i);
             SimpleMember coil = SimpleMember.forBlockId(tier.blockId());
             ShapeTemplate.Builder builder = new ShapeTemplate.Builder(BRONZE_PLATED_BRICKS);
-            for(int z = 0; z < 4; z++) {
+            for (int z = 0; z < 4; z++) {
                 boolean isFront = z == 0;
                 boolean isBack = z == 3;
-                for(int x = -1; x <= 1; x++) {
-                    for(int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
+                    for (int y = -1; y <= 1; y++) {
                         boolean isCenter = x == 0 && y == 0;
                         if (isFront || isBack) {
                             builder.add(x, y, z, casing, hatches);
@@ -133,7 +133,7 @@ public final class PyrolyseOvenBlockEntity extends AbstractElectricMultipliedCra
     private static void registerReiShapes() {
         ReiMachineRecipes.multiblockShapes.removeIf((e) -> e.machine().equals(IO.id("pyrolyse_oven")));
         int index = 0;
-        for(ShapeTemplate shapeTemplate : SHAPE_TEMPLATES) {
+        for (ShapeTemplate shapeTemplate : SHAPE_TEMPLATES) {
             ReiMachineRecipes.registerMultiblockShape(IO.id("pyrolyse_oven"), shapeTemplate, "" + index);
             index++;
         }

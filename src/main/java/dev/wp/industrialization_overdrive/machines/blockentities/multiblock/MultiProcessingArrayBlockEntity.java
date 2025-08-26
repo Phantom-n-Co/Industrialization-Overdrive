@@ -9,7 +9,7 @@ import aztech.modern_industrialization.machines.guicomponents.SlotPanel;
 import aztech.modern_industrialization.machines.init.MachineTier;
 import aztech.modern_industrialization.machines.models.MachineCasings;
 import aztech.modern_industrialization.machines.multiblocks.HatchFlags;
-import aztech.modern_industrialization.machines.multiblocks.HatchType;
+import aztech.modern_industrialization.machines.multiblocks.HatchTypes;
 import aztech.modern_industrialization.machines.multiblocks.ShapeTemplate;
 import aztech.modern_industrialization.machines.multiblocks.SimpleMember;
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType;
@@ -40,9 +40,9 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
     public MultiProcessingArrayBlockEntity(BEP bep) {
         super(bep, IO.id("multi_processing_array"), SHAPE_TEMPLATES, MachineTier.MULTIBLOCK);
 
-        if(!IOConfig.allowUpgradesInMultiProcessingArray) {
+        if (!IOConfig.allowUpgradesInMultiProcessingArray) {
             var slotPanel = guiComponents.get(SlotPanel.Server.class);
-            if(slotPanel != null) guiComponents.unregister(slotPanel);
+            if (slotPanel != null) guiComponents.unregister(slotPanel);
 
             this.registerGuiComponent(new SlotPanel.Server(this)
                     .withRedstoneControl(redstoneControl)
@@ -63,7 +63,7 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
                     public void handleClick(int clickedLine, int delta) {
                         int newShapeIndex = Mth.clamp(activeShape.getActiveShapeIndex() + delta, 0, SHAPE_TEMPLATES.length - 1);
                         int newMachineStackSize = MultiProcessingArrayBlockEntity.this.getMachineStackSize(newShapeIndex);
-                        if(newMachineStackSize < machines.getMachines().getCount()) {
+                        if (newMachineStackSize < machines.getMachines().getCount()) {
                             return;
                         }
                         activeShape.incrementShape(MultiProcessingArrayBlockEntity.this, delta);
@@ -106,7 +106,7 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
         List<Component> lines = Lists.newArrayList();
         lines.add(MICompatibleTextLine.line(IOText.MULTI_PROCESSING_ARRAY_RECIPE));
         lines.add(MICompatibleTextLine.line(IOText.MULTI_PROCESSING_ARRAY_BATCH_SIZE));
-        if(IOConfig.multiProcessingArrayEuCostMultiplier != 1) {
+        if (IOConfig.multiProcessingArrayEuCostMultiplier != 1) {
             lines.add(MICompatibleTextLine.line(IOText.MULTI_PROCESSING_ARRAY_EU_COST_MULTIPLIER).arg(this.getEuCostTransformer(), EU_COST_TRANSFORMER_PARSER));
         }
         return lines;
@@ -125,19 +125,19 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
         SimpleMember casing = SimpleMember.forBlock(MIBlock.BLOCK_DEFINITIONS.get(MI.id("solid_titanium_machine_casing")));
         SimpleMember pipe = SimpleMember.forBlock(MIBlock.BLOCK_DEFINITIONS.get(MI.id("titanium_machine_casing_pipe")));
         SimpleMember glass = new PredicateSimpleMember((state) -> state.is(IOTags.blockCommon("glass_blocks")), Blocks.GLASS);
-        HatchFlags front = new HatchFlags.Builder().with(HatchType.ENERGY_INPUT).build();
-        HatchFlags top = new HatchFlags.Builder().with(HatchType.ITEM_INPUT, HatchType.FLUID_INPUT).build();
-        HatchFlags bottom = new HatchFlags.Builder().with(HatchType.ITEM_OUTPUT, HatchType.FLUID_OUTPUT).build();
+        HatchFlags front = new HatchFlags.Builder().with(HatchTypes.ENERGY_INPUT).build();
+        HatchFlags top = new HatchFlags.Builder().with(HatchTypes.ITEM_INPUT, HatchTypes.FLUID_INPUT).build();
+        HatchFlags bottom = new HatchFlags.Builder().with(HatchTypes.ITEM_OUTPUT, HatchTypes.FLUID_OUTPUT).build();
 
-        for(int
-                i = 0, size = 3, machines = BASE_MACHINES;
-                i < SPLIT && machines <= MAX_MACHINES;
-                i++, size += 2, machines *= MULT_MACHINES){
+        for (int
+             i = 0, size = 3, machines = BASE_MACHINES;
+             i < SPLIT && machines <= MAX_MACHINES;
+             i++, size += 2, machines *= MULT_MACHINES) {
             ShapeTemplate.Builder builder = new ShapeTemplate.Builder(MachineCasings.SOLID_TITANIUM);
-            for(int z = 0; z < size; z++) {
+            for (int z = 0; z < size; z++) {
                 boolean isFront = z == 0;
-                for(int x = -1; x <= 1; x++) {
-                    for(int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
+                    for (int y = -1; y <= 1; y++) {
                         boolean isTop = y == 1;
                         boolean isBottom = y == -1;
                         boolean isCenter = x == 0 && y == 0;
@@ -157,7 +157,7 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
 
     public static void registerReiShapes() {
         int index = 0;
-        for(ShapeTemplate shapeTemplate : SHAPE_TEMPLATES) {
+        for (ShapeTemplate shapeTemplate : SHAPE_TEMPLATES) {
             ReiMachineRecipes.registerMultiblockShape(IO.id("multi_processing_array"), shapeTemplate, "" + index);
             index++;
         }
