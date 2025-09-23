@@ -2,8 +2,7 @@ package dev.wp.industrialization_overdrive;
 
 import aztech.modern_industrialization.MI;
 import aztech.modern_industrialization.compat.rei.machines.ReiMachineRecipes;
-import aztech.modern_industrialization.machines.guicomponents.ProgressBar;
-import aztech.modern_industrialization.machines.init.MultiblockMachines;
+import aztech.modern_industrialization.compat.rei.machines.SteamMode;
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType;
 import com.google.common.collect.Maps;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.MultiProcessingArrayBlockEntity;
@@ -60,20 +59,18 @@ public final class IOMachines {
                 .registerMachine();
         hook.builder("pyrolyse_oven", "Pyrolyse Oven", PyrolyseOvenBlockEntity::new)
                 .builtinModel(BRONZE_PLATED_BRICKS, "pyrolyse_oven", (model) -> model.front(true))
+                .gui(SteamMode.ELECTRIC_ONLY, RecipeTypes.PYROLYSE_OVEN, (gui -> {
+                    gui.slots(slots -> {
+                        slots.itemInput(56, 35);
+                        slots.itemOutput(102, 35);
+                        slots.fluidInput(36, 35);
+                        slots.fluidOutput(122, 35);
+                    });
+                    gui.progressBar(77, 33, "arrow");
+                }))
+                .registerRecipeCategory()
                 .registerMachine();
         ReiMachineRecipes.registerWorkstation(MI.id("coke_oven"), IO.id("pyrolyse_oven"));
-
-        registerPyrolyseOvenCategory();
-    }
-
-    private static void registerPyrolyseOvenCategory() {
-        new MultiblockMachines.Rei("Pyrolyse Oven", IO.id("pyrolyse_oven"),
-                IOMachines.RecipeTypes.PYROLYSE_OVEN,
-                new ProgressBar.Parameters(77, 33, "arrow"))
-                .items(inputs -> inputs.addSlot(56, 35), outputs -> outputs.addSlot(102, 35))
-                .fluids(fluids -> fluids.addSlot(36, 35), outputs -> outputs.addSlot(122, 35))
-                .workstations(IO.id("pyrolyse_oven"))
-                .register();
     }
 
 //    public static void singleBlockCrafting(SingleBlockCraftingMachinesMIHookContext hook) {
