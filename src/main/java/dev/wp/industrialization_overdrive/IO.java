@@ -15,6 +15,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.datamaps.DataMapsUpdatedEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import net.swedz.tesseract.neoforge.capabilities.CapabilitiesListeners;
+import net.swedz.tesseract.neoforge.compat.mi.TesseractMI;
 import net.swedz.tesseract.neoforge.registry.holder.BlockHolder;
 import net.swedz.tesseract.neoforge.registry.holder.ItemHolder;
 import org.slf4j.Logger;
@@ -36,6 +37,7 @@ public final class IO {
         IOConfig.loadConfig();
         bus.addListener(FMLCommonSetupEvent.class, (event) -> IOConfig.loadConfig());
 
+        TesseractMI.init(ID);
         IOComponents.init(bus);
         IOItems.init(bus);
         IOBlocks.init(bus);

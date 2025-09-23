@@ -54,17 +54,13 @@ public final class IOMachines {
     }
 
     public static void multiblocks(MultiblockMachinesMIHookContext hook) {
-        hook.register(
-                "Multi Processing Array", "multi_processing_array", "multi_processing_array",
-                SOLID_TITANIUM, true, false, false,
-                MultiProcessingArrayBlockEntity::new,
-                (__) -> MultiProcessingArrayBlockEntity.registerReiShapes()
-        );
-        hook.register(
-                "Pyrolyse Oven", "pyrolyse_oven", "pyrolyse_oven",
-                BRONZE_PLATED_BRICKS, true, false, false,
-                PyrolyseOvenBlockEntity::new
-        );
+        hook.builder("multi_processing_array", "Multi Processing Array", MultiProcessingArrayBlockEntity::new)
+                .builtinModel(SOLID_TITANIUM, "multi_processing_array", (model) -> model.front(true))
+                .registrator((__) -> MultiProcessingArrayBlockEntity.registerReiShapes())
+                .registerMachine();
+        hook.builder("pyrolyse_oven", "Pyrolyse Oven", PyrolyseOvenBlockEntity::new)
+                .builtinModel(BRONZE_PLATED_BRICKS, "pyrolyse_oven", (model) -> model.front(true))
+                .registerMachine();
         ReiMachineRecipes.registerWorkstation(MI.id("coke_oven"), IO.id("pyrolyse_oven"));
 
         registerPyrolyseOvenCategory();
