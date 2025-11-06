@@ -16,11 +16,10 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOMachines;
-import dev.wp.industrialization_overdrive.IOText;
 import dev.wp.industrialization_overdrive.datamap.PyrolyseOvenTier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.swedz.tesseract.neoforge.TesseractText;
+import net.swedz.tesseract.neoforge.compat.mi.TesseractMI;
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformer;
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformers;
 import net.swedz.tesseract.neoforge.compat.mi.helper.CommonGuiComponents;
@@ -34,8 +33,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static aztech.modern_industrialization.machines.models.MachineCasings.BRONZE_PLATED_BRICKS;
-import static net.swedz.tesseract.neoforge.compat.mi.TesseractMITooltips.MACHINE_RECIPE_TYPE_PARSER;
-import static net.swedz.tesseract.neoforge.compat.mi.tooltip.MICompatibleTextLine.line;
 
 public final class PyrolyseOvenBlockEntity extends AbstractElectricMultipliedCraftingMultiblockBlockEntity {
     public PyrolyseOvenBlockEntity(BEP bep) {
@@ -66,8 +63,8 @@ public final class PyrolyseOvenBlockEntity extends AbstractElectricMultipliedCra
     @Override
     public List<Component> getTooltips() {
         return List.of(
-                line(TesseractText.MI_MACHINE_BATCHER_RECIPE).arg(true, MIMachineRecipeTypes.COKE_OVEN, MACHINE_RECIPE_TYPE_PARSER),
-                line(IOText.MACHINE_BATCHER_COILS)
+                TesseractMI.text().machineBatcherRecipe(true, MIMachineRecipeTypes.COKE_OVEN),
+                IO.text().machineBatcherCoils()
         );
     }
 

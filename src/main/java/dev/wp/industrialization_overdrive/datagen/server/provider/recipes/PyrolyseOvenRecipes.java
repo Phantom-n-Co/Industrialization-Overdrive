@@ -16,7 +16,7 @@ public class PyrolyseOvenRecipes extends RecipesServerDatagenProvider {
     protected void buildRecipes(RecipeOutput output) {
         addMachineRecipe(
                 "pyrolyse_oven", "charcoal_from_logs", IOMachines.RecipeTypes.PYROLYSE_OVEN,
-                8, 32*20/4,
+                8, 32 * 20 / 4,
                 recipe -> recipe
                         .addItemInput(ItemTags.LOGS_THAT_BURN, 4)
                         .addItemOutput(Items.CHARCOAL, 5)

@@ -7,9 +7,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-import static net.neoforged.fml.common.EventBusSubscriber.Bus.MOD;
-
-@EventBusSubscriber(modid = IO.ID, bus = MOD)
+@EventBusSubscriber(modid = IO.ID)
 public final class DatagenDelegator {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

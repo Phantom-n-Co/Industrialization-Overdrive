@@ -17,7 +17,6 @@ import com.google.common.collect.Lists;
 import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOConfig;
 import dev.wp.industrialization_overdrive.IOTags;
-import dev.wp.industrialization_overdrive.IOText;
 import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
 import dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot.MultiProcessingArrayMachineSlot;
 import net.minecraft.network.chat.Component;
@@ -27,12 +26,9 @@ import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostT
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformers;
 import net.swedz.tesseract.neoforge.compat.mi.machine.blockentity.multiblock.multiplied.AbstractElectricMultipliedCraftingMultiblockBlockEntity;
 import net.swedz.tesseract.neoforge.compat.mi.machine.multiblock.member.PredicateSimpleMember;
-import net.swedz.tesseract.neoforge.compat.mi.tooltip.MICompatibleTextLine;
 
 import java.util.List;
 import java.util.stream.IntStream;
-
-import static net.swedz.tesseract.neoforge.compat.mi.TesseractMITooltips.EU_COST_TRANSFORMER_PARSER;
 
 public final class MultiProcessingArrayBlockEntity extends AbstractElectricMultipliedCraftingMultiblockBlockEntity {
     private final MultiProcessingArrayMachineComponent machines;
@@ -76,7 +72,7 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
                 },
                 new ShapeSelection.LineInfo(
                         SPLIT,
-                        IntStream.range(0, SPLIT).map(this::getMachineStackSize).mapToObj(IOText.MULTI_PROCESSING_ARRAY_SIZE::text).toList(),
+                        IntStream.range(0, SPLIT).map(this::getMachineStackSize).mapToObj(IO.text()::multiProcessingArraySize).toList(),
                         false
                 )
         ));
@@ -104,10 +100,10 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
     @Override
     public List<Component> getTooltips() {
         List<Component> lines = Lists.newArrayList();
-        lines.add(MICompatibleTextLine.line(IOText.MULTI_PROCESSING_ARRAY_RECIPE));
-        lines.add(MICompatibleTextLine.line(IOText.MULTI_PROCESSING_ARRAY_BATCH_SIZE));
+        lines.add(IO.text().multiProcessingArrayRecipe());
+        lines.add(IO.text().multiProcessingArrayBatchSize());
         if (IOConfig.multiProcessingArrayEuCostMultiplier != 1) {
-            lines.add(MICompatibleTextLine.line(IOText.MULTI_PROCESSING_ARRAY_EU_COST_MULTIPLIER).arg(this.getEuCostTransformer(), EU_COST_TRANSFORMER_PARSER));
+            lines.add(IO.text().multiProcessingArrayEuCostMultiplier(this.getEuCostTransformer()));
         }
         return lines;
     }

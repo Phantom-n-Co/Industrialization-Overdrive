@@ -20,7 +20,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @Mod(value = IO.ID, dist = Dist.CLIENT)
-@EventBusSubscriber(value = Dist.CLIENT, modid = IO.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = IO.ID)
 public final class IOClient {
     public IOClient(IEventBus bus) {
 

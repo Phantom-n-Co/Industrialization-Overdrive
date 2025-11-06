@@ -1,7 +1,11 @@
 package dev.wp.industrialization_overdrive;
 
+import aztech.modern_industrialization.MIText;
+import aztech.modern_industrialization.util.TextHelper;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
+import dev.wp.industrialization_overdrive.datagen.client.provider.LanguageDatagenProvider;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.EventPriority;
@@ -14,12 +18,20 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.datamaps.DataMapsUpdatedEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
+import net.swedz.tesseract.neoforge.api.Assert;
 import net.swedz.tesseract.neoforge.capabilities.CapabilitiesListeners;
 import net.swedz.tesseract.neoforge.compat.mi.TesseractMI;
+import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformer;
+import net.swedz.tesseract.neoforge.compat.mi.tooltip.MIParser;
+import net.swedz.tesseract.neoforge.lang.LangManager;
 import net.swedz.tesseract.neoforge.registry.holder.BlockHolder;
 import net.swedz.tesseract.neoforge.registry.holder.ItemHolder;
+import net.swedz.tesseract.neoforge.tooltip.Parser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static aztech.modern_industrialization.MITooltips.DEFAULT_STYLE;
+import static aztech.modern_industrialization.MITooltips.HIGHLIGHT_STYLE;
 
 @Mod(IO.ID)
 public final class IO {
@@ -34,7 +46,10 @@ public final class IO {
 
     public IO(IEventBus bus, ModContainer container) {
         container.registerConfig(ModConfig.Type.STARTUP, IOConfig.SPEC);
+
+        setupText();
         IOConfig.loadConfig();
+
         bus.addListener(FMLCommonSetupEvent.class, (event) -> IOConfig.loadConfig());
 
         TesseractMI.init(ID);
@@ -56,5 +71,36 @@ public final class IO {
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, DataMapsUpdatedEvent.class, (event) -> {
             event.ifRegistry(Registries.BLOCK, (registry) -> PyrolyseOvenBlockEntity.initTiers());
         });
+    }
+
+    private static IOText TEXT;
+
+    public static IOText text() {
+        Assert.notNull(TEXT, "Text not initialized yet");
+        return TEXT;
+    }
+
+    private static void setupText() {
+        var instance = new LangManager(ID)
+                .builtinColorStyles()
+                .style("tooltip", () -> DEFAULT_STYLE)
+                .style("highlighted", () -> HIGHLIGHT_STYLE)
+                .builtinParsers()
+                .parser("percentage", float.class, () -> (value) -> Parser.FLOAT_PERCENTAGE.parse(value, 0))
+                .parser("eu_per_tick", long.class, () -> (value) -> {
+                    var amount = TextHelper.getAmountGeneric(value);
+                    return MIText.EuT.text(amount.digit(), amount.unit());
+                })
+                .parser("eu", long.class, () -> (value) -> {
+                    var amount = TextHelper.getAmountGeneric(value);
+                    return MIText.Eu.text(amount.digit(), amount.unit());
+                })
+                .parser(EuCostTransformer.class, () -> MIParser.EU_COST_TRANSFORMER_PARSER)
+                .parser("block_pos", BlockPos.class, () -> Parser.BLOCK_POS)
+                .parser("keybind", String.class, () -> Parser.KEYBIND)
+                .build(IOText.class)
+                .load();
+        LanguageDatagenProvider.include(instance);
+        TEXT = instance.lang();
     }
 }

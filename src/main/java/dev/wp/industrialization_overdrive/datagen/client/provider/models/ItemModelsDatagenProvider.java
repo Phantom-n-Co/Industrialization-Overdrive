@@ -14,7 +14,7 @@ public final class ItemModelsDatagenProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         for (ItemHolder item : IOItems.values()) {
-            if(item.hasModelProvider()) item.modelProvider().accept(this);
+            if (item.hasModelProvider()) item.modelProvider().accept(this);
         }
     }
 

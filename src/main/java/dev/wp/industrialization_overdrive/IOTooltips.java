@@ -14,15 +14,12 @@ import net.swedz.tesseract.neoforge.tooltip.TooltipAttachment;
 
 import java.util.List;
 
-import static aztech.modern_industrialization.MITooltips.*;
-import static net.swedz.tesseract.neoforge.compat.mi.tooltip.MICompatibleTextLine.line;
-
 public class IOTooltips {
     private static final BiParser<Boolean, Float> MAYBE_SPACED_PERCENTAGE_PARSER = (space, ratio) ->
-            Component.literal("%d%s%%".formatted((int) (ratio * 100), space ? " " : "")).withStyle(NUMBER_TEXT);
+            Component.literal("%d%s%%".formatted((int) (ratio * 100), space ? " " : ""));
 
     public static final Parser<Float> PERCENTAGE_PARSER = (ratio) -> MAYBE_SPACED_PERCENTAGE_PARSER.parse(false, ratio);
-    public static final Parser<BlockPos> POS_PARSER = (pos) -> Component.literal("%d, %d, %d".formatted(pos.getX(), pos.getY(), pos.getZ())).withStyle(NUMBER_TEXT);
+    public static final Parser<BlockPos> POS_PARSER = (pos) -> Component.literal("%d, %d, %d".formatted(pos.getX(), pos.getY(), pos.getZ()));
 
     public static final TooltipAttachment COILS_PYRO = TooltipAttachment.singleLine(
             (stack, item) ->
@@ -33,7 +30,7 @@ public class IOTooltips {
                         .get(BuiltInRegistries.BLOCK.getKey(((BlockItem) stack.getItem()).getBlock()));
                 int batchSize = tier.batchSize();
                 float euCostMultiplier = tier.euCostMultiplier();
-                return line(IOText.COILS_PYRO_TIER).arg(batchSize).arg(euCostMultiplier, PERCENTAGE_PARSER);
+                return IO.text().coilsPyroTier(batchSize, euCostMultiplier);
             }
     );
 
@@ -44,11 +41,11 @@ public class IOTooltips {
                 if (IOUtil.isAE2Loaded) {
                     GlobalPos linkPos = Terminal.getLinkPos(stack);
                     if (linkPos != null)
-                        tooltip.add(line(IOText.TERMINAL_LINK_INFO).arg(linkPos.pos(), POS_PARSER));
-                    else tooltip.add(line(IOText.TERMINAL_LINK_NOT_LINKED));
+                        tooltip.add(IO.text().terminalLinkInfo(linkPos.pos()));
+                    else tooltip.add(IO.text().terminalLinkNotLinked());
                 }
-                tooltip.add(line(IOText.TERMINAL_HELP_1).arg("sneak", KEYBIND_PARSER).arg("use", KEYBIND_PARSER));
-                tooltip.add(line(IOUtil.isAE2Loaded ? IOText.TERMINAL_HELP_2_ALT : IOText.TERMINAL_HELP_2));
+                tooltip.add(IO.text().terminalHelp1("sneak", "use"));
+                tooltip.add(IOUtil.isAE2Loaded ? IO.text().terminalHelp2Alt() : IO.text().terminalHelp2());
                 return tooltip;
             }
     );

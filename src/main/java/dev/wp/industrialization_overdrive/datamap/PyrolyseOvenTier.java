@@ -14,15 +14,15 @@ import java.util.Map;
 public record PyrolyseOvenTier(int batchSize, float euCostMultiplier) {
     public static final Codec<PyrolyseOvenTier> CODEC = RecordCodecBuilder.create((instance) -> instance
             .group(
-                ExtraCodecs.POSITIVE_INT.fieldOf("batch_size").forGetter(PyrolyseOvenTier::batchSize),
-                ExtraCodecs.POSITIVE_FLOAT.fieldOf("eu_cost_multiplier").forGetter(PyrolyseOvenTier::euCostMultiplier)
-    ).apply(instance, PyrolyseOvenTier::new));
+                    ExtraCodecs.POSITIVE_INT.fieldOf("batch_size").forGetter(PyrolyseOvenTier::batchSize),
+                    ExtraCodecs.POSITIVE_FLOAT.fieldOf("eu_cost_multiplier").forGetter(PyrolyseOvenTier::euCostMultiplier)
+            ).apply(instance, PyrolyseOvenTier::new));
 
-    public static PyrolyseOvenTier getFor(Block block){
+    public static PyrolyseOvenTier getFor(Block block) {
         return RegistryHelper.holder(BuiltInRegistries.BLOCK, block).getData(IODataMaps.PYROLYSE_OVEN_TIER);
     }
 
-    public static Map<ResourceKey<Block>, PyrolyseOvenTier> getAll(){
+    public static Map<ResourceKey<Block>, PyrolyseOvenTier> getAll() {
         return BuiltInRegistries.BLOCK.getDataMap(IODataMaps.PYROLYSE_OVEN_TIER);
     }
 }

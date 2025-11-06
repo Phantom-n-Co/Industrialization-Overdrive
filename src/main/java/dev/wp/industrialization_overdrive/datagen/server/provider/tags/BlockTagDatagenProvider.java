@@ -11,23 +11,22 @@ import net.swedz.tesseract.neoforge.registry.holder.BlockHolder;
 
 import java.util.Comparator;
 
-public final class BlockTagDatagenProvider extends BlockTagsProvider
-{
-	public BlockTagDatagenProvider(GatherDataEvent event) {
-		super(event.getGenerator().getPackOutput(), event.getLookupProvider(), IO.ID, event.getExistingFileHelper());
-	}
-	
-	@Override
-	protected void addTags(HolderLookup.Provider provider) {
-		for(BlockHolder<?> block : IOBlocks.values().stream().sorted(Comparator.comparing((block) -> block.identifier().id())).toList()) {
-			for(TagKey<Block> tag : block.tags()) {
-				this.tag(tag).add(block.get());
-			}
-		}
-	}
-	
-	@Override
-	public String getName() {
-		return this.getClass().getSimpleName();
-	}
+public final class BlockTagDatagenProvider extends BlockTagsProvider {
+    public BlockTagDatagenProvider(GatherDataEvent event) {
+        super(event.getGenerator().getPackOutput(), event.getLookupProvider(), IO.ID, event.getExistingFileHelper());
+    }
+
+    @Override
+    protected void addTags(HolderLookup.Provider provider) {
+        for (BlockHolder<?> block : IOBlocks.values().stream().sorted(Comparator.comparing((block) -> block.identifier().id())).toList()) {
+            for (TagKey<Block> tag : block.tags()) {
+                this.tag(tag).add(block.get());
+            }
+        }
+    }
+
+    @Override
+    public String getName() {
+        return this.getClass().getSimpleName();
+    }
 }

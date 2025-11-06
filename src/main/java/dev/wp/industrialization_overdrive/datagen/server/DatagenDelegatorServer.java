@@ -2,9 +2,9 @@ package dev.wp.industrialization_overdrive.datagen.server;
 
 import dev.wp.industrialization_overdrive.datagen.server.provider.datamaps.DataMapDatagenProvider;
 import dev.wp.industrialization_overdrive.datagen.server.provider.loottable.BlockLootTableDatagenProvider;
-import dev.wp.industrialization_overdrive.datagen.server.provider.recipes.PyrolyseOvenRecipes;
 import dev.wp.industrialization_overdrive.datagen.server.provider.recipes.CommonRecipesServerDatagenProvider;
 import dev.wp.industrialization_overdrive.datagen.server.provider.recipes.MachineItemRecipesServerDatagenProvider;
+import dev.wp.industrialization_overdrive.datagen.server.provider.recipes.PyrolyseOvenRecipes;
 import dev.wp.industrialization_overdrive.datagen.server.provider.tags.BlockTagDatagenProvider;
 import dev.wp.industrialization_overdrive.datagen.server.provider.tags.ItemTagDatagenProvider;
 import net.minecraft.core.HolderLookup;

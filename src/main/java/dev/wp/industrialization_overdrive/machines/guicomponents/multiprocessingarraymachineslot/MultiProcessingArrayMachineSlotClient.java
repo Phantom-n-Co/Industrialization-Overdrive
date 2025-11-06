@@ -7,13 +7,11 @@ import aztech.modern_industrialization.machines.gui.GuiComponent;
 import aztech.modern_industrialization.machines.gui.GuiComponentClient;
 import aztech.modern_industrialization.machines.gui.MachineScreen;
 import aztech.modern_industrialization.util.Rectangle;
-import dev.wp.industrialization_overdrive.IOText;
+import dev.wp.industrialization_overdrive.IO;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.Slot;
@@ -24,55 +22,45 @@ import java.util.List;
 public class MultiProcessingArrayMachineSlotClient implements GuiComponentClient {
     private int maxMachines;
 
-    public MultiProcessingArrayMachineSlotClient(RegistryFriendlyByteBuf buf)
-    {
+    public MultiProcessingArrayMachineSlotClient(RegistryFriendlyByteBuf buf) {
         this.readCurrentData(buf);
     }
 
     @Override
-    public void readCurrentData(RegistryFriendlyByteBuf buf)
-    {
+    public void readCurrentData(RegistryFriendlyByteBuf buf) {
         maxMachines = buf.readInt();
     }
 
     @Override
-    public void setupMenu(GuiComponent.MenuFacade menu)
-    {
-        class ClientSlot extends SlotWithBackground implements SlotTooltip
-        {
-            public ClientSlot()
-            {
+    public void setupMenu(GuiComponent.MenuFacade menu) {
+        class ClientSlot extends SlotWithBackground implements SlotTooltip {
+            public ClientSlot() {
                 super(new SimpleContainer(1), 0, MultiProcessingArrayMachineSlot.getSlotX(menu.getGuiParams()), MultiProcessingArrayMachineSlot.getSlotY());
             }
 
             @Override
-            public boolean mayPlace(ItemStack itemStack)
-            {
+            public boolean mayPlace(ItemStack itemStack) {
                 return MultiProcessingArrayMachineSlot.isMachine(itemStack.getItem());
             }
 
             @Override
-            public int getMaxStackSize()
-            {
+            public int getMaxStackSize() {
                 return maxMachines;
             }
 
             @Override
-            public int getBackgroundU()
-            {
+            public int getBackgroundU() {
                 return 18;
             }
 
             @Override
-            public int getBackgroundV()
-            {
+            public int getBackgroundV() {
                 return 80;
             }
 
             @Override
-            public Component getTooltip()
-            {
-                return IOText.MULTI_PROCESSING_ARRAY_MACHINE_INPUT.text().withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xA9A9A9)));
+            public Component getTooltip() {
+                return IO.text().multiProcessingArrayMachineInput();
             }
         }
 
@@ -80,24 +68,19 @@ public class MultiProcessingArrayMachineSlotClient implements GuiComponentClient
     }
 
     @Override
-    public ClientComponentRenderer createRenderer(MachineScreen machineScreen)
-    {
-        return new ClientComponentRenderer()
-        {
-            private Rectangle getBox(int leftPos, int topPos)
-            {
+    public ClientComponentRenderer createRenderer(MachineScreen machineScreen) {
+        return new ClientComponentRenderer() {
+            private Rectangle getBox(int leftPos, int topPos) {
                 return new Rectangle(leftPos + machineScreen.getGuiParams().backgroundWidth, topPos + 10 + MultiProcessingArrayMachineSlot.getSlotY() - 19, 31, 34);
             }
 
             @Override
-            public void addExtraBoxes(List<Rectangle> rectangles, int leftPos, int topPos)
-            {
+            public void addExtraBoxes(List<Rectangle> rectangles, int leftPos, int topPos) {
                 rectangles.add(this.getBox(leftPos, topPos));
             }
 
             @Override
-            public void renderBackground(GuiGraphics graphics, int leftPos, int topPos)
-            {
+            public void renderBackground(GuiGraphics graphics, int leftPos, int topPos) {
                 Rectangle box = this.getBox(leftPos, topPos);
 
                 int textureX = box.x() - leftPos - box.w();
@@ -106,25 +89,20 @@ public class MultiProcessingArrayMachineSlotClient implements GuiComponentClient
             }
 
             @Override
-            public void renderTooltip(MachineScreen screen, Font font, GuiGraphics graphics, int x, int y, int cursorX, int cursorY)
-            {
-                if(screen.getFocusedSlot() instanceof SlotTooltip st && !screen.getFocusedSlot().hasItem())
-                {
+            public void renderTooltip(MachineScreen screen, Font font, GuiGraphics graphics, int x, int y, int cursorX, int cursorY) {
+                if (screen.getFocusedSlot() instanceof SlotTooltip st && !screen.getFocusedSlot().hasItem()) {
                     graphics.renderTooltip(font, st.getTooltip(), cursorX, cursorY);
                 }
             }
         };
     }
 
-    interface SlotTooltip
-    {
+    interface SlotTooltip {
         Component getTooltip();
     }
 
-    private static class SlotWithBackground extends Slot implements BackgroundRenderedSlot
-    {
-        public SlotWithBackground(Container container, int index, int x, int y)
-        {
+    private static class SlotWithBackground extends Slot implements BackgroundRenderedSlot {
+        public SlotWithBackground(Container container, int index, int x, int y) {
             super(container, index, x, y);
         }
     }

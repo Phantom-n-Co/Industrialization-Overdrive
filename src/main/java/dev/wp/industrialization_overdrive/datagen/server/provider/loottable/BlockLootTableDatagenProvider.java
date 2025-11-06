@@ -10,22 +10,22 @@ import net.swedz.tesseract.neoforge.registry.holder.BlockHolder;
 import java.util.Set;
 
 public final class BlockLootTableDatagenProvider extends BlockLootSubProvider {
-	public BlockLootTableDatagenProvider(HolderLookup.Provider registries) {
-		super(Set.of(), FeatureFlags.VANILLA_SET, registries);
-	}
-	
-	@Override
-	protected Iterable<Block> getKnownBlocks() {
-		return IOBlocks.values().stream()
-				.filter(BlockHolder::hasLootTable)
-				.map(BlockHolder::get)
-				.toList();
-	}
-	
-	@Override
-	protected void generate() {
-		for(BlockHolder<?> block : IOBlocks.values()) {
-			if(block.hasLootTable()) this.add(block.get(), block.buildLootTable(this));
-		}
-	}
+    public BlockLootTableDatagenProvider(HolderLookup.Provider registries) {
+        super(Set.of(), FeatureFlags.VANILLA_SET, registries);
+    }
+
+    @Override
+    protected Iterable<Block> getKnownBlocks() {
+        return IOBlocks.values().stream()
+                .filter(BlockHolder::hasLootTable)
+                .map(BlockHolder::get)
+                .toList();
+    }
+
+    @Override
+    protected void generate() {
+        for (BlockHolder<?> block : IOBlocks.values()) {
+            if (block.hasLootTable()) this.add(block.get(), block.buildLootTable(this));
+        }
+    }
 }

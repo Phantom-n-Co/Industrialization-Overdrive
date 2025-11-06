@@ -14,7 +14,7 @@ public final class BlockModelsDatagenProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         for (BlockHolder<?> block : IOBlocks.values()) {
-            if(block.hasModelProvider()) block.modelProvider().accept(this);
+            if (block.hasModelProvider()) block.modelProvider().accept(this);
         }
     }
 
