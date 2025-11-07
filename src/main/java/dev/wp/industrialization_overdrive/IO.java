@@ -16,6 +16,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import net.neoforged.neoforge.registries.datamaps.DataMapsUpdatedEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import net.swedz.tesseract.neoforge.api.Assert;
@@ -100,7 +101,8 @@ public final class IO {
                 .parser("keybind", String.class, () -> Parser.KEYBIND)
                 .build(IOText.class)
                 .load();
-        LanguageDatagenProvider.include(instance);
+        if (DatagenModLoader.isRunningDataGen())
+            LanguageDatagenProvider.include(instance);
         TEXT = instance.lang();
     }
 }

@@ -234,7 +234,7 @@ processResources {
 }
 
 tasks.jar {
-//    exclude("**/datagen/**")
+    exclude("**/datagen/**")
 
     from('guidebook') {
         into('assets/modern_industrialization/mi_guidebook')

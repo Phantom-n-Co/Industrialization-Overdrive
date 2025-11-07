@@ -39,6 +39,5 @@ public final class LanguageDatagenProvider extends LanguageProvider {
 
         this.add("pyro_tier.%s.%s.%s".formatted(IO.ID, MI.ID, "cupronickel_coil"), "Cupronickel");
         this.add("pyro_tier.%s.%s.%s".formatted(IO.ID, MI.ID, "kanthal_coil"), "Kanthal");
-        this.add("rei_categories.%s.%s".formatted(IO.ID, "pyrolyse_oven"), "Pyrolyse Oven");
     }
 }
