@@ -102,7 +102,7 @@ public final class PyrolyseOvenBlockEntity extends AbstractElectricMultipliedCra
         SHAPE_TEMPLATES = new ShapeTemplate[TIERS.size()];
 
         SimpleMember casing = SimpleMember.forBlock(MIBlock.BLOCK_DEFINITIONS.get(MI.id("bronze_plated_bricks")));
-        HatchFlags hatches = new HatchFlags.Builder().with(HatchTypes.FLUID_OUTPUT, HatchTypes.ITEM_INPUT, HatchTypes.ITEM_OUTPUT, HatchTypes.ENERGY_INPUT).build();
+        HatchFlags hatches = new HatchFlags.Builder().with(HatchTypes.FLUID_INPUT, HatchTypes.FLUID_OUTPUT, HatchTypes.ITEM_INPUT, HatchTypes.ITEM_OUTPUT, HatchTypes.ENERGY_INPUT).build();
 
         for (int i = 0; i < TIERS.size(); i++) {
             Tier tier = TIERS.get(i);
