@@ -1,5 +1,6 @@
 package dev.wp.industrialization_overdrive;
 
+import dev.technici4n.grandpower.api.ISimpleEnergyItem;
 import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
 import dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot.MultiProcessingArrayMachineSlot;
 import net.minecraft.core.registries.Registries;
@@ -7,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.swedz.extended_industrialization.item.machineconfig.MachineConfigPanel;
@@ -25,13 +25,23 @@ public final class IOOtherRegistries {
 
     public static final Supplier<CreativeModeTab> CREATIVE_TAB = IOOtherRegistries.CREATIVE_MODE_TABS.register(IO.ID, () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.%s.%s".formatted(IO.ID, IO.ID)))
-            .icon(() -> Blocks.DIRT.asItem().getDefaultInstance())
+            .icon(() -> IOItems.TERMINAL.get().getDefaultInstance())
             .displayItems((params, output) -> {
                 Comparator<ItemHolder> compareBySortOrder = Comparator.comparing(ItemHolder::sortOrder);
                 Comparator<ItemHolder> compareByName = Comparator.comparing((i) -> i.identifier().id());
                 IOItems.values().stream()
                         .sorted(compareBySortOrder.thenComparing(compareByName))
-                        .forEach(output::accept);
+                        .forEach((item) -> {
+                            output.accept(item);
+
+                            if (item.get() instanceof ISimpleEnergyItem energyItem) {
+                                var chargedItem = item.get().getDefaultInstance();
+                                if (energyItem.getEnergyCapacity(chargedItem) > 0) {
+                                    energyItem.setStoredEnergy(chargedItem, energyItem.getEnergyCapacity(chargedItem));
+                                    output.accept(chargedItem);
+                                }
+                            }
+                        });
             })
             .build());
 

@@ -1,6 +1,7 @@
 package dev.wp.industrialization_overdrive;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformer;
 import net.swedz.tesseract.neoforge.lang.annotation.LangKey;
@@ -25,7 +26,7 @@ public interface IOText {
     MutableComponent multiProcessingArrayRecipe();
 
     @LangKey(text = "Machines: %d")
-    MutableComponent multiProcessingArraySize(@WithStyle("highlighted") int size);
+    MutableComponent multiProcessingArraySize(int size);
 
     @LangKey(text = "Batch size and cost is determined by coil used.")
     @WithStyle("tooltip")
@@ -37,10 +38,7 @@ public interface IOText {
 
     @LangKey(text = "- Press %s + %s on a MI multiblock to automatically build it.")
     @WithStyle("tooltip")
-    MutableComponent terminalHelp1(
-            @Parsed("keybind") @WithStyle("highlighted") String key1,
-            @Parsed("keybind") @WithStyle("highlighted") String key2
-    );
+    MutableComponent terminalHelp1(@Parsed("keybind") @WithStyle("highlighted") String key1, @Parsed("keybind") @WithStyle("highlighted") String key2);
 
     @LangKey(text = "- Requires parts to be in your inventory.")
     @WithStyle("tooltip")
@@ -57,4 +55,44 @@ public interface IOText {
     @LangKey(text = "Not linked to an ME system.")
     @WithStyle("tooltip")
     MutableComponent terminalLinkNotLinked();
+
+    @LangKey(text = "Silk Touch: %s")
+    @WithStyle("tooltip")
+    MutableComponent vajraSilkTouchInfo(@WithStyle("highlighted") Component status);
+
+    @LangKey(text = "Speed: %d")
+    @WithStyle("tooltip")
+    MutableComponent vajraSpeedInfo(@WithStyle("highlighted") Component speed);
+
+    @LangKey(text = "Speed changed to %d.")
+    @WithStyle("tooltip")
+    MutableComponent vajraSpeedChanged(@WithStyle("highlighted") Component speed);
+
+    @LangKey(text = "Slow")
+    @WithStyle("highlighted")
+    MutableComponent vajraSpeedSlow();
+
+    @LangKey(text = "Normal")
+    @WithStyle("highlighted")
+    MutableComponent vajraSpeedNormal();
+
+    @LangKey(text = "Fast")
+    @WithStyle("highlighted")
+    MutableComponent vajraSpeedFast();
+
+    @LangKey(text = "Instant")
+    @WithStyle("highlighted")
+    MutableComponent vajraSpeedInstant();
+
+    @LangKey(text = "Enabled")
+    @WithStyle("green")
+    MutableComponent enabled();
+
+    @LangKey(text = "Disabled")
+    @WithStyle("red")
+    MutableComponent disabled();
+
+    @LangKey(text = "Energy: %s / %s")
+    @WithStyle("tooltip")
+    MutableComponent energyInfo(@Parsed("eu") @WithStyle("highlighted") long stored, @Parsed("eu") @WithStyle("highlighted") long capacity);
 }

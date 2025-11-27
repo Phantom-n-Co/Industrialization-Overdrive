@@ -2,11 +2,14 @@ package dev.wp.industrialization_overdrive;
 
 import com.google.common.collect.Sets;
 import dev.wp.industrialization_overdrive.item.Terminal;
+import dev.wp.industrialization_overdrive.item.Vajra;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.swedz.tesseract.neoforge.registry.SortOrder;
 import net.swedz.tesseract.neoforge.registry.common.CommonModelBuilders;
+import net.swedz.tesseract.neoforge.registry.common.MICommonCapabitilies;
 import net.swedz.tesseract.neoforge.registry.holder.ItemHolder;
 
 import java.util.Set;
@@ -30,7 +33,12 @@ public final class IOItems {
         Registry.init(bus);
     }
 
-    public static final ItemHolder<Terminal> TERMINAL = create("terminal", "Terminal", Terminal::new, IOSortOrder.GEAR).withModelBuilder(CommonModelBuilders::generated).register();
+    public static final ItemHolder<Terminal> TERMINAL = create("terminal", "Multiblock Builder", Terminal::new, IOSortOrder.GEAR).withModelBuilder(CommonModelBuilders::generated).register();
+    public static final ItemHolder<Vajra> VAJRA = create("vajra", "Vajra", Vajra::new, IOSortOrder.GEAR)
+            .tag(ItemTags.PICKAXES, ItemTags.AXES, ItemTags.SHOVELS)
+            .withModelBuilder(CommonModelBuilders::handheld)
+            .withCapabilities(MICommonCapabitilies::simpleEnergyItem)
+            .register();
 
     public static Set<ItemHolder> values() {
         return Set.copyOf(Registry.HOLDERS);

@@ -5,6 +5,7 @@ import aztech.modern_industrialization.util.TextHelper;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
 import dev.wp.industrialization_overdrive.datagen.client.provider.LanguageDatagenProvider;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
+import dev.wp.industrialization_overdrive.network.IOPackets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +18,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.datamaps.DataMapsUpdatedEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import net.swedz.tesseract.neoforge.api.Assert;
@@ -66,6 +68,7 @@ public final class IO {
         });
 
         bus.addListener(RegisterCapabilitiesEvent.class, (event) -> CapabilitiesListeners.triggerAll(ID, event));
+        bus.addListener(RegisterPayloadHandlersEvent.class, IOPackets::init);
 
         bus.addListener(RegisterDataMapTypesEvent.class, IODataMaps::init);
 

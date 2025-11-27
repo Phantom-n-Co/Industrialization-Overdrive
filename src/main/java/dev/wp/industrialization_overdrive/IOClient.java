@@ -7,6 +7,9 @@ import aztech.modern_industrialization.machines.blockentities.multiblocks.LargeT
 import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBER;
 import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBlockEntity;
 import aztech.modern_industrialization.machines.multiblocks.MultiblockTankBER;
+import dev.wp.industrialization_overdrive.item.Vajra;
+import dev.wp.industrialization_overdrive.network.packet.ModifyVajraSpeedPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.world.level.block.Block;
@@ -17,13 +20,31 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @Mod(value = IO.ID, dist = Dist.CLIENT)
 @EventBusSubscriber(value = Dist.CLIENT, modid = IO.ID)
 public final class IOClient {
+
     public IOClient(IEventBus bus) {
 
+        NeoForge.EVENT_BUS.addListener(InputEvent.MouseScrollingEvent.class, (event) -> {
+            var player = Minecraft.getInstance().player;
+            if (player != null && player.isShiftKeyDown()) {
+                var stack = player.getMainHandItem();
+                if (stack.getItem() == IOItems.VAJRA.get()) {
+                    boolean increase = event.getScrollDeltaY() > 0;
+                    int speed = Vajra.getToolSpeed(stack);
+                    if (increase ? speed < Vajra.MAX_SPEED : speed > Vajra.MIN_SPEED) {
+                        new ModifyVajraSpeedPacket(increase).sendToServer();
+                    }
+
+                    event.setCanceled(true);
+                }
+            }
+        });
     }
 
     @SubscribeEvent
