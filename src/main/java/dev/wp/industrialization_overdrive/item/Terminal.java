@@ -167,7 +167,7 @@ public final class Terminal extends Item {
     }
 
     private static boolean isAlreadyValid(ShapeMatcher shapeMatcher, Level level, BlockPos pos) {
-        if (shapeMatcher.matches(pos, level, null)) return true;
+        if (shapeMatcher.matches(pos, level)) return true;
         var be = level.getBlockEntity(pos);
         var hatchFlags = shapeMatcher.getHatchFlags(pos);
         return be instanceof HatchBlockEntity hatch && hatchFlags != null && hatchFlags.allows(hatch.getHatchType());

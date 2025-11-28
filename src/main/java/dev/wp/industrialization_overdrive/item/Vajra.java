@@ -31,7 +31,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
-    private final long energyUsagePerBlock = CableTier.MV.getEu() * 5;
+    private final long maxEnergy = CableTier.HV.getMaxTransfer() * 64;
+    private final long energyUsagePerBlock = maxEnergy / 6000;
     public static final int MIN_SPEED = 1;
     public static final int MAX_SPEED = 4;
 
@@ -39,6 +40,7 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
         super(properties
                 .stacksTo(1)
                 .rarity(Rarity.EPIC)
+                .component(IOComponents.HIDE_BAR, false)
                 .component(IOComponents.VAJRA_SPEED, 2)
                 .component(IOComponents.SILK_TOUCH, false)
                 .component(MIComponents.ENERGY, 0L)
@@ -122,8 +124,8 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
         var player = ctx.getPlayer();
         if (player == null) return super.useOn(ctx);
 
-        var energy = stack.getOrDefault(MIComponents.ENERGY, 0L);
-        if (energy < energyUsagePerBlock) return super.useOn(ctx);
+        if (!canUse(stack)) return super.useOn(ctx);
+        useEnergy(stack, energyUsagePerBlock);
 
         if (level.isClientSide && !level.isEmptyBlock(pos)) {
             player.swing(InteractionHand.MAIN_HAND);
@@ -167,9 +169,9 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
         if (!canUse(stack)) return 0;
-        if (state.getDestroySpeed(null, null) < 0) return super.getDestroySpeed(stack, state);
 
         var baseSpeed = state.getDestroySpeed(null, null);
+        if (baseSpeed < 0) return super.getDestroySpeed(stack, state);
 
         switch (getToolSpeed(stack)) {
             case 1 -> {
@@ -179,7 +181,7 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
                 return baseSpeed * 7.5f;
             }
             case 3 -> {
-                return baseSpeed * 29;
+                return baseSpeed * 29f;
             }
             case 4 -> {
                 return baseSpeed = Float.MAX_VALUE;
@@ -196,17 +198,17 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
 
     @Override
     public long getEnergyCapacity(ItemStack stack) {
-        return CableTier.HV.getEu() * 100;
+        return maxEnergy;
     }
 
     @Override
     public long getEnergyMaxInput(ItemStack stack) {
-        return CableTier.HV.getEu();
+        return maxEnergy;
     }
 
     @Override
     public long getEnergyMaxOutput(ItemStack stack) {
-        return 0;
+        return maxEnergy;
     }
 
     @Override

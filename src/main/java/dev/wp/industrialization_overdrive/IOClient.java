@@ -1,12 +1,12 @@
 package dev.wp.industrialization_overdrive;
 
+import aztech.modern_industrialization.client.machines.MachineBlockEntityRenderer;
+import aztech.modern_industrialization.client.machines.multiblocks.MultiblockMachineBER;
+import aztech.modern_industrialization.client.machines.multiblocks.MultiblockTankBER;
 import aztech.modern_industrialization.machines.MachineBlock;
 import aztech.modern_industrialization.machines.MachineBlockEntity;
-import aztech.modern_industrialization.machines.MachineBlockEntityRenderer;
 import aztech.modern_industrialization.machines.blockentities.multiblocks.LargeTankMultiblockBlockEntity;
-import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBER;
 import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBlockEntity;
-import aztech.modern_industrialization.machines.multiblocks.MultiblockTankBER;
 import dev.wp.industrialization_overdrive.item.Vajra;
 import dev.wp.industrialization_overdrive.network.packet.ModifyVajraSpeedPacket;
 import net.minecraft.client.Minecraft;

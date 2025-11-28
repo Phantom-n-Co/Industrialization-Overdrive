@@ -37,23 +37,23 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
         super(bep, IO.id("multi_processing_array"), SHAPE_TEMPLATES, MachineTier.MULTIBLOCK);
 
         if (!IOConfig.allowUpgradesInMultiProcessingArray) {
-            var slotPanel = guiComponents.get(SlotPanel.Server.class);
+            var slotPanel = guiComponents.getNullable(SlotPanel.class);
             if (slotPanel != null) guiComponents.unregister(slotPanel);
 
-            this.registerGuiComponent(new SlotPanel.Server(this)
+            this.registerGuiComponent(new SlotPanel(this)
                     .withRedstoneControl(redstoneControl)
                     .withOverdrive(overdrive));
         }
 
         this.machines = new MultiProcessingArrayMachineComponent();
         this.registerComponents(machines);
-        this.registerGuiComponent(new MultiProcessingArrayMachineSlot.Server(
+        this.registerGuiComponent(new MultiProcessingArrayMachineSlot(
                 this,
                 () -> this.getMachineStackSize(activeShape.getActiveShapeIndex()),
                 machines
         ));
 
-        this.registerGuiComponent(new ShapeSelection.Server(
+        this.registerGuiComponent(new ShapeSelection(
                 new ShapeSelection.Behavior() {
                     @Override
                     public void handleClick(int clickedLine, int delta) {
@@ -71,8 +71,7 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
                     }
                 },
                 new ShapeSelection.LineInfo(
-                        SPLIT,
-                        IntStream.range(0, SPLIT).map(this::getMachineStackSize).mapToObj(IO.text()::multiProcessingArraySize).toList(),
+                        IntStream.range(0, SPLIT).map(this::getMachineStackSize).mapToObj(IO.text()::multiProcessingArraySize).map((c) -> (Component) c).toList(),
                         false
                 )
         ));

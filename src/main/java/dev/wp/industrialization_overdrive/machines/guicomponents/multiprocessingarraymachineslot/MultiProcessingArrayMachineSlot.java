@@ -6,14 +6,16 @@ import aztech.modern_industrialization.machines.MachineBlock;
 import aztech.modern_industrialization.machines.MachineBlockEntity;
 import aztech.modern_industrialization.machines.blockentities.multiblocks.AbstractElectricCraftingMultiblockBlockEntity;
 import aztech.modern_industrialization.machines.gui.GuiComponent;
+import aztech.modern_industrialization.machines.gui.GuiComponentServer;
 import aztech.modern_industrialization.machines.gui.MachineGuiParameters;
 import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOConfig;
 import dev.wp.industrialization_overdrive.IOTags;
 import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,8 +23,9 @@ import net.swedz.tesseract.neoforge.helper.RegistryHelper;
 
 import java.util.function.Supplier;
 
-public final class MultiProcessingArrayMachineSlot {
-    public static final ResourceLocation ID = IO.id("multi_processing_array_machine_slot");
+public final class MultiProcessingArrayMachineSlot implements GuiComponentServer<Unit, Integer> {
+    public static final Type<Unit, Integer> TYPE = new Type<>(IO.id("multi_processing_array_machine_slot"),
+            StreamCodec.unit(Unit.INSTANCE), ByteBufCodecs.VAR_INT);
 
     public static int getSlotX(MachineGuiParameters guiParameters) {
         return guiParameters.backgroundWidth + 6;
@@ -49,68 +52,56 @@ public final class MultiProcessingArrayMachineSlot {
         return (AbstractElectricCraftingMultiblockBlockEntity) ((MachineBlock) ((BlockItem) itemStack.getItem()).getBlock()).getBlockEntityInstance();
     }
 
-    public static final class Server implements GuiComponent.Server<Integer> {
-        private final MachineBlockEntity machine;
-        private final Supplier<Integer> getMaxMachines;
-        private final MultiProcessingArrayMachineComponent machines;
+    private final MachineBlockEntity machine;
+    private final Supplier<Integer> getMaxMachines;
+    private final MultiProcessingArrayMachineComponent machines;
 
-        public Server(MachineBlockEntity machine, Supplier<Integer> getMaxMachines, MultiProcessingArrayMachineComponent machines) {
-            this.machine = machine;
-            this.getMaxMachines = getMaxMachines;
-            this.machines = machines;
-        }
+    public MultiProcessingArrayMachineSlot(MachineBlockEntity machine, Supplier<Integer> getMaxMachines, MultiProcessingArrayMachineComponent machines) {
+        this.machine = machine;
+        this.getMaxMachines = getMaxMachines;
+        this.machines = machines;
+    }
 
-        @Override
-        public Integer copyData() {
-            return getMaxMachines.get();
-        }
+    @Override
+    public void setupMenu(GuiComponent.MenuFacade menu) {
+        menu.addSlotToMenu(
+                new HackySlot(getSlotX(machine.guiParams), getSlotY()) {
+                    @Override
+                    protected ItemStack getRealStack() {
+                        return machines.getMachines();
+                    }
 
-        @Override
-        public boolean needsSync(Integer cachedData) {
-            return !cachedData.equals(getMaxMachines.get());
-        }
+                    @Override
+                    protected void setRealStack(ItemStack itemStack) {
+                        machines.setMachines(machine, itemStack);
+                    }
 
-        @Override
-        public void writeInitialData(RegistryFriendlyByteBuf buf) {
-            this.writeCurrentData(buf);
-        }
+                    @Override
+                    public boolean mayPlace(ItemStack itemStack) {
+                        return isMachine(itemStack.getItem());
+                    }
 
-        @Override
-        public void writeCurrentData(RegistryFriendlyByteBuf buf) {
-            buf.writeInt(getMaxMachines.get());
-        }
+                    @Override
+                    public int getMaxStackSize() {
+                        return getMaxMachines.get();
+                    }
+                },
+                SlotGroup.CONFIGURABLE_STACKS
+        );
+    }
 
-        @Override
-        public ResourceLocation getId() {
-            return ID;
-        }
+    @Override
+    public Unit getParams() {
+        return Unit.INSTANCE;
+    }
 
-        @Override
-        public void setupMenu(GuiComponent.MenuFacade menu) {
-            menu.addSlotToMenu(
-                    new HackySlot(getSlotX(machine.guiParams), getSlotY()) {
-                        @Override
-                        protected ItemStack getRealStack() {
-                            return machines.getMachines();
-                        }
+    @Override
+    public Integer extractData() {
+        return getMaxMachines.get();
+    }
 
-                        @Override
-                        protected void setRealStack(ItemStack itemStack) {
-                            machines.setMachines(machine, itemStack);
-                        }
-
-                        @Override
-                        public boolean mayPlace(ItemStack itemStack) {
-                            return isMachine(itemStack.getItem());
-                        }
-
-                        @Override
-                        public int getMaxStackSize() {
-                            return getMaxMachines.get();
-                        }
-                    },
-                    SlotGroup.CONFIGURABLE_STACKS
-            );
-        }
+    @Override
+    public Type<Unit, Integer> getType() {
+        return TYPE;
     }
 }

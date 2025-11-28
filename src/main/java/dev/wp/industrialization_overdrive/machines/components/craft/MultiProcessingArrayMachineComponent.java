@@ -1,7 +1,7 @@
 package dev.wp.industrialization_overdrive.machines.components.craft;
 
-import aztech.modern_industrialization.machines.IComponent;
 import aztech.modern_industrialization.machines.MachineBlockEntity;
+import aztech.modern_industrialization.machines.MachineComponent;
 import aztech.modern_industrialization.machines.components.DropableComponent;
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType;
 import dev.wp.industrialization_overdrive.IO;
@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.swedz.tesseract.neoforge.compat.mi.api.ComponentStackHolder;
 
-public final class MultiProcessingArrayMachineComponent implements IComponent.ServerOnly, DropableComponent, ComponentStackHolder {
+public final class MultiProcessingArrayMachineComponent implements MachineComponent.ServerOnly, DropableComponent, ComponentStackHolder {
     public static final ResourceLocation ID = IO.id("multi_processing_array_machine");
 
     private ItemStack machines = ItemStack.EMPTY;

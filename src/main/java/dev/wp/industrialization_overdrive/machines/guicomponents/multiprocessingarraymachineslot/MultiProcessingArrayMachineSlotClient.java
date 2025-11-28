@@ -1,17 +1,17 @@
 package dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot;
 
+import aztech.modern_industrialization.client.machines.gui.ClientComponentRenderer;
+import aztech.modern_industrialization.client.machines.gui.GuiComponentClient;
+import aztech.modern_industrialization.client.machines.gui.MachineScreen;
 import aztech.modern_industrialization.inventory.BackgroundRenderedSlot;
 import aztech.modern_industrialization.inventory.SlotGroup;
-import aztech.modern_industrialization.machines.gui.ClientComponentRenderer;
 import aztech.modern_industrialization.machines.gui.GuiComponent;
-import aztech.modern_industrialization.machines.gui.GuiComponentClient;
-import aztech.modern_industrialization.machines.gui.MachineScreen;
 import aztech.modern_industrialization.util.Rectangle;
 import dev.wp.industrialization_overdrive.IO;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Unit;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.Slot;
@@ -19,16 +19,9 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class MultiProcessingArrayMachineSlotClient implements GuiComponentClient {
-    private int maxMachines;
-
-    public MultiProcessingArrayMachineSlotClient(RegistryFriendlyByteBuf buf) {
-        this.readCurrentData(buf);
-    }
-
-    @Override
-    public void readCurrentData(RegistryFriendlyByteBuf buf) {
-        maxMachines = buf.readInt();
+public class MultiProcessingArrayMachineSlotClient extends GuiComponentClient<Unit, Integer> {
+    public MultiProcessingArrayMachineSlotClient(Unit params, Integer data) {
+        super(params, data);
     }
 
     @Override
@@ -45,7 +38,7 @@ public class MultiProcessingArrayMachineSlotClient implements GuiComponentClient
 
             @Override
             public int getMaxStackSize() {
-                return maxMachines;
+                return data;
             }
 
             @Override

@@ -20,7 +20,7 @@ import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.ViewerSetupM
 public class IOMIHookListener implements MIHookListener {
     @Override
     public void clientGuiComponents(ClientGuiComponentsMIHookContext hook) {
-        hook.register(MultiProcessingArrayMachineSlot.ID, MultiProcessingArrayMachineSlotClient::new);
+        hook.register(MultiProcessingArrayMachineSlot.TYPE, MultiProcessingArrayMachineSlotClient::new);
     }
 
 //    @Override
