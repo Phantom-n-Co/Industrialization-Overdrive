@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
-    private final long maxEnergy = CableTier.HV.getMaxTransfer() * 64;
+    private final long maxEnergy = CableTier.HV.getEu() * 10000;
     private final long energyUsagePerBlock = maxEnergy / 6000;
     public static final int MIN_SPEED = 1;
     public static final int MAX_SPEED = 4;
