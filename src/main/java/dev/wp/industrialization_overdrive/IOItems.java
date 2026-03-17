@@ -35,7 +35,7 @@ public final class IOItems {
 
     public static final ItemHolder<Terminal> TERMINAL = create("terminal", "Multiblock Builder", Terminal::new, IOSortOrder.GEAR).withModelBuilder(CommonModelBuilders::generated).register();
     public static final ItemHolder<Vajra> VAJRA = create("vajra", "Vajra", Vajra::new, IOSortOrder.GEAR)
-            .tag(ItemTags.PICKAXES, ItemTags.AXES, ItemTags.SHOVELS)
+            .tag(ItemTags.PICKAXES, ItemTags.AXES, ItemTags.SHOVELS, ItemTags.HOES)
             .withModelBuilder(CommonModelBuilders::handheld)
             .withCapabilities(MICommonCapabitilies::simpleEnergyItem)
             .register();
