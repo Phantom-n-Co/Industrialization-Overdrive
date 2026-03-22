@@ -1,7 +1,6 @@
 package dev.wp.industrialization_overdrive;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -16,7 +15,6 @@ import java.util.function.Supplier;
 public final class IOComponents {
     private static final DeferredRegister.DataComponents COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, IO.ID);
 
-    public static final Supplier<DataComponentType<GlobalPos>> TERMINAL_LINK = create("terminal_link", GlobalPos.CODEC, GlobalPos.STREAM_CODEC);
     public static final Supplier<DataComponentType<Boolean>> SILK_TOUCH = create("silk_touch", Codec.BOOL, ByteBufCodecs.BOOL);
     public static final Supplier<DataComponentType<Integer>> VAJRA_SPEED = create("vajra_speed", Codec.INT, ByteBufCodecs.INT);
     public static final Supplier<DataComponentType<Boolean>> HIDE_BAR = create("hide_bar", Codec.BOOL, ByteBufCodecs.BOOL);

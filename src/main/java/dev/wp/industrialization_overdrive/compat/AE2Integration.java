@@ -3,6 +3,7 @@ package dev.wp.industrialization_overdrive.compat;
 import appeng.api.config.Actionable;
 import appeng.api.features.GridLinkables;
 import appeng.api.features.IGridLinkableHandler;
+import appeng.api.ids.AEComponents;
 import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionSource;
@@ -38,13 +39,17 @@ public class AE2Integration {
 
         @Override
         public void link(ItemStack itemStack, GlobalPos pos) {
-            Terminal.setLinkPos(itemStack, pos);
+            itemStack.set(AEComponents.WIRELESS_LINK_TARGET, pos);
         }
 
         @Override
         public void unlink(ItemStack itemStack) {
-            Terminal.clearLinkPos(itemStack);
+            itemStack.remove(AEComponents.WIRELESS_LINK_TARGET);
         }
+    }
+
+    public static GlobalPos getLinkPos(ItemStack stack) {
+        return stack.get(AEComponents.WIRELESS_LINK_TARGET);
     }
 
     /**
@@ -86,8 +91,8 @@ public class AE2Integration {
      * Helper to get MEStorage from the player's linked terminal.
      */
     private static MEStorage getMEStorage(Player player, Level level) {
-        ItemStack terminalStack = player.getMainHandItem();
-        GlobalPos linkPos = Terminal.getLinkPos(terminalStack);
+        ItemStack itemStack = player.getMainHandItem();
+        GlobalPos linkPos = itemStack.get(AEComponents.WIRELESS_LINK_TARGET);
         if (linkPos == null || level == null) return null;
         BlockEntity be = level.getBlockEntity(linkPos.pos());
         if (!(be instanceof IWirelessAccessPoint accessPoint)) return null;

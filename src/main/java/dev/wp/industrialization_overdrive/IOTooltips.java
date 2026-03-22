@@ -1,7 +1,7 @@
 package dev.wp.industrialization_overdrive;
 
 import com.google.common.collect.Lists;
-import dev.wp.industrialization_overdrive.item.Terminal;
+import dev.wp.industrialization_overdrive.compat.AE2Integration;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -39,7 +39,7 @@ public class IOTooltips {
             (flags, ctx, stack, item) -> {
                 List<Component> tooltip = Lists.newArrayList();
                 if (IOUtil.isAE2Loaded) {
-                    GlobalPos linkPos = Terminal.getLinkPos(stack);
+                    GlobalPos linkPos = AE2Integration.getLinkPos(stack);
                     if (linkPos != null)
                         tooltip.add(IO.text().terminalLinkInfo(linkPos.pos()));
                     else tooltip.add(IO.text().terminalLinkNotLinked());

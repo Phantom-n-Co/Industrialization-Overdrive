@@ -3,11 +3,9 @@ package dev.wp.industrialization_overdrive.item;
 import aztech.modern_industrialization.machines.multiblocks.HatchBlockEntity;
 import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBlockEntity;
 import aztech.modern_industrialization.machines.multiblocks.ShapeMatcher;
-import dev.wp.industrialization_overdrive.IOComponents;
 import dev.wp.industrialization_overdrive.IOUtil;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -176,18 +174,6 @@ public final class Terminal extends Item {
     private static Component formatItemLine(Item item, int count, int color) {
         String name = item.getDefaultInstance().getHoverName().getString();
         return Component.literal(String.format("- %sx %s", count, name)).withColor(color);
-    }
-
-    public static GlobalPos getLinkPos(ItemStack stack) {
-        return stack.get(IOComponents.TERMINAL_LINK);
-    }
-
-    public static void setLinkPos(ItemStack stack, GlobalPos pos) {
-        stack.set(IOComponents.TERMINAL_LINK, pos);
-    }
-
-    public static void clearLinkPos(ItemStack stack) {
-        stack.remove(IOComponents.TERMINAL_LINK);
     }
 }
 
