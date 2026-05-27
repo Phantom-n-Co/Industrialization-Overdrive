@@ -1,6 +1,7 @@
 package dev.wp.industrialization_overdrive.network;
 
 import dev.wp.industrialization_overdrive.IO;
+import dev.wp.industrialization_overdrive.network.packet.ModifyTerminalModePacket;
 import dev.wp.industrialization_overdrive.network.packet.ModifyVajraSpeedPacket;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -21,6 +22,7 @@ public class IOPackets {
 
     static {
         register("modify_vajra_speed", ModifyVajraSpeedPacket.class, ModifyVajraSpeedPacket.STREAM_CODEC);
+        register("modify_terminal_mode", ModifyTerminalModePacket.class, ModifyTerminalModePacket.STREAM_CODEC);
     }
 
     private static <P extends IOCustomPacket> void register(String id, Class<P> packetClass, StreamCodec<? super RegistryFriendlyByteBuf, P> packetCodec) {

@@ -45,6 +45,7 @@ public class IOTooltips {
                     else tooltip.add(IO.text().terminalLinkNotLinked());
                 }
                 tooltip.add(IO.text().terminalHelp1("sneak", "use"));
+                tooltip.add(IO.text().terminalHelp3("key.industrialization_overdrive.terminal_mode_switch"));
                 tooltip.add(IOUtil.isAE2Loaded ? IO.text().terminalHelp2Alt() : IO.text().terminalHelp2());
                 return tooltip;
             }

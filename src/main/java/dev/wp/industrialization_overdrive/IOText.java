@@ -95,4 +95,23 @@ public interface IOText {
     @LangKey(text = "Energy: %s / %s")
     @WithStyle("tooltip")
     MutableComponent energyInfo(@Parsed("eu") @WithStyle("highlighted") long stored, @Parsed("eu") @WithStyle("highlighted") long capacity);
+
+    @LangKey(text = "Mode changed to %s.")
+    @WithStyle("tooltip")
+    MutableComponent terminalModeChanged(@WithStyle("highlighted") String mode);
+
+    @LangKey(text = "Template copied from %s, %s, %s")
+    @WithStyle("green")
+    MutableComponent terminalTemplateCopied(int x, int y, int z);
+
+    @LangKey(text = "No template stored in terminal.")
+    @WithStyle("red")
+    MutableComponent terminalNoTemplate();
+
+    @LangKey(text = "Multiblock dismantled.")
+    @WithStyle("green")
+    MutableComponent terminalDismantled();
+    @LangKey(text = "- Press %s to cycle modes.")
+    @WithStyle("tooltip")
+    MutableComponent terminalHelp3(@Parsed("keybind") @WithStyle("highlighted") String key);
 }

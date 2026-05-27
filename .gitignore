@@ -25,4 +25,6 @@ run-data
 
 repo
 
-src/generated/resources/.cache
+localsources
+
+src/generated/resources/.cache/
