@@ -53,23 +53,28 @@ public class AE2Integration {
     }
 
     /**
-     * Simulate extraction from ME system, returning a map of what can be provided.
+     * Tries to fulfill the required items from the ME system for any missing items in the player's inventory.
+     * Returns a map of items and their amounts that can be provided by the ME system.
      */
-    public static Map<Item, Integer> simulateExtractFromME(Player player, Level level, Map<Item, Integer> missingItems) {
-        Map<Item, Integer> provided = new HashMap<>();
+    public static Map<Item, Integer> getMissingFromME(Player player, Level level, Map<Item, Integer> inventoryCount, Map<Item, Integer> requiredBlocks) {
+        Map<Item, Integer> meProvided = new HashMap<>();
         MEStorage networkInv = getMEStorage(player, level);
-        if (networkInv == null) return provided;
-        for (var entry : missingItems.entrySet()) {
+        if (networkInv == null) return meProvided;
+
+        for (var entry : requiredBlocks.entrySet()) {
             Item item = entry.getKey();
-            int needed = entry.getValue();
-            ItemStack testStack = new ItemStack(item, needed);
-            var key = AEItemKey.of(testStack);
-            long extracted = networkInv.extract(key, needed, Actionable.SIMULATE, IActionSource.ofPlayer(player));
-            if (extracted > 0) {
-                provided.put(item, (int) extracted);
+            int required = entry.getValue();
+            int inInv = inventoryCount.getOrDefault(item, 0);
+            int missing = required - inInv;
+
+            if (missing > 0) {
+                ItemStack testStack = new ItemStack(item, missing);
+                var key = AEItemKey.of(testStack);
+                long extracted = networkInv.extract(key, missing, Actionable.SIMULATE, IActionSource.ofPlayer(player));
+                if (extracted > 0) meProvided.put(item, (int) extracted);
             }
         }
-        return provided;
+        return meProvided;
     }
 
     /**
