@@ -82,10 +82,12 @@ public class MultiProcessingArrayMachineSlotClient extends GuiComponentClient<Un
             }
 
             @Override
-            public void renderTooltip(MachineScreen screen, Font font, GuiGraphics graphics, int x, int y, int cursorX, int cursorY) {
+            public boolean renderTooltip(MachineScreen screen, Font font, GuiGraphics graphics, int x, int y, int cursorX, int cursorY) {
                 if (screen.getFocusedSlot() instanceof SlotTooltip st && !screen.getFocusedSlot().hasItem()) {
                     graphics.renderTooltip(font, st.getTooltip(), cursorX, cursorY);
+                    return true;
                 }
+                return false;
             }
         };
     }
