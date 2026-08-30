@@ -82,7 +82,7 @@ public final class MultiblockBuilder extends Item {
                     return handleCopy(stack, level, pos, player, multiblock);
                 }
             } else {
-                return handlePaste(stack, level, pos.above(), player);
+                return handlePaste(stack, level, player.isShiftKeyDown() ? pos : pos.relative(ctx.getClickedFace()), player);
             }
             return InteractionResult.PASS;
         }
@@ -352,9 +352,14 @@ public final class MultiblockBuilder extends Item {
 
     private void tearDownBlock(Level level, Player player, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
+        BlockEntity be = level.getBlockEntity(pos);
+        List<ItemStack> drops = Block.getDrops(state, (net.minecraft.server.level.ServerLevel) level, pos, be);
+        if (be instanceof MachineBlockEntity machine) {
+            machine.getInventory().getItemStacks().forEach(stack -> drops.add(stack.getResource().toStack((int) stack.getAmount())));
+            drops.addAll(machine.dropExtra());
+            level.removeBlockEntity(pos);
+        }
         if (!player.isCreative()) {
-            BlockEntity be = level.getBlockEntity(pos);
-            List<ItemStack> drops = Block.getDrops(state, (net.minecraft.server.level.ServerLevel) level, pos, be);
             for (ItemStack drop : drops) {
                 if (!player.getInventory().add(drop)) {
                     player.drop(drop, false);

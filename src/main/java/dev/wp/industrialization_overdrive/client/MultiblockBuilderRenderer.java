@@ -110,7 +110,8 @@ public final class MultiblockBuilderRenderer {
         if (template.get(BlockPos.ZERO) == null) return List.of();
 
         Rotation rotation = MultiblockBuilder.getPasteRotation(template.get(BlockPos.ZERO).settings(), player.getDirection().getOpposite());
-        BlockPos anchor = MultiblockBuilder.pastePosition(hit.getBlockPos().above(), template, rotation);
+        BlockPos pasteTarget = player.isShiftKeyDown() ? hit.getBlockPos() : hit.getBlockPos().relative(hit.getDirection());
+        BlockPos anchor = MultiblockBuilder.pastePosition(pasteTarget, template, rotation);
         List<Preview> result = new ArrayList<>();
         for (var entry : template.entrySet()) {
             Block block = Block.byItem(entry.getValue().item());
