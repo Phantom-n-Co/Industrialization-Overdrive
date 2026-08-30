@@ -17,6 +17,8 @@ import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOComponents;
 import dev.wp.industrialization_overdrive.IOUtil;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
+import dev.wp.industrialization_overdrive.compat.EIIntegration;
+import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -133,6 +135,8 @@ public final class Terminal extends Item {
         machine.components.forType(UpgradeComponent.class, upgrade -> upgrade.writeNbt(tag, registries));
         machine.components.forType(RedstoneControlComponent.class, redstone -> redstone.writeNbt(tag, registries));
         machine.components.forType(OverdriveComponent.class, overdrive -> overdrive.writeNbt(tag, registries));
+        machine.components.forType(MultiProcessingArrayMachineComponent.class, machines -> machines.writeNbt(tag, registries));
+        if (IOUtil.isEILoaded) EIIntegration.writeProcessingArraySettings(machine, tag, registries);
 
         // Hatch settings
         if (machine instanceof HatchBlockEntity) {
@@ -198,6 +202,12 @@ public final class Terminal extends Item {
                         requiredBlocks.merge(overdrive.getItem(), overdrive.getCount(), Integer::sum);
                     }
                 }
+                if (settings.contains("machinesStack")) {
+                    ItemStack machines = ItemStack.parseOptional(registries, settings.getCompound("machinesStack"));
+                    if (!machines.isEmpty()) {
+                        requiredBlocks.merge(machines.getItem(), machines.getCount(), Integer::sum);
+                    }
+                }
             }
         }
 
@@ -254,6 +264,8 @@ public final class Terminal extends Item {
         machine.components.forType(UpgradeComponent.class, upgrade -> upgrade.readNbt(settings, registries, false));
         machine.components.forType(RedstoneControlComponent.class, redstone -> redstone.readNbt(settings, registries, false));
         machine.components.forType(OverdriveComponent.class, overdrive -> overdrive.readNbt(settings, registries, false));
+        machine.components.forType(MultiProcessingArrayMachineComponent.class, machines -> machines.readNbt(settings, registries, false));
+        if (IOUtil.isEILoaded) EIIntegration.readProcessingArraySettings(machine, settings, registries);
 
         // 3. Hatch locks
         if (machine instanceof HatchBlockEntity) {
