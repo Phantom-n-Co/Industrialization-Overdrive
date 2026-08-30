@@ -1,39 +1,27 @@
 package dev.wp.industrialization_overdrive;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.swedz.tesseract.config.annotation.ConfigComment;
+import net.swedz.tesseract.config.annotation.ConfigKey;
+import net.swedz.tesseract.config.annotation.Range;
+import net.swedz.tesseract.config.annotation.SubSection;
 
-public class IOConfig {
-    private static final ModConfigSpec.Builder BUILDER;
-
-    private static final ModConfigSpec.BooleanValue ALLOW_UPGRADES_IN_MULTI_PROCESSING_ARRAY;
-    private static final ModConfigSpec.DoubleValue MULTI_PROCESSING_ARRAY_EU;
-
-    public static final ModConfigSpec SPEC;
-
-    static {
-        BUILDER = new ModConfigSpec.Builder();
-
-        ALLOW_UPGRADES_IN_MULTI_PROCESSING_ARRAY = BUILDER
-                .comment("Whether upgrades should be allowed in the Multi Processing Array")
-                .define("allow_upgrades_in_multi_processing_array", true);
-        {
-            BUILDER.push("batching_machines");
-
-            MULTI_PROCESSING_ARRAY_EU = BUILDER
-                    .comment("The multiplier to use for the EU cost of the Multi Processing Array")
-                    .defineInRange("multi_processing_array_eu", 1D, 0.1D, Double.MAX_VALUE);
-
-            BUILDER.pop();
-        }
-
-        SPEC = BUILDER.build();
+public interface IOConfig {
+    @ConfigKey("allow_upgrades_in_multi_processing_array")
+    @ConfigComment("Whether upgrades should be allowed in the Multi Processing Array")
+    default boolean allowUpgradesInMultiProcessingArray() {
+        return true;
     }
 
-    public static boolean allowUpgradesInMultiProcessingArray;
-    public static double multiProcessingArrayEuCostMultiplier;
+    @ConfigKey("batching_machines")
+    @SubSection
+    BatchingMachines batchingMachines();
 
-    public static void loadConfig() {
-        allowUpgradesInMultiProcessingArray = ALLOW_UPGRADES_IN_MULTI_PROCESSING_ARRAY.get();
-        multiProcessingArrayEuCostMultiplier = MULTI_PROCESSING_ARRAY_EU.get();
+    interface BatchingMachines {
+        @ConfigKey("multi_processing_array_eu")
+        @ConfigComment("The multiplier to use for the EU cost of the Multi Processing Array")
+        @Range.Double(min = 0.1D, max = Double.MAX_VALUE)
+        default double multiProcessingArrayEU() {
+            return 1D;
+        }
     }
 }

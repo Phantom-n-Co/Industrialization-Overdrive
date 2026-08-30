@@ -22,10 +22,12 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.datamaps.DataMapsUpdatedEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import net.swedz.tesseract.api.Assert;
+import net.swedz.tesseract.config.ConfigManager;
 import net.swedz.tesseract.neoforge.capabilities.CapabilitiesListeners;
 import net.swedz.tesseract.neoforge.compat.mi.TesseractMI;
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformer;
 import net.swedz.tesseract.neoforge.compat.mi.tooltip.MIParser;
+import net.swedz.tesseract.neoforge.config.ModConfigFileAccess;
 import net.swedz.tesseract.neoforge.lang.LangManager;
 import net.swedz.tesseract.neoforge.registry.holder.BlockHolder;
 import net.swedz.tesseract.neoforge.registry.holder.ItemHolder;
@@ -48,12 +50,8 @@ public final class IO {
     public static final Logger LOGGER = LoggerFactory.getLogger(NAME);
 
     public IO(IEventBus bus, ModContainer container) {
-        container.registerConfig(ModConfig.Type.STARTUP, IOConfig.SPEC);
-
+        setupConfig(bus, container);
         setupText();
-        IOConfig.loadConfig();
-
-        bus.addListener(FMLCommonSetupEvent.class, (event) -> IOConfig.loadConfig());
 
         TesseractMI.init(ID);
         IOComponents.init(bus);
@@ -75,6 +73,21 @@ public final class IO {
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, DataMapsUpdatedEvent.class, (event) -> {
             event.ifRegistry(Registries.BLOCK, (registry) -> PyrolyseOvenBlockEntity.initTiers());
         });
+    }
+
+    private static IOConfig CONFIG;
+
+    public static IOConfig config() {
+        Assert.notNull(CONFIG, "Config not initialized yet");
+        return CONFIG;
+    }
+
+    public static void setupConfig(IEventBus bus, ModContainer container) {
+        var file = new ModConfigFileAccess(container, ModConfig.Type.STARTUP);
+        var instance = new ConfigManager(file).build(IOConfig.class).load();
+        bus.addListener(FMLCommonSetupEvent.class, (event) -> instance.load(false));
+        file.registerReloadListeners(bus, instance);
+        CONFIG = instance.config();
     }
 
     private static IOText TEXT;

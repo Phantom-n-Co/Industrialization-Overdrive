@@ -9,7 +9,6 @@ import aztech.modern_industrialization.machines.gui.GuiComponent;
 import aztech.modern_industrialization.machines.gui.GuiComponentServer;
 import aztech.modern_industrialization.machines.gui.MachineGuiParameters;
 import dev.wp.industrialization_overdrive.IO;
-import dev.wp.industrialization_overdrive.IOConfig;
 import dev.wp.industrialization_overdrive.IOTags;
 import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -32,7 +31,7 @@ public final class MultiProcessingArrayMachineSlot implements GuiComponentServer
     }
 
     public static int getSlotY() {
-        return 106 - (IOConfig.allowUpgradesInMultiProcessingArray ? 0 : 20);
+        return 106 - (IO.config().allowUpgradesInMultiProcessingArray() ? 0 : 20);
     }
 
     public static boolean isMachine(Item item) {

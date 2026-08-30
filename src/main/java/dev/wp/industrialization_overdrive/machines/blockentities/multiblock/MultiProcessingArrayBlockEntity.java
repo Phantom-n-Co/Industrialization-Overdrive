@@ -15,7 +15,6 @@ import aztech.modern_industrialization.machines.multiblocks.SimpleMember;
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType;
 import com.google.common.collect.Lists;
 import dev.wp.industrialization_overdrive.IO;
-import dev.wp.industrialization_overdrive.IOConfig;
 import dev.wp.industrialization_overdrive.IOTags;
 import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
 import dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot.MultiProcessingArrayMachineSlot;
@@ -36,7 +35,7 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
     public MultiProcessingArrayBlockEntity(BEP bep) {
         super(bep, IO.id("multi_processing_array"), SHAPE_TEMPLATES, MachineTier.MULTIBLOCK);
 
-        if (!IOConfig.allowUpgradesInMultiProcessingArray) {
+        if (!IO.config().allowUpgradesInMultiProcessingArray()) {
             var slotPanel = guiComponents.getNullable(SlotPanel.class);
             if (slotPanel != null) guiComponents.unregister(slotPanel);
 
@@ -89,7 +88,7 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
 
     @Override
     public EuCostTransformer getEuCostTransformer() {
-        return EuCostTransformers.percentage(() -> (float) IOConfig.multiProcessingArrayEuCostMultiplier);
+        return EuCostTransformers.percentage(() -> (float) IO.config().batchingMachines().multiProcessingArrayEU());
     }
 
     private int getMachineStackSize(int sizeIndex) {
@@ -101,7 +100,7 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
         List<Component> lines = Lists.newArrayList();
         lines.add(IO.text().multiProcessingArrayRecipe());
         lines.add(IO.text().multiProcessingArrayBatchSize());
-        if (IOConfig.multiProcessingArrayEuCostMultiplier != 1) {
+        if (IO.config().batchingMachines().multiProcessingArrayEU() != 1) {
             lines.add(IO.text().multiProcessingArrayEuCostMultiplier(this.getEuCostTransformer()));
         }
         return lines;
