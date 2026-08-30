@@ -20,6 +20,7 @@ import dev.wp.industrialization_overdrive.compat.AE2Integration;
 import dev.wp.industrialization_overdrive.compat.EIIntegration;
 import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -33,6 +34,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -162,12 +164,13 @@ public final class MultiblockBuilder extends Item {
             return InteractionResult.FAIL;
         }
 
+        Rotation rotation = getPasteRotation(template.get(BlockPos.ZERO).settings(), player.getDirection().getOpposite());
         int lowestTemplateY = template.keySet().stream().mapToInt(BlockPos::getY).min().orElse(0);
         BlockPos pastePos = pos.above(Math.max(0, -lowestTemplateY));
 
         Map<Item, Integer> requiredBlocks = new HashMap<>();
         for (var entry : template.entrySet()) {
-            BlockPos targetPos = pastePos.offset(entry.getKey());
+            BlockPos targetPos = pastePos.offset(rotateOffset(entry.getKey(), rotation));
             BlockState state = level.getBlockState(targetPos);
             Item item = entry.getValue().item();
 
@@ -214,13 +217,13 @@ public final class MultiblockBuilder extends Item {
 
         if (player.isCreative() || checkAndConsumeInventory(player, level, requiredBlocks)) {
             for (var entry : template.entrySet()) {
-                BlockPos targetPos = pastePos.offset(entry.getKey());
+                BlockPos targetPos = pastePos.offset(rotateOffset(entry.getKey(), rotation));
                 Item item = entry.getValue().item();
                 level.setBlock(targetPos, Block.byItem(item).defaultBlockState(), 3);
 
                 BlockEntity be = level.getBlockEntity(targetPos);
                 if (be instanceof MachineBlockEntity machine) {
-                    applySettings(machine, entry.getValue().settings());
+                    applySettings(machine, rotateSettings(entry.getValue().settings(), rotation));
                 }
             }
             player.sendSystemMessage(IO.text().multiblockBuilderPasteSuccess());
@@ -228,6 +231,38 @@ public final class MultiblockBuilder extends Item {
         }
 
         return InteractionResult.FAIL;
+    }
+
+    private static Rotation getPasteRotation(CompoundTag settings, Direction targetDirection) {
+        if (!settings.contains("facingDirection") || !targetDirection.getAxis().isHorizontal()) return Rotation.NONE;
+
+        Direction sourceDirection = Direction.from3DDataValue(settings.getInt("facingDirection"));
+        for (Rotation rotation : Rotation.values()) {
+            if (rotation.rotate(sourceDirection) == targetDirection) return rotation;
+        }
+        return Rotation.NONE;
+    }
+
+    private static BlockPos rotateOffset(BlockPos offset, Rotation rotation) {
+        return switch (rotation) {
+            case CLOCKWISE_90 -> new BlockPos(-offset.getZ(), offset.getY(), offset.getX());
+            case CLOCKWISE_180 -> new BlockPos(-offset.getX(), offset.getY(), -offset.getZ());
+            case COUNTERCLOCKWISE_90 -> new BlockPos(offset.getZ(), offset.getY(), -offset.getX());
+            default -> offset;
+        };
+    }
+
+    private static CompoundTag rotateSettings(CompoundTag settings, Rotation rotation) {
+        if (rotation == Rotation.NONE) return settings;
+
+        CompoundTag rotated = settings.copy();
+        if (rotated.contains("facingDirection")) {
+            rotated.putInt("facingDirection", rotation.rotate(Direction.from3DDataValue(rotated.getInt("facingDirection"))).get3DDataValue());
+        }
+        if (rotated.contains("outputDirection")) {
+            rotated.putInt("outputDirection", rotation.rotate(Direction.from3DDataValue(rotated.getInt("outputDirection"))).get3DDataValue());
+        }
+        return rotated;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
