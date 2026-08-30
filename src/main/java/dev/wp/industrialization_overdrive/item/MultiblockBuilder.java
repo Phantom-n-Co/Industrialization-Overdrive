@@ -113,7 +113,7 @@ public final class MultiblockBuilder extends Item {
         }
 
         stack.set(IOComponents.MULTI_BUILDER_TEMPLATE, template);
-        player.displayClientMessage(IO.text().terminalTemplateCopied(pos.getX(), pos.getY(), pos.getZ()), true);
+        player.displayClientMessage(IO.text().multiblockBuilderTemplateCopied(pos.getX(), pos.getY(), pos.getZ()), true);
 
         return InteractionResult.SUCCESS;
     }
@@ -158,7 +158,7 @@ public final class MultiblockBuilder extends Item {
     private InteractionResult handlePaste(ItemStack stack, Level level, BlockPos pos, Player player) {
         Map<BlockPos, IOComponents.BlockData> template = stack.get(IOComponents.MULTI_BUILDER_TEMPLATE);
         if (template == null || template.isEmpty()) {
-            player.displayClientMessage(IO.text().terminalNoTemplate(), true);
+            player.displayClientMessage(IO.text().multiblockBuilderNoTemplate(), true);
             return InteractionResult.FAIL;
         }
 
@@ -304,7 +304,7 @@ public final class MultiblockBuilder extends Item {
         // Tear down controller
         tearDownBlock(level, player, pos);
 
-        player.displayClientMessage(IO.text().terminalDismantled(), true);
+        player.displayClientMessage(IO.text().multiblockBuilderDismantled(), true);
         return InteractionResult.SUCCESS;
     }
 

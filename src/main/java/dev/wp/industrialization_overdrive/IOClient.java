@@ -8,7 +8,7 @@ import aztech.modern_industrialization.machines.MachineBlockEntity;
 import aztech.modern_industrialization.machines.blockentities.multiblocks.LargeTankMultiblockBlockEntity;
 import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBlockEntity;
 import dev.wp.industrialization_overdrive.item.Vajra;
-import dev.wp.industrialization_overdrive.network.packet.ModifyTerminalModePacket;
+import dev.wp.industrialization_overdrive.network.packet.ModifyMultiblockBuilderModePacket;
 import dev.wp.industrialization_overdrive.network.packet.ModifyVajraSpeedPacket;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -30,21 +30,21 @@ import org.lwjgl.glfw.GLFW;
 
 @Mod(value = IO.ID, dist = Dist.CLIENT)
 public final class IOClient {
-    public static final KeyMapping TERMINAL_MODE_SWITCH = new KeyMapping(
+    public static final KeyMapping MULTIBLOCK_BUILDER_MODE_SWITCH = new KeyMapping(
             "key.industrialization_overdrive.terminal_mode_switch",
             GLFW.GLFW_KEY_V,
             "key.categories.industrialization_overdrive"
     );
 
     public IOClient(IEventBus bus) {
-        bus.addListener(RegisterKeyMappingsEvent.class, event -> event.register(TERMINAL_MODE_SWITCH));
+        bus.addListener(RegisterKeyMappingsEvent.class, event -> event.register(MULTIBLOCK_BUILDER_MODE_SWITCH));
 
         NeoForge.EVENT_BUS.addListener(InputEvent.Key.class, (event) -> {
             var player = Minecraft.getInstance().player;
-            if (player != null && TERMINAL_MODE_SWITCH.consumeClick()) {
+            if (player != null && MULTIBLOCK_BUILDER_MODE_SWITCH.consumeClick()) {
                 var stack = player.getMainHandItem();
-                if (stack.getItem() == IOItems.TERMINAL.get()) {
-                    new ModifyTerminalModePacket(true).sendToServer();
+                if (stack.getItem() == IOItems.MULTIBLOCK_BUILDER.get()) {
+                    new ModifyMultiblockBuilderModePacket(true).sendToServer();
                 }
             }
         });

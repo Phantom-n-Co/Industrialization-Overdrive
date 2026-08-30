@@ -36,7 +36,7 @@ public final class CommonRecipesServerDatagenProvider extends RecipesServerDatag
     protected void buildRecipes(@NotNull RecipeOutput output) {
         addBasicCraftingRecipes(
                 "shaped", "terminal", true,
-                IOItems.TERMINAL, 1,
+                IOItems.MULTIBLOCK_BUILDER, 1,
                 (r) -> r
                         .pattern("SGS")
                         .pattern("SES")

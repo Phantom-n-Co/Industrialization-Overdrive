@@ -34,19 +34,19 @@ public class IOTooltips {
             }
     );
 
-    public static final TooltipAttachment TERMINAL = TooltipAttachment.multilines(
-            IOItems.TERMINAL,
+    public static final TooltipAttachment MULTIBLOCK_BUILDER = TooltipAttachment.multilines(
+            IOItems.MULTIBLOCK_BUILDER,
             (flags, ctx, stack, item) -> {
                 List<Component> tooltip = Lists.newArrayList();
                 if (IOUtil.isAE2Loaded) {
                     GlobalPos linkPos = AE2Integration.getLinkPos(stack);
                     if (linkPos != null)
-                        tooltip.add(IO.text().terminalLinkInfo(linkPos.pos()));
-                    else tooltip.add(IO.text().terminalLinkNotLinked());
+                        tooltip.add(IO.text().multiblockBuilderLinkInfo(linkPos.pos()));
+                    else tooltip.add(IO.text().multiblockBuilderLinkNotLinked());
                 }
-                tooltip.add(IO.text().terminalHelp1("sneak", "use"));
-                tooltip.add(IO.text().terminalHelp3("industrialization_overdrive.terminal_mode_switch"));
-                tooltip.add(IOUtil.isAE2Loaded ? IO.text().terminalHelp2Alt() : IO.text().terminalHelp2());
+                tooltip.add(IO.text().multiblockBuilderHelp1("sneak", "use"));
+                tooltip.add(IO.text().multiblockBuilderHelp3("industrialization_overdrive.terminal_mode_switch"));
+                tooltip.add(IOUtil.isAE2Loaded ? IO.text().multiblockBuilderHelp2Alt() : IO.text().multiblockBuilderHelp2());
                 return tooltip;
             }
     );

@@ -78,41 +78,53 @@ public interface IOText {
 
     @LangKey(text = "Mode changed to %s.")
     @WithStyle("tooltip")
-    MutableComponent terminalModeChanged(@WithStyle("highlighted") String mode);
+    MutableComponent multiblockBuilderModeChanged(@WithStyle("highlighted") Component mode);
+
+    @LangKey(text = "Build")
+    @WithStyle("highlighted")
+    MutableComponent multiblockBuilderModeBuild();
+
+    @LangKey(text = "Copy/Paste")
+    @WithStyle("highlighted")
+    MutableComponent multiblockBuilderModeCopyPaste();
+
+    @LangKey(text = "Tear Down")
+    @WithStyle("highlighted")
+    MutableComponent multiblockBuilderModeTearDown();
 
     @LangKey(text = "Template copied from %s, %s, %s")
     @WithStyle("green")
-    MutableComponent terminalTemplateCopied(int x, int y, int z);
+    MutableComponent multiblockBuilderTemplateCopied(int x, int y, int z);
 
-    @LangKey(text = "No template stored in terminal.")
+    @LangKey(text = "No template stored in Multiblock Builder.")
     @WithStyle("red")
-    MutableComponent terminalNoTemplate();
+    MutableComponent multiblockBuilderNoTemplate();
 
     @LangKey(text = "Multiblock dismantled.")
     @WithStyle("green")
-    MutableComponent terminalDismantled();
+    MutableComponent multiblockBuilderDismantled();
 
     @LangKey(text = "- Press %s + %s on a MI multiblock to automatically build it.")
     @WithStyle("tooltip")
-    MutableComponent terminalHelp1(@Parsed("keybind") @WithStyle("highlighted") String key1, @Parsed("keybind") @WithStyle("highlighted") String key2);
+    MutableComponent multiblockBuilderHelp1(@Parsed("keybind") @WithStyle("highlighted") String key1, @Parsed("keybind") @WithStyle("highlighted") String key2);
 
     @LangKey(text = "- Requires parts to be in your inventory.")
     @WithStyle("tooltip")
-    MutableComponent terminalHelp2();
+    MutableComponent multiblockBuilderHelp2();
 
     @LangKey(text = "- Requires parts to be in your inventory or a linked ME system.")
     @WithStyle("tooltip")
-    MutableComponent terminalHelp2Alt();
+    MutableComponent multiblockBuilderHelp2Alt();
 
     @LangKey(text = "- Press %s to cycle modes.")
     @WithStyle("tooltip")
-    MutableComponent terminalHelp3(@Parsed("keybind") @WithStyle("highlighted") String key);
+    MutableComponent multiblockBuilderHelp3(@Parsed("keybind") @WithStyle("highlighted") String key);
 
     @LangKey(text = "Linked to an ME system at %s.")
     @WithStyle("tooltip")
-    MutableComponent terminalLinkInfo(@Parsed("block_pos") @WithStyle("highlighted") BlockPos location);
+    MutableComponent multiblockBuilderLinkInfo(@Parsed("block_pos") @WithStyle("highlighted") BlockPos location);
 
     @LangKey(text = "Not linked to an ME system.")
     @WithStyle("tooltip")
-    MutableComponent terminalLinkNotLinked();
+    MutableComponent multiblockBuilderLinkNotLinked();
 }

@@ -23,7 +23,7 @@ public final class IOOtherRegistries {
 
     public static final Supplier<CreativeModeTab> CREATIVE_TAB = IOOtherRegistries.CREATIVE_MODE_TABS.register(IO.ID, () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.%s.%s".formatted(IO.ID, IO.ID)))
-            .icon(() -> IOItems.TERMINAL.get().getDefaultInstance())
+            .icon(() -> IOItems.MULTIBLOCK_BUILDER.get().getDefaultInstance())
             .displayItems((params, output) -> {
                 Comparator<ItemHolder> compareBySortOrder = Comparator.comparing(ItemHolder::sortOrder);
                 Comparator<ItemHolder> compareByName = Comparator.comparing((i) -> i.identifier().id());

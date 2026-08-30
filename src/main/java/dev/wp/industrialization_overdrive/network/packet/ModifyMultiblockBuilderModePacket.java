@@ -5,13 +5,14 @@ import dev.wp.industrialization_overdrive.IOComponents;
 import dev.wp.industrialization_overdrive.IOItems;
 import dev.wp.industrialization_overdrive.network.IOCustomPacket;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.swedz.tesseract.neoforge.packet.PacketContext;
 
-public record ModifyTerminalModePacket(boolean next) implements IOCustomPacket {
-    public static final StreamCodec<ByteBuf, ModifyTerminalModePacket> STREAM_CODEC = ByteBufCodecs.BOOL
-            .map(ModifyTerminalModePacket::new, ModifyTerminalModePacket::next);
+public record ModifyMultiblockBuilderModePacket(boolean next) implements IOCustomPacket {
+    public static final StreamCodec<ByteBuf, ModifyMultiblockBuilderModePacket> STREAM_CODEC = ByteBufCodecs.BOOL
+            .map(ModifyMultiblockBuilderModePacket::new, ModifyMultiblockBuilderModePacket::next);
 
     private static final String[] MODES = {"build", "copy_paste", "tear_down"};
 
@@ -22,7 +23,7 @@ public record ModifyTerminalModePacket(boolean next) implements IOCustomPacket {
         var player = ctx.getPlayer();
         var stack = player.getMainHandItem();
 
-        if (stack.getItem() == IOItems.TERMINAL.get()) {
+        if (stack.getItem() == IOItems.MULTIBLOCK_BUILDER.get()) {
             String currentMode = stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, "build");
             int index = 0;
             for (int i = 0; i < MODES.length; i++) {
@@ -41,7 +42,13 @@ public record ModifyTerminalModePacket(boolean next) implements IOCustomPacket {
             String newMode = MODES[index];
             stack.set(IOComponents.MULTI_BUILDER_MODE, newMode);
 
-            player.displayClientMessage(IO.text().terminalModeChanged(newMode), true);
+            Component mode = switch (newMode) {
+                case "build" -> IO.text().multiblockBuilderModeBuild();
+                case "copy_paste" -> IO.text().multiblockBuilderModeCopyPaste();
+                case "tear_down" -> IO.text().multiblockBuilderModeTearDown();
+                default -> Component.literal(newMode);
+            };
+            player.displayClientMessage(IO.text().multiblockBuilderModeChanged(mode), true);
         }
     }
 }

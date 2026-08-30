@@ -1,7 +1,7 @@
 {
   "block.industrialization_overdrive.multi_processing_array": "Matriz de Processamento Múltiplo",
   "block.industrialization_overdrive.pyrolyse_oven": "Forno de Pirolisa",
-  "item.industrialization_overdrive.terminal": "Terminal",
+  "item.industrialization_overdrive.terminal": "Construtor de Multiblocos",
   "itemGroup.industrialization_overdrive.industrialization_overdrive": "Industrialization Overdrive",
   "pyro_tier.industrialization_overdrive.modern_industrialization.cupronickel_coil": "Cuproníquel",
   "pyro_tier.industrialization_overdrive.modern_industrialization.kanthal_coil": "Kanthal",
@@ -13,9 +13,9 @@
   "text.industrialization_overdrive.multi_processing_array_machine_input": "Insira multiblocos de fabricação elétrica para operarem em paralelo.",
   "text.industrialization_overdrive.multi_processing_array_recipe": "Pode executar receitas de qualquer multibloco de fabricação elétrica fornecido em lotes.",
   "text.industrialization_overdrive.multi_processing_array_size": "Máquinas: %d",
-  "text.industrialization_overdrive.terminal_help_1": "- Pressione %s + %s em um multibloco do MI para construí-lo automaticamente.",
-  "text.industrialization_overdrive.terminal_help_2": "- Requer que as peças estejam no seu inventário.",
-  "text.industrialization_overdrive.terminal_help_2_alt": "- Requer que as peças estejam no seu inventário ou em um sistema ME vinculado.",
-  "text.industrialization_overdrive.terminal_link_info": "Vinculado a um sistema ME em %s.",
-  "text.industrialization_overdrive.terminal_link_not_linked": "Não vinculado a um sistema ME."
+  "text.industrialization_overdrive.multiblock_builder_help_1": "- Pressione %s + %s em um multibloco do MI para construí-lo automaticamente.",
+  "text.industrialization_overdrive.multiblock_builder_help_2": "- Requer que as peças estejam no seu inventário.",
+  "text.industrialization_overdrive.multiblock_builder_help_2_alt": "- Requer que as peças estejam no seu inventário ou em um sistema ME vinculado.",
+  "text.industrialization_overdrive.multiblock_builder_link_info": "Vinculado a um sistema ME em %s.",
+  "text.industrialization_overdrive.multiblock_builder_link_not_linked": "Não vinculado a um sistema ME."
 }

@@ -28,7 +28,7 @@ public class AE2Integration {
     public static final IGridLinkableHandler LINKABLE_HANDLER = new LinkableHandler();
 
     public static void registerItems() {
-        GridLinkables.register(IOItems.TERMINAL.get(), LINKABLE_HANDLER);
+        GridLinkables.register(IOItems.MULTIBLOCK_BUILDER.get(), LINKABLE_HANDLER);
     }
 
     public static class LinkableHandler implements IGridLinkableHandler {
@@ -93,7 +93,7 @@ public class AE2Integration {
     }
 
     /**
-     * Helper to get MEStorage from the player's linked terminal.
+     * Helper to get MEStorage from the player's linked Multiblock Builder.
      */
     private static MEStorage getMEStorage(Player player, Level level) {
         ItemStack itemStack = player.getMainHandItem();

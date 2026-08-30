@@ -6,7 +6,7 @@ This mod is also meant to extend the available machines/content in [Extended Ind
 ## Features
 
 - Items
-  - Terminal - Auto builds any MI multiblock, if you have the materials for it.
+  - Multiblock Builder - Auto builds any MI multiblock, if you have the materials for it.
 
 - Machines
   - Multi Processing Array(PA from Extended Industrialization that accepts multiblocks)
