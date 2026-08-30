@@ -69,7 +69,7 @@ public final class IOClient {
         });
     }
 
-    @EventBusSubscriber(value = Dist.CLIENT, modid = IO.ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(value = Dist.CLIENT, modid = IO.ID)
     public static final class Renderers {
         @SubscribeEvent
         private static void registerBlockEntityRenderers(FMLClientSetupEvent event) {
