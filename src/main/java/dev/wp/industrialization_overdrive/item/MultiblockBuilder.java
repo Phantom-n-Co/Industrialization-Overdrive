@@ -162,9 +162,12 @@ public final class MultiblockBuilder extends Item {
             return InteractionResult.FAIL;
         }
 
+        int lowestTemplateY = template.keySet().stream().mapToInt(BlockPos::getY).min().orElse(0);
+        BlockPos pastePos = pos.above(Math.max(0, -lowestTemplateY));
+
         Map<Item, Integer> requiredBlocks = new HashMap<>();
         for (var entry : template.entrySet()) {
-            BlockPos targetPos = pos.offset(entry.getKey());
+            BlockPos targetPos = pastePos.offset(entry.getKey());
             BlockState state = level.getBlockState(targetPos);
             Item item = entry.getValue().item();
 
@@ -211,7 +214,7 @@ public final class MultiblockBuilder extends Item {
 
         if (player.isCreative() || checkAndConsumeInventory(player, level, requiredBlocks)) {
             for (var entry : template.entrySet()) {
-                BlockPos targetPos = pos.offset(entry.getKey());
+                BlockPos targetPos = pastePos.offset(entry.getKey());
                 Item item = entry.getValue().item();
                 level.setBlock(targetPos, Block.byItem(item).defaultBlockState(), 3);
 
