@@ -20,12 +20,10 @@ import dev.wp.industrialization_overdrive.compat.AE2Integration;
 import dev.wp.industrialization_overdrive.compat.EIIntegration;
 import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -43,12 +41,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class Terminal extends Item {
+public final class MultiblockBuilder extends Item {
     private static final int COLOR_MISSING = DyeColor.RED.getTextColor();
     private static final int COLOR_ENOUGH = DyeColor.GREEN.getTextColor();
     private static final int COLOR_HEADER = DyeColor.YELLOW.getTextColor();
 
-    public Terminal(Properties properties) {
+    public MultiblockBuilder(Properties properties) {
         super(properties
                 .stacksTo(1)
                 .rarity(Rarity.RARE)
@@ -229,13 +227,12 @@ public final class Terminal extends Item {
         return InteractionResult.FAIL;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private void applyStackSettings(AbstractConfigurableStack target, AbstractConfigurableStack source) {
         // We only want to apply configuration, not the content (amount/key)
         // Unless it's locked, in which case the lock needs to be preserved.
-        if (source.isPlayerLocked()) {
-            target.playerLock(source.getLockedInstance(), Simulation.ACT);
-        }
+        if (source.isPlayerLocked()) target.playerLock(source.getLockedInstance(), Simulation.ACT);
+
         if (target instanceof ConfigurableItemStack targetItem && source instanceof ConfigurableItemStack sourceItem) {
             int targetCap = targetItem.getAdjustedCapacity();
             int sourceCap = sourceItem.getAdjustedCapacity();

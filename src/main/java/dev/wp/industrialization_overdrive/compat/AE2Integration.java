@@ -10,7 +10,7 @@ import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.storage.MEStorage;
 import dev.wp.industrialization_overdrive.IOItems;
-import dev.wp.industrialization_overdrive.item.Terminal;
+import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -34,7 +34,7 @@ public class AE2Integration {
     public static class LinkableHandler implements IGridLinkableHandler {
         @Override
         public boolean canLink(ItemStack stack) {
-            return stack.getItem() instanceof Terminal;
+            return stack.getItem() instanceof MultiblockBuilder;
         }
 
         @Override
