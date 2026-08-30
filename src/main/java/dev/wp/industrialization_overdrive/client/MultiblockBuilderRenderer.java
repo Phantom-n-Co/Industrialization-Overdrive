@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
@@ -47,7 +48,8 @@ public final class MultiblockBuilderRenderer {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         Player player = minecraft.player;
-        if (level == null || player == null || !(minecraft.hitResult instanceof BlockHitResult hit)) return;
+        if (level == null || player == null || !(minecraft.hitResult instanceof BlockHitResult hit)
+                || hit.getType() == HitResult.Type.MISS) return;
 
         ItemStack stack = heldBuilder(player);
         if (stack.isEmpty()) return;
