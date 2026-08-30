@@ -4,6 +4,8 @@
   "item.industrialization_overdrive.terminal": "Multiblock Builder",
   "item.industrialization_overdrive.vajra": "Vajra",
   "itemGroup.industrialization_overdrive.industrialization_overdrive": "Industrialization Overdrive",
+  "key.categories.industrialization_overdrive": "Industrialization Overdrive",
+  "key.industrialization_overdrive.terminal_mode_switch": "Switch terminal mode",
   "pyro_tier.industrialization_overdrive.modern_industrialization.cupronickel_coil": "Cupronickel",
   "pyro_tier.industrialization_overdrive.modern_industrialization.kanthal_coil": "Kanthal",
   "rei_categories.industrialization_overdrive.pyrolyse_oven": "Pyrolyse Oven",
