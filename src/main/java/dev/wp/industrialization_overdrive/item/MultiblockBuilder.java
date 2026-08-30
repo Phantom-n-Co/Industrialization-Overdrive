@@ -165,8 +165,7 @@ public final class MultiblockBuilder extends Item {
         }
 
         Rotation rotation = getPasteRotation(template.get(BlockPos.ZERO).settings(), player.getDirection().getOpposite());
-        int lowestTemplateY = template.keySet().stream().mapToInt(BlockPos::getY).min().orElse(0);
-        BlockPos pastePos = pos.above(Math.max(0, -lowestTemplateY));
+        BlockPos pastePos = pastePosition(pos, template, rotation);
 
         Map<Item, Integer> requiredBlocks = new HashMap<>();
         for (var entry : template.entrySet()) {
@@ -233,7 +232,7 @@ public final class MultiblockBuilder extends Item {
         return InteractionResult.FAIL;
     }
 
-    private static Rotation getPasteRotation(CompoundTag settings, Direction targetDirection) {
+    public static Rotation getPasteRotation(CompoundTag settings, Direction targetDirection) {
         if (!settings.contains("facingDirection") || !targetDirection.getAxis().isHorizontal()) return Rotation.NONE;
 
         Direction sourceDirection = Direction.from3DDataValue(settings.getInt("facingDirection"));
@@ -243,7 +242,7 @@ public final class MultiblockBuilder extends Item {
         return Rotation.NONE;
     }
 
-    private static BlockPos rotateOffset(BlockPos offset, Rotation rotation) {
+    public static BlockPos rotateOffset(BlockPos offset, Rotation rotation) {
         return switch (rotation) {
             case CLOCKWISE_90 -> new BlockPos(-offset.getZ(), offset.getY(), offset.getX());
             case CLOCKWISE_180 -> new BlockPos(-offset.getX(), offset.getY(), -offset.getZ());
@@ -252,7 +251,12 @@ public final class MultiblockBuilder extends Item {
         };
     }
 
-    private static CompoundTag rotateSettings(CompoundTag settings, Rotation rotation) {
+    public static BlockPos pastePosition(BlockPos clickedPos, Map<BlockPos, IOComponents.BlockData> template, Rotation rotation) {
+        int lowestTemplateY = template.keySet().stream().mapToInt(BlockPos::getY).min().orElse(0);
+        return clickedPos.above(Math.max(0, -lowestTemplateY));
+    }
+
+    public static CompoundTag rotateSettings(CompoundTag settings, Rotation rotation) {
         if (rotation == Rotation.NONE) return settings;
 
         CompoundTag rotated = settings.copy();

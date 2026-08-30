@@ -7,6 +7,7 @@ import aztech.modern_industrialization.machines.MachineBlock;
 import aztech.modern_industrialization.machines.MachineBlockEntity;
 import aztech.modern_industrialization.machines.blockentities.multiblocks.LargeTankMultiblockBlockEntity;
 import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBlockEntity;
+import dev.wp.industrialization_overdrive.client.MultiblockBuilderRenderer;
 import dev.wp.industrialization_overdrive.item.Vajra;
 import dev.wp.industrialization_overdrive.network.packet.ModifyMultiblockBuilderModePacket;
 import dev.wp.industrialization_overdrive.network.packet.ModifyVajraSpeedPacket;
@@ -24,6 +25,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.lwjgl.glfw.GLFW;
@@ -38,6 +40,7 @@ public final class IOClient {
 
     public IOClient(IEventBus bus) {
         bus.addListener(RegisterKeyMappingsEvent.class, event -> event.register(MULTIBLOCK_BUILDER_MODE_SWITCH));
+        NeoForge.EVENT_BUS.addListener(RenderLevelStageEvent.class, MultiblockBuilderRenderer::render);
 
         NeoForge.EVENT_BUS.addListener(InputEvent.Key.class, (event) -> {
             var player = Minecraft.getInstance().player;
