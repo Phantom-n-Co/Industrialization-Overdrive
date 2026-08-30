@@ -77,14 +77,13 @@ public final class MultiblockBuilder extends Item {
         }
 
         if (mode.equals("copy_paste")) {
-            if (player.isShiftKeyDown()) {
+            var isSneaking = player.isShiftKeyDown();
+            if (isSneaking) {
                 if (be instanceof MultiblockMachineBlockEntity multiblock) {
                     return handleCopy(stack, level, pos, player, multiblock);
                 }
-            } else {
-                return handlePaste(stack, level, player.isShiftKeyDown() ? pos : pos.relative(ctx.getClickedFace()), player);
             }
-            return InteractionResult.PASS;
+            return handlePaste(stack, level, isSneaking ? pos : pos.relative(ctx.getClickedFace()), player);
         }
 
         if (!(be instanceof MultiblockMachineBlockEntity multiblock))

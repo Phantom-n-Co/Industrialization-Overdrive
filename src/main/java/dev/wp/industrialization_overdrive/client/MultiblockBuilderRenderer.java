@@ -62,13 +62,18 @@ public final class MultiblockBuilderRenderer {
         poseStack.pushPose();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.disableCull();
+        RenderSystem.enablePolygonOffset();
+        RenderSystem.polygonOffset(-1.0F, -10.0F);
         try {
             poseStack.translate(-camera.x, -camera.y, -camera.z);
             for (Preview preview : previews) {
                 poseStack.pushPose();
                 try {
                     poseStack.translate(preview.pos.getX(), preview.pos.getY(), preview.pos.getZ());
+                    float scale = preview.tint == GREEN ? 0.999F : 1.001F;
+                    poseStack.translate(0.5F, 0.5F, 0.5F);
+                    poseStack.scale(scale, scale, scale);
+                    poseStack.translate(-0.5F, -0.5F, -0.5F);
                     ModelData modelData = modelData(level, preview);
                     if (modelData == null) {
                         dispatcher.renderSingleBlock(preview.state, poseStack,
@@ -84,8 +89,8 @@ public final class MultiblockBuilderRenderer {
             }
             buffers.endBatch(RenderType.translucent());
         } finally {
-            RenderSystem.enableCull();
             RenderSystem.disableBlend();
+            RenderSystem.disablePolygonOffset();
             poseStack.popPose();
         }
     }
@@ -168,7 +173,7 @@ public final class MultiblockBuilderRenderer {
         return new VertexConsumer() {
             @Override public VertexConsumer addVertex(float x, float y, float z) { return delegate.addVertex(x, y, z); }
             @Override public VertexConsumer setColor(int r, int g, int b, int alpha) {
-                return delegate.setColor(r * red / 255, g * green / 255, b * blue / 255, 96);
+                return delegate.setColor(r * red / 255, g * green / 255, b * blue / 255, 125);
             }
             @Override public VertexConsumer setUv(float u, float v) { return delegate.setUv(u, v); }
             @Override public VertexConsumer setUv1(int u, int v) { return delegate.setUv1(u, v); }
