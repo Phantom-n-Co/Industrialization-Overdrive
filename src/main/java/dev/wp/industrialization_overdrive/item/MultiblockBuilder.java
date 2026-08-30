@@ -135,7 +135,7 @@ public final class MultiblockBuilder extends Item {
         machine.components.forType(RedstoneControlComponent.class, redstone -> redstone.writeNbt(tag, registries));
         machine.components.forType(OverdriveComponent.class, overdrive -> overdrive.writeNbt(tag, registries));
         machine.components.forType(MultiProcessingArrayMachineComponent.class, machines -> machines.writeNbt(tag, registries));
-        if (IOUtil.isEILoaded) EIIntegration.writeProcessingArraySettings(machine, tag, registries);
+        if (IOUtil.isEILoaded) EIIntegration.writeSettings(machine, tag, registries);
 
         // Hatch settings
         if (machine instanceof HatchBlockEntity) {
@@ -303,7 +303,7 @@ public final class MultiblockBuilder extends Item {
         machine.components.forType(RedstoneControlComponent.class, redstone -> redstone.readNbt(settings, registries, false));
         machine.components.forType(OverdriveComponent.class, overdrive -> overdrive.readNbt(settings, registries, false));
         machine.components.forType(MultiProcessingArrayMachineComponent.class, machines -> machines.readNbt(settings, registries, false));
-        if (IOUtil.isEILoaded) EIIntegration.readProcessingArraySettings(machine, settings, registries);
+        if (IOUtil.isEILoaded) EIIntegration.readSettings(machine, settings, registries);
 
         // 3. Hatch locks
         if (machine instanceof HatchBlockEntity) {
