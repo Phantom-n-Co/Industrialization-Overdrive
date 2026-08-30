@@ -92,7 +92,7 @@ public final class MultiblockBuilder extends Item {
 
     private InteractionResult handleCopy(ItemStack stack, Level level, BlockPos pos, Player player, MultiblockMachineBlockEntity multiblock) {
         if (!multiblock.isShapeValid()) {
-            player.sendSystemMessage(Component.literal("Multiblock must be formed to copy it.").withColor(COLOR_MISSING));
+            player.sendSystemMessage(IO.text().multiblockBuilderCopyRequiresFormed());
             return InteractionResult.FAIL;
         }
 
@@ -171,7 +171,7 @@ public final class MultiblockBuilder extends Item {
             if (state.getBlock().asItem().equals(item)) continue;
 
             if (!state.canBeReplaced()) {
-                player.sendSystemMessage(Component.literal(String.format("Block at %s is not part of the multiblock and cannot be replaced.", targetPos.toShortString())).withColor(COLOR_MISSING));
+                player.sendSystemMessage(IO.text().multiblockBuilderBlockCannotBeReplaced(targetPos));
                 return InteractionResult.SUCCESS;
             }
             requiredBlocks.merge(item, 1, Integer::sum);
@@ -220,7 +220,7 @@ public final class MultiblockBuilder extends Item {
                     applySettings(machine, entry.getValue().settings());
                 }
             }
-            player.sendSystemMessage(Component.literal("Successfully pasted multiblock structure.").withColor(COLOR_ENOUGH));
+            player.sendSystemMessage(IO.text().multiblockBuilderPasteSuccess());
             return InteractionResult.SUCCESS;
         }
 
@@ -338,7 +338,7 @@ public final class MultiblockBuilder extends Item {
             BlockState previewState = member.getPreviewState();
             level.setBlock(memberPos, previewState, 3);
         }
-        player.sendSystemMessage(Component.literal(String.format("Successfully built multiblock at %s, %s, %s", pos.getX(), pos.getY(), pos.getZ())).withColor(COLOR_ENOUGH));
+        player.sendSystemMessage(IO.text().multiblockBuilderBuildSuccess(pos.getX(), pos.getY(), pos.getZ()));
     }
 
     private InteractionResult handleSurvivalBuild(Level level, BlockPos pos, Player player, ShapeMatcher shapeMatcher) {
@@ -351,7 +351,7 @@ public final class MultiblockBuilder extends Item {
             BlockState previewState = member.getPreviewState();
             if (!state.canBeReplaced()) {
                 obstructionFound = true;
-                player.sendSystemMessage(Component.literal(String.format("Block at %s is not part of the multiblock", checkPos.toShortString())).withColor(COLOR_MISSING));
+                player.sendSystemMessage(IO.text().multiblockBuilderBlockNotPart(checkPos));
             }
             if (state.canBeReplaced()) {
                 Item block = previewState.getBlock().asItem();
@@ -383,7 +383,7 @@ public final class MultiblockBuilder extends Item {
         }
 
         if (anyMissing) {
-            player.sendSystemMessage(Component.literal("Required items:").withColor(COLOR_HEADER));
+            player.sendSystemMessage(IO.text().multiblockBuilderRequiredItems());
             for (var entry : requiredBlocks.entrySet()) {
                 Item item = entry.getKey();
                 int required = entry.getValue();
@@ -441,7 +441,7 @@ public final class MultiblockBuilder extends Item {
 
     private static Component formatItemLine(Item item, int count, int color) {
         String name = item.getDefaultInstance().getHoverName().getString();
-        return Component.literal(String.format("- %sx %s", count, name)).withColor(color);
+        return IO.text().multiblockBuilderRequiredItem(count, name).withColor(color);
     }
 }
 

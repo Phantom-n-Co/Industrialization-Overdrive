@@ -127,4 +127,31 @@ public interface IOText {
     @LangKey(text = "Not linked to an ME system.")
     @WithStyle("tooltip")
     MutableComponent multiblockBuilderLinkNotLinked();
+
+    @LangKey(text = "Multiblock must be formed to copy it.")
+    @WithStyle("red")
+    MutableComponent multiblockBuilderCopyRequiresFormed();
+
+    @LangKey(text = "Block at %s is not part of the multiblock and cannot be replaced.")
+    @WithStyle("red")
+    MutableComponent multiblockBuilderBlockCannotBeReplaced(@Parsed("block_pos") BlockPos location);
+
+    @LangKey(text = "Successfully pasted multiblock structure.")
+    @WithStyle("green")
+    MutableComponent multiblockBuilderPasteSuccess();
+
+    @LangKey(text = "Successfully built multiblock at %s, %s, %s")
+    @WithStyle("green")
+    MutableComponent multiblockBuilderBuildSuccess(int x, int y, int z);
+
+    @LangKey(text = "Block at %s is not part of the multiblock")
+    @WithStyle("red")
+    MutableComponent multiblockBuilderBlockNotPart(@Parsed("block_pos") BlockPos location);
+
+    @LangKey(text = "Required items:")
+    @WithStyle("highlighted")
+    MutableComponent multiblockBuilderRequiredItems();
+
+    @LangKey(text = "- %sx %s")
+    MutableComponent multiblockBuilderRequiredItem(int count, String item);
 }
