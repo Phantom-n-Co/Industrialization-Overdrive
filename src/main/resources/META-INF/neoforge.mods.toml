@@ -47,3 +47,10 @@ type = "required"
 versionRange = "${tesseract_version_range}"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "guideme"
+type = "optional"
+versionRange = "${guideme_version_range}"
+ordering = "AFTER"
+side = "BOTH"
