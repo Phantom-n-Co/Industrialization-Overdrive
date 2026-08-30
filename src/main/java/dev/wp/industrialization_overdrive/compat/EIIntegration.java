@@ -5,7 +5,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.swedz.extended_industrialization.item.machineconfig.MachineConfigPanel;
 import net.swedz.extended_industrialization.machines.component.craft.processingarray.ProcessingArrayMachineComponent;
-import net.swedz.extended_industrialization.machines.guicomponent.processingarraymachineslot.ProcessingArrayMachineSlot;
 import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
 import dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot.MultiProcessingArrayMachineSlot;
 

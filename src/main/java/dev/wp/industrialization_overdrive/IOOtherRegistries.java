@@ -1,8 +1,6 @@
 package dev.wp.industrialization_overdrive;
 
 import dev.technici4n.grandpower.api.ISimpleEnergyItem;
-import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
-import dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot.MultiProcessingArrayMachineSlot;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
