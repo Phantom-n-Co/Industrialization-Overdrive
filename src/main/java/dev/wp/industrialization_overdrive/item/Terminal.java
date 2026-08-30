@@ -224,7 +224,7 @@ public final class Terminal extends Item {
         // We only want to apply configuration, not the content (amount/key)
         // Unless it's locked, in which case the lock needs to be preserved.
         if (source.isPlayerLocked()) {
-            target.togglePlayerLock(source.getLockedInstance());
+            target.playerLock(source.getLockedInstance(), Simulation.ACT);
         }
         if (target instanceof ConfigurableItemStack targetItem && source instanceof ConfigurableItemStack sourceItem) {
             int targetCap = targetItem.getAdjustedCapacity();

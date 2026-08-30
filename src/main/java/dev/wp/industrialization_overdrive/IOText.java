@@ -36,26 +36,6 @@ public interface IOText {
     @WithStyle("tooltip")
     MutableComponent coilsPyroTier(@WithStyle("highlighted") int batchSize, @Parsed("percentage") @WithStyle("highlighted") float euCost);
 
-    @LangKey(text = "- Press %s + %s on a MI multiblock to automatically build it.")
-    @WithStyle("tooltip")
-    MutableComponent terminalHelp1(@Parsed("keybind") @WithStyle("highlighted") String key1, @Parsed("keybind") @WithStyle("highlighted") String key2);
-
-    @LangKey(text = "- Requires parts to be in your inventory.")
-    @WithStyle("tooltip")
-    MutableComponent terminalHelp2();
-
-    @LangKey(text = "- Requires parts to be in your inventory or a linked ME system.")
-    @WithStyle("tooltip")
-    MutableComponent terminalHelp2Alt();
-
-    @LangKey(text = "Linked to an ME system at %s.")
-    @WithStyle("tooltip")
-    MutableComponent terminalLinkInfo(@Parsed("block_pos") @WithStyle("highlighted") BlockPos location);
-
-    @LangKey(text = "Not linked to an ME system.")
-    @WithStyle("tooltip")
-    MutableComponent terminalLinkNotLinked();
-
     @LangKey(text = "Silk Touch: %s")
     @WithStyle("tooltip")
     MutableComponent vajraSilkTouchInfo(@WithStyle("highlighted") Component status);
@@ -111,7 +91,28 @@ public interface IOText {
     @LangKey(text = "Multiblock dismantled.")
     @WithStyle("green")
     MutableComponent terminalDismantled();
+
+    @LangKey(text = "- Press %s + %s on a MI multiblock to automatically build it.")
+    @WithStyle("tooltip")
+    MutableComponent terminalHelp1(@Parsed("keybind") @WithStyle("highlighted") String key1, @Parsed("keybind") @WithStyle("highlighted") String key2);
+
+    @LangKey(text = "- Requires parts to be in your inventory.")
+    @WithStyle("tooltip")
+    MutableComponent terminalHelp2();
+
+    @LangKey(text = "- Requires parts to be in your inventory or a linked ME system.")
+    @WithStyle("tooltip")
+    MutableComponent terminalHelp2Alt();
+
     @LangKey(text = "- Press %s to cycle modes.")
     @WithStyle("tooltip")
     MutableComponent terminalHelp3(@Parsed("keybind") @WithStyle("highlighted") String key);
+
+    @LangKey(text = "Linked to an ME system at %s.")
+    @WithStyle("tooltip")
+    MutableComponent terminalLinkInfo(@Parsed("block_pos") @WithStyle("highlighted") BlockPos location);
+
+    @LangKey(text = "Not linked to an ME system.")
+    @WithStyle("tooltip")
+    MutableComponent terminalLinkNotLinked();
 }

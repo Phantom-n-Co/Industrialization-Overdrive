@@ -21,6 +21,7 @@
   "text.industrialization_overdrive.terminal_help_1": "- Press %s + %s on a MI multiblock to automatically build it.",
   "text.industrialization_overdrive.terminal_help_2": "- Requires parts to be in your inventory.",
   "text.industrialization_overdrive.terminal_help_2_alt": "- Requires parts to be in your inventory or a linked ME system.",
+  "text.industrialization_overdrive.terminal_help_3": "- Press %s to cycle modes.",
   "text.industrialization_overdrive.terminal_link_info": "Linked to an ME system at %s.",
   "text.industrialization_overdrive.terminal_link_not_linked": "Not linked to an ME system.",
   "text.industrialization_overdrive.terminal_mode_changed": "Mode changed to %s.",
