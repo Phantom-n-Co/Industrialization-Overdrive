@@ -109,8 +109,9 @@ public final class MultiblockBuilderRenderer {
         if (mode == MultiblockBuilder.Mode.BUILD) return buildPreviews(level, hit.getBlockPos());
         if (mode != MultiblockBuilder.Mode.COPY_PASTE) return List.of();
 
-        Map<BlockPos, IOComponents.BlockData> template = stack.get(IOComponents.MULTI_BUILDER_TEMPLATE);
-        if (template == null || template.isEmpty()) return List.of();
+        IOComponents.Template storedTemplate = stack.get(IOComponents.MULTI_BUILDER_TEMPLATE);
+        if (storedTemplate == null || storedTemplate.blocks().isEmpty()) return List.of();
+        Map<BlockPos, IOComponents.BlockData> template = storedTemplate.expand();
         for (var entry : template.entrySet()) {
             if (entry.getKey() == null || entry.getValue() == null) return List.of();
         }

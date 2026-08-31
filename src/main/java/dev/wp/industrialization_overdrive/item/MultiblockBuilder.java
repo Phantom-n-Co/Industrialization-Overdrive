@@ -130,7 +130,7 @@ public final class MultiblockBuilder extends Item {
             EIIntegration.copyChainedBlocks(level, pos, template, IO.config().machineChainerCopyDepth(), this::copySettings);
         }
 
-        stack.set(IOComponents.MULTI_BUILDER_TEMPLATE, template);
+        stack.set(IOComponents.MULTI_BUILDER_TEMPLATE, IOComponents.Template.from(template));
         player.displayClientMessage(IO.text().multiblockBuilderTemplateCopied(pos.getX(), pos.getY(), pos.getZ()), true);
 
         return InteractionResult.SUCCESS;
@@ -143,7 +143,7 @@ public final class MultiblockBuilder extends Item {
         CompoundTag rootSettings = root.settings().copy();
         rootSettings.putInt("chainerCopyFacingDirection", player.getDirection().getOpposite().get3DDataValue());
         template.put(BlockPos.ZERO, new IOComponents.BlockData(root.item(), rootSettings));
-        stack.set(IOComponents.MULTI_BUILDER_TEMPLATE, template);
+        stack.set(IOComponents.MULTI_BUILDER_TEMPLATE, IOComponents.Template.from(template));
         player.displayClientMessage(IO.text().multiblockBuilderTemplateCopied(pos.getX(), pos.getY(), pos.getZ()), true);
         return InteractionResult.SUCCESS;
     }
@@ -153,42 +153,57 @@ public final class MultiblockBuilder extends Item {
         if (machine.getLevel() == null) return tag;
         var registries = machine.getLevel().registryAccess();
 
-        // Always copy: facingDirection, activeShape, placer
+        // Always copy: facingDirection and output/auto-extract settings
         machine.orientation.writeNbt(tag, registries);
-        machine.placedBy.writeNbt(tag, registries);
 
-        machine.components.forType(ActiveShapeComponent.class, activeShape -> activeShape.writeNbt(tag, registries));
+        machine.components.forType(ActiveShapeComponent.class, activeShape -> {
+            if (activeShape.getActiveShapeIndex() != 0) activeShape.writeNbt(tag, registries);
+        });
 
         // Copy optional modules (only consumed if present in paste)
         machine.components.forType(UpgradeComponent.class, upgrade -> upgrade.writeNbt(tag, registries));
         machine.components.forType(RedstoneControlComponent.class, redstone -> redstone.writeNbt(tag, registries));
         machine.components.forType(OverdriveComponent.class, overdrive -> overdrive.writeNbt(tag, registries));
         machine.components.forType(MultiProcessingArrayMachineComponent.class, machines -> machines.writeNbt(tag, registries));
-        machine.components.forType(CasingComponent.class, casing -> casing.writeNbt(tag, registries));
+        machine.components.forType(CasingComponent.class, casing -> {
+            CompoundTag casingTag = new CompoundTag();
+            casing.writeNbt(casingTag, registries);
+            if (!casingTag.getCompound("casing").isEmpty()) tag.put("casing", casingTag.get("casing"));
+        });
         if (IOUtil.isEILoaded) EIIntegration.writeSettings(machine, tag, registries);
+        for (String key : List.of("redstoneModuleStack", "upgradesItemStack", "overdriveModuleStack")) {
+            if (tag.getCompound(key).isEmpty()) tag.remove(key);
+        }
 
         MIInventory inventory = machine.getInventory();
         ListTag itemLocks = new ListTag();
+        boolean hasItemLocks = false;
         for (ConfigurableItemStack itemStack : inventory.getItemStacks()) {
-            itemLocks.add(itemStack.toNbt(registries));
+            boolean configured = itemStack.isPlayerLocked() || itemStack.getAdjustedCapacity() != 1;
+            itemLocks.add(configured ? itemStack.toNbt(registries) : new CompoundTag());
+            hasItemLocks |= configured;
         }
-        tag.put("itemLocks", itemLocks);
+        if (hasItemLocks) tag.put("itemLocks", itemLocks);
 
         ListTag fluidLocks = new ListTag();
+        boolean hasFluidLocks = false;
         for (ConfigurableFluidStack fluidStack : inventory.getFluidStacks()) {
-            fluidLocks.add(fluidStack.toNbt(registries));
+            boolean configured = fluidStack.isPlayerLocked();
+            fluidLocks.add(configured ? fluidStack.toNbt(registries) : new CompoundTag());
+            hasFluidLocks |= configured;
         }
-        tag.put("fluidLocks", fluidLocks);
+        if (hasFluidLocks) tag.put("fluidLocks", fluidLocks);
 
         return tag;
     }
 
     private InteractionResult handlePaste(ItemStack stack, Level level, BlockPos pos, Player player) {
-        Map<BlockPos, IOComponents.BlockData> template = stack.get(IOComponents.MULTI_BUILDER_TEMPLATE);
-        if (template == null || template.isEmpty()) {
+        IOComponents.Template storedTemplate = stack.get(IOComponents.MULTI_BUILDER_TEMPLATE);
+        if (storedTemplate == null || storedTemplate.blocks().isEmpty()) {
             player.displayClientMessage(IO.text().multiblockBuilderNoTemplate(), true);
             return InteractionResult.FAIL;
         }
+        Map<BlockPos, IOComponents.BlockData> template = storedTemplate.expand();
 
         Rotation rotation = getPasteRotation(template.get(BlockPos.ZERO).settings(), player.getDirection().getOpposite());
         BlockPos pastePos = pastePosition(pos, template, rotation);
@@ -254,7 +269,7 @@ public final class MultiblockBuilder extends Item {
 
                 BlockEntity be = level.getBlockEntity(targetPos);
                 if (be instanceof MachineBlockEntity machine) {
-                    applySettings(machine, rotateSettings(entry.getValue().settings(), rotation));
+                    applySettings(machine, rotateSettings(entry.getValue().settings(), rotation), player);
                 }
             }
             player.sendSystemMessage(IO.text().multiblockBuilderPasteSuccess());
@@ -323,13 +338,13 @@ public final class MultiblockBuilder extends Item {
         }
     }
 
-    private void applySettings(MachineBlockEntity machine, CompoundTag settings) {
+    private void applySettings(MachineBlockEntity machine, CompoundTag settings, Player player) {
         if (machine.getLevel() == null) return;
         var registries = machine.getLevel().registryAccess();
 
-        // 1. Mandatory settings (orientation, shape, placer)
+        // 1. Mandatory settings (orientation and shape); placer is the player pasting it
         machine.orientation.readNbt(settings, registries, false);
-        machine.placedBy.readNbt(settings, registries, false);
+        machine.placedBy.onPlaced(player);
         machine.components.forType(ActiveShapeComponent.class, activeShape -> activeShape.readNbt(settings, registries, false));
 
         // 2. Optional settings (upgrades, modules) - We already consumed them if survival, so we can just set them.
