@@ -8,6 +8,7 @@ import aztech.modern_industrialization.machines.MachineBlockEntity;
 import aztech.modern_industrialization.machines.blockentities.multiblocks.LargeTankMultiblockBlockEntity;
 import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBlockEntity;
 import dev.wp.industrialization_overdrive.client.MultiblockBuilderRenderer;
+import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
 import dev.wp.industrialization_overdrive.item.Vajra;
 import dev.wp.industrialization_overdrive.network.packet.ModifyMultiblockBuilderModePacket;
 import dev.wp.industrialization_overdrive.network.packet.ModifyVajraSpeedPacket;
@@ -15,6 +16,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
@@ -40,6 +42,11 @@ public final class IOClient {
 
     public IOClient(IEventBus bus) {
         bus.addListener(RegisterKeyMappingsEvent.class, event -> event.register(MULTIBLOCK_BUILDER_MODE_SWITCH));
+        bus.addListener(FMLClientSetupEvent.class, event -> event.enqueueWork(() -> ItemProperties.register(
+                IOItems.MULTIBLOCK_BUILDER.get(),
+                IO.id("mode"),
+                (stack, level, entity, seed) -> stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, MultiblockBuilder.Mode.BUILD).ordinal()
+        )));
         NeoForge.EVENT_BUS.addListener(RenderLevelStageEvent.class, MultiblockBuilderRenderer::render);
 
         NeoForge.EVENT_BUS.addListener(InputEvent.Key.class, (event) -> {

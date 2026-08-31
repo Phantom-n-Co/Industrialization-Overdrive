@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "industrialization_overdrive:item/terminal_tear_down"
+  }
+}

@@ -14,6 +14,8 @@ public final class ItemModelsDatagenProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         for (ItemHolder item : IOItems.values()) {
+            if (item.equals(IOItems.MULTIBLOCK_BUILDER)) continue;
+
             if (item.hasModelProvider()) item.modelProvider().accept(this);
         }
     }
