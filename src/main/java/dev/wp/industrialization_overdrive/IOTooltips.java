@@ -2,6 +2,7 @@ package dev.wp.industrialization_overdrive;
 
 import com.google.common.collect.Lists;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
+import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -38,6 +39,12 @@ public class IOTooltips {
             IOItems.MULTIBLOCK_BUILDER,
             (flags, ctx, stack, item) -> {
                 List<Component> tooltip = Lists.newArrayList();
+                Component mode = switch (stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, MultiblockBuilder.Mode.BUILD)) {
+                    case BUILD -> IO.text().multiblockBuilderModeBuild();
+                    case COPY_PASTE -> IO.text().multiblockBuilderModeCopyPaste();
+                    case TEAR_DOWN -> IO.text().multiblockBuilderModeTearDown();
+                };
+                tooltip.add(IO.text().multiblockBuilderCurrentMode(mode));
                 if (IOUtil.isAE2Loaded) {
                     GlobalPos linkPos = AE2Integration.getLinkPos(stack);
                     if (linkPos != null)

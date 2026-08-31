@@ -80,6 +80,10 @@ public interface IOText {
     @WithStyle("tooltip")
     MutableComponent multiblockBuilderModeChanged(@WithStyle("highlighted") Component mode);
 
+    @LangKey(text = "Mode: %s")
+    @WithStyle("tooltip")
+    MutableComponent multiblockBuilderCurrentMode(@WithStyle("highlighted") Component mode);
+
     @LangKey(text = "Build")
     @WithStyle("highlighted")
     MutableComponent multiblockBuilderModeBuild();

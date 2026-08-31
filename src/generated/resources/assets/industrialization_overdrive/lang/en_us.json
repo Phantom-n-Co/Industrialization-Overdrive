@@ -23,6 +23,7 @@
   "text.industrialization_overdrive.multiblock_builder_block_not_part": "Block at %s is not part of the multiblock",
   "text.industrialization_overdrive.multiblock_builder_build_success": "Successfully built multiblock at %s, %s, %s",
   "text.industrialization_overdrive.multiblock_builder_copy_requires_formed": "Multiblock must be formed to copy it.",
+  "text.industrialization_overdrive.multiblock_builder_current_mode": "Mode: %s",
   "text.industrialization_overdrive.multiblock_builder_dismantled": "Multiblock dismantled.",
   "text.industrialization_overdrive.multiblock_builder_help_1": "- Press %s + %s on a MI multiblock to automatically build it.",
   "text.industrialization_overdrive.multiblock_builder_help_2": "- Requires parts to be in your inventory.",
