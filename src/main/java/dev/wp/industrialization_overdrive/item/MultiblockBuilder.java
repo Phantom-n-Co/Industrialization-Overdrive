@@ -6,6 +6,7 @@ import aztech.modern_industrialization.inventory.ConfigurableItemStack;
 import aztech.modern_industrialization.inventory.MIInventory;
 import aztech.modern_industrialization.machines.MachineBlockEntity;
 import aztech.modern_industrialization.machines.components.ActiveShapeComponent;
+import aztech.modern_industrialization.machines.components.CasingComponent;
 import aztech.modern_industrialization.machines.components.OverdriveComponent;
 import aztech.modern_industrialization.machines.components.RedstoneControlComponent;
 import aztech.modern_industrialization.machines.components.UpgradeComponent;
@@ -138,6 +139,10 @@ public final class MultiblockBuilder extends Item {
     private InteractionResult handleChainerCopy(ItemStack stack, Level level, BlockPos pos, Player player) {
         Map<BlockPos, IOComponents.BlockData> template = new HashMap<>();
         EIIntegration.copyChainer(level, pos, template, IO.config().machineChainerCopyDepth(), this::copySettings);
+        IOComponents.BlockData root = template.get(BlockPos.ZERO);
+        CompoundTag rootSettings = root.settings().copy();
+        rootSettings.putInt("chainerCopyFacingDirection", player.getDirection().getOpposite().get3DDataValue());
+        template.put(BlockPos.ZERO, new IOComponents.BlockData(root.item(), rootSettings));
         stack.set(IOComponents.MULTI_BUILDER_TEMPLATE, template);
         player.displayClientMessage(IO.text().multiblockBuilderTemplateCopied(pos.getX(), pos.getY(), pos.getZ()), true);
         return InteractionResult.SUCCESS;
@@ -159,23 +164,21 @@ public final class MultiblockBuilder extends Item {
         machine.components.forType(RedstoneControlComponent.class, redstone -> redstone.writeNbt(tag, registries));
         machine.components.forType(OverdriveComponent.class, overdrive -> overdrive.writeNbt(tag, registries));
         machine.components.forType(MultiProcessingArrayMachineComponent.class, machines -> machines.writeNbt(tag, registries));
+        machine.components.forType(CasingComponent.class, casing -> casing.writeNbt(tag, registries));
         if (IOUtil.isEILoaded) EIIntegration.writeSettings(machine, tag, registries);
 
-        // Hatch settings
-        if (machine instanceof HatchBlockEntity) {
-            MIInventory inventory = machine.getInventory();
-            ListTag itemLocks = new ListTag();
-            for (ConfigurableItemStack itemStack : inventory.getItemStacks()) {
-                itemLocks.add(itemStack.toNbt(registries));
-            }
-            tag.put("itemLocks", itemLocks);
-
-            ListTag fluidLocks = new ListTag();
-            for (ConfigurableFluidStack fluidStack : inventory.getFluidStacks()) {
-                fluidLocks.add(fluidStack.toNbt(registries));
-            }
-            tag.put("fluidLocks", fluidLocks);
+        MIInventory inventory = machine.getInventory();
+        ListTag itemLocks = new ListTag();
+        for (ConfigurableItemStack itemStack : inventory.getItemStacks()) {
+            itemLocks.add(itemStack.toNbt(registries));
         }
+        tag.put("itemLocks", itemLocks);
+
+        ListTag fluidLocks = new ListTag();
+        for (ConfigurableFluidStack fluidStack : inventory.getFluidStacks()) {
+            fluidLocks.add(fluidStack.toNbt(registries));
+        }
+        tag.put("fluidLocks", fluidLocks);
 
         return tag;
     }
@@ -234,6 +237,12 @@ public final class MultiblockBuilder extends Item {
                         requiredBlocks.merge(machines.getItem(), machines.getCount(), Integer::sum);
                     }
                 }
+                if (settings.contains("casing")) {
+                    ItemStack casing = ItemStack.parseOptional(registries, settings.getCompound("casing"));
+                    if (!casing.isEmpty()) {
+                        requiredBlocks.merge(casing.getItem(), casing.getCount(), Integer::sum);
+                    }
+                }
             }
         }
 
@@ -256,9 +265,11 @@ public final class MultiblockBuilder extends Item {
     }
 
     public static Rotation getPasteRotation(CompoundTag settings, Direction targetDirection) {
-        if (!settings.contains("facingDirection") || !targetDirection.getAxis().isHorizontal()) return Rotation.NONE;
+        if (!targetDirection.getAxis().isHorizontal()) return Rotation.NONE;
 
-        Direction sourceDirection = Direction.from3DDataValue(settings.getInt("facingDirection"));
+        if (!settings.contains("chainerCopyFacingDirection") && !settings.contains("facingDirection")) return Rotation.NONE;
+        Direction sourceDirection = Direction.from3DDataValue(settings.getInt(
+                settings.contains("chainerCopyFacingDirection") ? "chainerCopyFacingDirection" : "facingDirection"));
         for (Rotation rotation : Rotation.values()) {
             if (rotation.rotate(sourceDirection) == targetDirection) return rotation;
         }
@@ -327,28 +338,27 @@ public final class MultiblockBuilder extends Item {
         machine.components.forType(RedstoneControlComponent.class, redstone -> redstone.readNbt(settings, registries, false));
         machine.components.forType(OverdriveComponent.class, overdrive -> overdrive.readNbt(settings, registries, false));
         machine.components.forType(MultiProcessingArrayMachineComponent.class, machines -> machines.readNbt(settings, registries, false));
+        machine.components.forType(CasingComponent.class, casing -> casing.readNbt(settings, registries, false));
         if (IOUtil.isEILoaded) EIIntegration.readSettings(machine, settings, registries);
 
-        // 3. Hatch locks
-        if (machine instanceof HatchBlockEntity) {
-            MIInventory inventory = machine.getInventory();
-            if (settings.contains("itemLocks", Tag.TAG_LIST)) {
-                ListTag itemLocks = settings.getList("itemLocks", Tag.TAG_COMPOUND);
-                List<ConfigurableItemStack> stacks = inventory.getItemStacks();
-                for (int i = 0; i < Math.min(itemLocks.size(), stacks.size()); i++) {
-                    CompoundTag lockTag = itemLocks.getCompound(i);
-                    ConfigurableItemStack copiedStack = new ConfigurableItemStack(lockTag, registries);
-                    applyStackSettings(stacks.get(i), copiedStack);
-                }
+        // 3. Slot locks
+        MIInventory inventory = machine.getInventory();
+        if (settings.contains("itemLocks", Tag.TAG_LIST)) {
+            ListTag itemLocks = settings.getList("itemLocks", Tag.TAG_COMPOUND);
+            List<ConfigurableItemStack> stacks = inventory.getItemStacks();
+            for (int i = 0; i < Math.min(itemLocks.size(), stacks.size()); i++) {
+                CompoundTag lockTag = itemLocks.getCompound(i);
+                ConfigurableItemStack copiedStack = new ConfigurableItemStack(lockTag, registries);
+                applyStackSettings(stacks.get(i), copiedStack);
             }
-            if (settings.contains("fluidLocks", Tag.TAG_LIST)) {
-                ListTag fluidLocks = settings.getList("fluidLocks", Tag.TAG_COMPOUND);
-                List<ConfigurableFluidStack> stacks = inventory.getFluidStacks();
-                for (int i = 0; i < Math.min(fluidLocks.size(), stacks.size()); i++) {
-                    CompoundTag lockTag = fluidLocks.getCompound(i);
-                    ConfigurableFluidStack copiedStack = new ConfigurableFluidStack(lockTag, registries);
-                    applyStackSettings(stacks.get(i), copiedStack);
-                }
+        }
+        if (settings.contains("fluidLocks", Tag.TAG_LIST)) {
+            ListTag fluidLocks = settings.getList("fluidLocks", Tag.TAG_COMPOUND);
+            List<ConfigurableFluidStack> stacks = inventory.getFluidStacks();
+            for (int i = 0; i < Math.min(fluidLocks.size(), stacks.size()); i++) {
+                CompoundTag lockTag = fluidLocks.getCompound(i);
+                ConfigurableFluidStack copiedStack = new ConfigurableFluidStack(lockTag, registries);
+                applyStackSettings(stacks.get(i), copiedStack);
             }
         }
 
