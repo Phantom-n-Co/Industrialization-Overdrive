@@ -14,7 +14,7 @@ public interface IOConfig {
 
     @ConfigKey("machine_chainer_copy_depth")
     @ConfigComment("How many levels of Extended Industrialization Machine Chainers to copy; 0 disables copying and -1 is unlimited")
-    @Range.Integer(min = -1, max = 128)
+    @Range.Integer(min = -1, max = 1024)
     default int machineChainerCopyDepth() {
         return -1;
     }
