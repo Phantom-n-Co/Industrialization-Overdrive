@@ -105,9 +105,9 @@ public final class MultiblockBuilderRenderer {
     }
 
     private static List<Preview> previews(ClientLevel level, Player player, BlockHitResult hit, ItemStack stack) {
-        String mode = stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, "build");
-        if (mode.equals("build")) return buildPreviews(level, hit.getBlockPos());
-        if (!mode.equals("copy_paste")) return List.of();
+        MultiblockBuilder.Mode mode = stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, MultiblockBuilder.Mode.BUILD);
+        if (mode == MultiblockBuilder.Mode.BUILD) return buildPreviews(level, hit.getBlockPos());
+        if (mode != MultiblockBuilder.Mode.COPY_PASTE) return List.of();
 
         Map<BlockPos, IOComponents.BlockData> template = stack.get(IOComponents.MULTI_BUILDER_TEMPLATE);
         if (template == null || template.isEmpty()) return List.of();

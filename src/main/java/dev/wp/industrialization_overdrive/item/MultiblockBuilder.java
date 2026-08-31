@@ -44,6 +44,12 @@ import java.util.List;
 import java.util.Map;
 
 public final class MultiblockBuilder extends Item {
+    public enum Mode {
+        BUILD,
+        COPY_PASTE,
+        TEAR_DOWN
+    }
+
     private static final int COLOR_MISSING = DyeColor.RED.getTextColor();
     private static final int COLOR_ENOUGH = DyeColor.GREEN.getTextColor();
     private static final int COLOR_HEADER = DyeColor.YELLOW.getTextColor();
@@ -52,7 +58,7 @@ public final class MultiblockBuilder extends Item {
         super(properties
                 .stacksTo(1)
                 .rarity(Rarity.RARE)
-                .component(IOComponents.MULTI_BUILDER_MODE, "build"));
+                .component(IOComponents.MULTI_BUILDER_MODE, Mode.BUILD));
     }
 
     @NotNull
@@ -65,11 +71,11 @@ public final class MultiblockBuilder extends Item {
             return InteractionResult.PASS;
 
         ItemStack stack = ctx.getItemInHand();
-        String mode = stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, "build");
+        Mode mode = stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, Mode.BUILD);
 
         var be = level.getBlockEntity(pos);
 
-        if (mode.equals("tear_down")) {
+        if (mode == Mode.TEAR_DOWN) {
             if (be instanceof MultiblockMachineBlockEntity multiblock) {
                 return handleTearDown(level, player, multiblock);
             }
@@ -79,7 +85,7 @@ public final class MultiblockBuilder extends Item {
             return InteractionResult.PASS;
         }
 
-        if (mode.equals("copy_paste")) {
+        if (mode == Mode.COPY_PASTE) {
             var isSneaking = player.isShiftKeyDown();
             if (isSneaking) {
                 if (be instanceof MultiblockMachineBlockEntity multiblock) {
