@@ -1,7 +1,7 @@
 package dev.wp.industrialization_overdrive;
 
 import com.google.common.collect.Sets;
-import dev.wp.industrialization_overdrive.item.Terminal;
+import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
 import dev.wp.industrialization_overdrive.item.Vajra;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -33,7 +33,7 @@ public final class IOItems {
         Registry.init(bus);
     }
 
-    public static final ItemHolder<Terminal> TERMINAL = create("terminal", "Multiblock Builder", Terminal::new, IOSortOrder.GEAR).withModelBuilder(CommonModelBuilders::generated).register();
+    public static final ItemHolder<MultiblockBuilder> MULTIBLOCK_BUILDER = create("terminal", "Multiblock Builder", MultiblockBuilder::new, IOSortOrder.GEAR).withModelBuilder(CommonModelBuilders::generated).register();
     public static final ItemHolder<Vajra> VAJRA = create("vajra", "Vajra", Vajra::new, IOSortOrder.GEAR)
             .tag(ItemTags.PICKAXES, ItemTags.AXES, ItemTags.SHOVELS, ItemTags.HOES)
             .withModelBuilder(CommonModelBuilders::handheld)

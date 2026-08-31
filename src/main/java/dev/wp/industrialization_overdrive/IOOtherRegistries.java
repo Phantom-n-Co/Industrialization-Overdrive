@@ -1,8 +1,6 @@
 package dev.wp.industrialization_overdrive;
 
 import dev.technici4n.grandpower.api.ISimpleEnergyItem;
-import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
-import dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot.MultiProcessingArrayMachineSlot;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -10,7 +8,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.swedz.extended_industrialization.item.machineconfig.MachineConfigPanel;
+import dev.wp.industrialization_overdrive.compat.EIIntegration;
 import net.swedz.tesseract.neoforge.registry.holder.ItemHolder;
 
 import java.util.Comparator;
@@ -25,7 +23,7 @@ public final class IOOtherRegistries {
 
     public static final Supplier<CreativeModeTab> CREATIVE_TAB = IOOtherRegistries.CREATIVE_MODE_TABS.register(IO.ID, () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.%s.%s".formatted(IO.ID, IO.ID)))
-            .icon(() -> IOItems.TERMINAL.get().getDefaultInstance())
+            .icon(() -> IOItems.MULTIBLOCK_BUILDER.get().getDefaultInstance())
             .displayItems((params, output) -> {
                 Comparator<ItemHolder> compareBySortOrder = Comparator.comparing(ItemHolder::sortOrder);
                 Comparator<ItemHolder> compareByName = Comparator.comparing((i) -> i.identifier().id());
@@ -50,11 +48,6 @@ public final class IOOtherRegistries {
         RECIPE_TYPES.register(bus);
         CREATIVE_MODE_TABS.register(bus);
 
-        if (IOUtil.isEILoaded)
-            MachineConfigPanel.register("multi_processing_array_machines", MultiProcessingArrayMachineComponent.class, ((player, target, component, holder, slotItem, item, simulation) -> {
-                if (MultiProcessingArrayMachineSlot.isMachine(item))
-                    return MachineConfigPanel.ComponentTypeHandler.insertStack(player, target, component, slotItem, item, simulation);
-                return false;
-            }));
+        if (IOUtil.isEILoaded) EIIntegration.registerMachineConfigPanel();
     }
 }

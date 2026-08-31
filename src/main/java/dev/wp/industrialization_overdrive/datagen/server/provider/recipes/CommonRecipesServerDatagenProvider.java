@@ -36,12 +36,11 @@ public final class CommonRecipesServerDatagenProvider extends RecipesServerDatag
     protected void buildRecipes(@NotNull RecipeOutput output) {
         addBasicCraftingRecipes(
                 "shaped", "terminal", true,
-                IOItems.TERMINAL.get(), 1,
+                IOItems.MULTIBLOCK_BUILDER, 1,
                 (r) -> r
-                        .pattern("DGD")
-                        .pattern("TET")
-                        .define('D', MIItem.DIODE)
-                        .define('T', MIItem.TRANSISTOR)
+                        .pattern("SGS")
+                        .pattern("SES")
+                        .define('S', "#c:plates/steel")
                         .define('G', Tags.Items.GLASS_PANES)
                         .define('E', MIItem.ELECTRONIC_CIRCUIT),
                 output

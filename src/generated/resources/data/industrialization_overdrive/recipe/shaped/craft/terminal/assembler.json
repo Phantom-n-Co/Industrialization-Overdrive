@@ -4,12 +4,8 @@
   "eu": 8,
   "item_inputs": [
     {
-      "amount": 2,
-      "item": "modern_industrialization:diode"
-    },
-    {
-      "amount": 2,
-      "item": "modern_industrialization:transistor"
+      "amount": 4,
+      "tag": "c:plates/steel"
     },
     {
       "amount": 1,

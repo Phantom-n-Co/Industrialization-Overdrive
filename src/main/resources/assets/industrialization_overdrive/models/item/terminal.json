@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "industrialization_overdrive:item/terminal_build"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "industrialization_overdrive:mode": 1.0
+      },
+      "model": "industrialization_overdrive:item/terminal_copy_paste"
+    },
+    {
+      "predicate": {
+        "industrialization_overdrive:mode": 2.0
+      },
+      "model": "industrialization_overdrive:item/terminal_tear_down"
+    }
+  ]
+}

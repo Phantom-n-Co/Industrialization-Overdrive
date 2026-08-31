@@ -74,8 +74,8 @@ dependencies {
     implementation "dev.technici4n:GrandPower:${grandpower_version}"
     implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
     implementation "net.swedz:tesseract-api-neoforge:${tesseract_version}-${minecraft_version}"
-    implementation "net.swedz:extended-industrialization:${extended_industrialization_version}-${minecraft_version}"
     implementation "org.appliedenergistics:guideme:${guideme_version}"
+    compileOnly "net.swedz:extended-industrialization:${extended_industrialization_version}-${minecraft_version}"
     compileOnly "org.appliedenergistics:appliedenergistics2:${ae2_version}:api"
     compileOnly "com.almostreliable.mods:almostunified-neoforge:${project.minecraft_version}-${project.au_version}:api"
 
@@ -83,6 +83,7 @@ dependencies {
     //runtimeOnly "net.swedz:mi-tweaks:${mi_tweaks_version}-${minecraft_version}"
 
     runtimeOnly "org.appliedenergistics:appliedenergistics2:${ae2_version}"
+    runtimeOnly "net.swedz:extended-industrialization:${extended_industrialization_version}-${minecraft_version}"
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}"
     runtimeOnly "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
     runtimeOnly "curse.maven:jade-324717:5639932"

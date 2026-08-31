@@ -2,6 +2,7 @@ package dev.wp.industrialization_overdrive;
 
 import com.google.common.collect.Lists;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
+import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -34,18 +35,25 @@ public class IOTooltips {
             }
     );
 
-    public static final TooltipAttachment TERMINAL = TooltipAttachment.multilines(
-            IOItems.TERMINAL,
+    public static final TooltipAttachment MULTIBLOCK_BUILDER = TooltipAttachment.multilines(
+            IOItems.MULTIBLOCK_BUILDER,
             (flags, ctx, stack, item) -> {
                 List<Component> tooltip = Lists.newArrayList();
+                Component mode = switch (stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, MultiblockBuilder.Mode.BUILD)) {
+                    case BUILD -> IO.text().multiblockBuilderModeBuild();
+                    case COPY_PASTE -> IO.text().multiblockBuilderModeCopyPaste();
+                    case TEAR_DOWN -> IO.text().multiblockBuilderModeTearDown();
+                };
+                tooltip.add(IO.text().multiblockBuilderCurrentMode(mode));
                 if (IOUtil.isAE2Loaded) {
                     GlobalPos linkPos = AE2Integration.getLinkPos(stack);
                     if (linkPos != null)
-                        tooltip.add(IO.text().terminalLinkInfo(linkPos.pos()));
-                    else tooltip.add(IO.text().terminalLinkNotLinked());
+                        tooltip.add(IO.text().multiblockBuilderLinkInfo(linkPos.pos()));
+                    else tooltip.add(IO.text().multiblockBuilderLinkNotLinked());
                 }
-                tooltip.add(IO.text().terminalHelp1("sneak", "use"));
-                tooltip.add(IOUtil.isAE2Loaded ? IO.text().terminalHelp2Alt() : IO.text().terminalHelp2());
+                tooltip.add(IO.text().multiblockBuilderHelp1("sneak", "use"));
+                tooltip.add(IO.text().multiblockBuilderHelp3("industrialization_overdrive.terminal_mode_switch"));
+                tooltip.add(IOUtil.isAE2Loaded ? IO.text().multiblockBuilderHelp2Alt() : IO.text().multiblockBuilderHelp2());
                 return tooltip;
             }
     );
