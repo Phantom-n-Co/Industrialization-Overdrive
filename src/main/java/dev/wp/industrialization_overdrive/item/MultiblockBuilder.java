@@ -73,6 +73,9 @@ public final class MultiblockBuilder extends Item {
             if (be instanceof MultiblockMachineBlockEntity multiblock) {
                 return handleTearDown(level, player, multiblock);
             }
+            if (IOUtil.isEILoaded && EIIntegration.isMachineChainer(be)) {
+                return handleChainerTearDown(level, player, pos);
+            }
             return InteractionResult.PASS;
         }
 
@@ -81,6 +84,9 @@ public final class MultiblockBuilder extends Item {
             if (isSneaking) {
                 if (be instanceof MultiblockMachineBlockEntity multiblock) {
                     return handleCopy(stack, level, pos, player, multiblock);
+                }
+                if (IOUtil.isEILoaded && IO.config().machineChainerCopyDepth() != 0 && EIIntegration.isMachineChainer(be)) {
+                    return handleChainerCopy(stack, level, pos, player);
                 }
             }
             return handlePaste(stack, level, isSneaking ? pos : pos.relative(ctx.getClickedFace()), player);
@@ -113,9 +119,21 @@ public final class MultiblockBuilder extends Item {
             template.put(memberPos.subtract(pos), new IOComponents.BlockData(state.getBlock().asItem(), settings != null ? settings : new CompoundTag()));
         }
 
+        if (IOUtil.isEILoaded && IO.config().machineChainerCopyDepth() != 0) {
+            EIIntegration.copyChainedBlocks(level, pos, template, IO.config().machineChainerCopyDepth(), this::copySettings);
+        }
+
         stack.set(IOComponents.MULTI_BUILDER_TEMPLATE, template);
         player.displayClientMessage(IO.text().multiblockBuilderTemplateCopied(pos.getX(), pos.getY(), pos.getZ()), true);
 
+        return InteractionResult.SUCCESS;
+    }
+
+    private InteractionResult handleChainerCopy(ItemStack stack, Level level, BlockPos pos, Player player) {
+        Map<BlockPos, IOComponents.BlockData> template = new HashMap<>();
+        EIIntegration.copyChainer(level, pos, template, IO.config().machineChainerCopyDepth(), this::copySettings);
+        stack.set(IOComponents.MULTI_BUILDER_TEMPLATE, template);
+        player.displayClientMessage(IO.text().multiblockBuilderTemplateCopied(pos.getX(), pos.getY(), pos.getZ()), true);
         return InteractionResult.SUCCESS;
     }
 
@@ -345,6 +363,14 @@ public final class MultiblockBuilder extends Item {
         // Tear down controller
         tearDownBlock(level, player, pos);
 
+        player.displayClientMessage(IO.text().multiblockBuilderDismantled(), true);
+        return InteractionResult.SUCCESS;
+    }
+
+    private InteractionResult handleChainerTearDown(Level level, Player player, BlockPos pos) {
+        for (BlockPos chainedPos : EIIntegration.getChainedPositions(level, pos)) {
+            tearDownBlock(level, player, chainedPos);
+        }
         player.displayClientMessage(IO.text().multiblockBuilderDismantled(), true);
         return InteractionResult.SUCCESS;
     }
