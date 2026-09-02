@@ -10,11 +10,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,9 +26,16 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
+import net.neoforged.neoforge.event.level.BlockDropsEvent;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
@@ -36,6 +44,14 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
 
     public enum Speed {
         SLOW, NORMAL, FAST, INSTANT
+    }
+
+    private static final ThreadLocal<List<ItemStack>> TOTAL_DROPS = new ThreadLocal<>();
+    private static final ThreadLocal<Boolean> RECURSIVE_MINE_BLOCK = ThreadLocal.withInitial(() -> false);
+
+    static {
+        NeoForge.EVENT_BUS.addListener(Vajra::pickupDrops);
+        NeoForge.EVENT_BUS.addListener(Vajra::pickupSpawnedDrop);
     }
 
     public Vajra(Properties properties) {
@@ -55,6 +71,58 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
 
     private static void setSilkTouch(ItemStack stack, boolean silkTouch) {
         stack.set(MIComponents.SILK_TOUCH, silkTouch);
+    }
+
+    private static void pickupDrops(BlockDropsEvent event) {
+        if (!(event.getBreaker() instanceof ServerPlayer) || !(event.getTool().getItem() instanceof Vajra)) return;
+
+        List<ItemStack> totalDrops = TOTAL_DROPS.get();
+        if (totalDrops == null) return;
+
+        for (ItemEntity entity : event.getDrops()) {
+            if (entity.getItem().isEmpty()) continue;
+            boolean merged = false;
+            for (ItemStack drop : totalDrops) {
+                if (ItemStack.isSameItemSameComponents(entity.getItem(), drop)) {
+                    drop.grow(entity.getItem().getCount());
+                    merged = true;
+                    break;
+                }
+            }
+            if (!merged) totalDrops.add(entity.getItem());
+        }
+        event.getDrops().clear();
+    }
+
+    private static void pickupSpawnedDrop(EntityJoinLevelEvent event) {
+        if (!(event.getEntity() instanceof ItemEntity drop)) return;
+
+        List<ItemStack> totalDrops = TOTAL_DROPS.get();
+        if (totalDrops != null) {
+            totalDrops.add(drop.getItem().copy());
+            event.setCanceled(true);
+        }
+    }
+
+    private static boolean destroyWithPickup(ServerPlayer player, Level level, BlockPos pos) {
+        TOTAL_DROPS.set(new ArrayList<>());
+        RECURSIVE_MINE_BLOCK.set(true);
+        boolean destroyed;
+        try {
+            destroyed = player.gameMode.destroyBlock(pos);
+            if (!player.isCreative()) {
+                TOTAL_DROPS.get().forEach(drop -> {
+                    ItemEntity itemEntity = new ItemEntity(level, player.getX(), player.getY(), player.getZ(), drop);
+                    itemEntity.setNoPickUpDelay();
+                    NeoForge.EVENT_BUS.post(new ItemEntityPickupEvent.Pre(player, itemEntity));
+                    if (!itemEntity.isRemoved()) ItemHandlerHelper.giveItemToPlayer(player, itemEntity.getItem());
+                });
+            }
+        } finally {
+            RECURSIVE_MINE_BLOCK.set(false);
+            TOTAL_DROPS.remove();
+        }
+        return destroyed;
     }
 
     public static Speed getToolSpeed(ItemStack stack) {
@@ -82,11 +150,12 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
 
     @Override
     public boolean mineBlock(ItemStack stack, Level world, BlockState state, BlockPos pos, LivingEntity miner) {
-        if (canUse(stack)) {
-            useEnergy(stack, energyUsagePerBlock);
-            return true;
-        }
-        return false;
+        if (!(miner instanceof ServerPlayer player) || RECURSIVE_MINE_BLOCK.get()) return false;
+        if (!canUse(stack)) return false;
+
+        useEnergy(stack, energyUsagePerBlock);
+        destroyWithPickup(player, world, pos);
+        return true;
     }
 
     private void useEnergy(ItemStack stack, long amount) {
@@ -115,29 +184,22 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
         var pos = ctx.getClickedPos();
         var level = ctx.getLevel();
         var blockState = level.getBlockState(pos);
-        var block = blockState.getBlock();
-        var blockEntity = level.getBlockEntity(pos);
         var stack = ctx.getItemInHand();
 
         // Don't break unbreakable blocks
         if (blockState.getDestroySpeed(level, pos) < 0) return super.useOn(ctx);
 
-        var player = ctx.getPlayer();
+        Player player = ctx.getPlayer();
         if (player == null) return super.useOn(ctx);
 
         if (!canUse(stack)) return super.useOn(ctx);
-        useEnergy(stack, energyUsagePerBlock);
 
-        if (level.isClientSide && !level.isEmptyBlock(pos)) {
-            player.swing(InteractionHand.MAIN_HAND);
-        } else {
-            block.playerWillDestroy(level, pos, blockState, player);
-
-            if (level.removeBlock(pos, false)) {
-                block.destroy(level, pos, blockState);
-
-                block.playerDestroy(level, player, pos, blockState, blockEntity, stack);
-                player.level().playSound(null, pos, block.getSoundType(blockState, level, pos, player).getBreakSound(), SoundSource.PLAYERS, 1.0f, 1.0f);
+        if (level.isClientSide) {
+            if (!level.isEmptyBlock(pos)) player.swing(InteractionHand.MAIN_HAND);
+        } else if (player instanceof ServerPlayer serverPlayer) {
+            useEnergy(stack, energyUsagePerBlock);
+            if (destroyWithPickup(serverPlayer, level, pos)) {
+                level.levelEvent(2001, pos, Block.getId(blockState));
             }
         }
 
@@ -233,5 +295,3 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
         tooltip.add(IO.text().energyInfo(stack.getOrDefault(MIComponents.ENERGY, 0L), getEnergyCapacity(stack)));
     }
 }
-
-
