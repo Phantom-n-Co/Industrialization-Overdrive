@@ -1,7 +1,7 @@
 ---
 navigation:
   title: "Industrialization Overdrive"
-  icon: "wrench"
+  icon: "industrialization_overdrive:terminal"
   position: 99
 ---
 
