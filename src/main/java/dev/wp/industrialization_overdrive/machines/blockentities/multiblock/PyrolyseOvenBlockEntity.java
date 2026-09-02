@@ -46,6 +46,12 @@ public final class PyrolyseOvenBlockEntity extends AbstractElectricMultipliedCra
     }
 
     @Override
+    public ShapeTemplate getActiveShape() {
+        // Guide book un-crashinator
+        return activeShape.shapeTemplates.length == 0 ? SHAPE_TEMPLATES[0] : super.getActiveShape();
+    }
+
+    @Override
     public MachineRecipeType getRecipeType() {
         return IOMachines.RecipeTypes.PYROLYSE_OVEN;
     }

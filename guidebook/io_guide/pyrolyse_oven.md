@@ -12,12 +12,9 @@ item_ids:
 
 ## Pyrolyse Oven
 
-```
-TODO: uncomment this when it doesn't crash.
 <GameScene zoom="2" interactive={true} fullWidth={true}>
     <MultiblockShape controller="industrialization_overdrive:pyrolyse_oven" />
 </GameScene>
-```
 
 <Recipe id="industrialization_overdrive:machines/pyrolyse_oven/craft" />
 
