@@ -13,7 +13,6 @@ import aztech.modern_industrialization.machines.multiblocks.HatchTypes;
 import aztech.modern_industrialization.machines.multiblocks.ShapeTemplate;
 import aztech.modern_industrialization.machines.multiblocks.SimpleMember;
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType;
-import com.google.common.collect.Lists;
 import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOTags;
 import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
@@ -26,6 +25,7 @@ import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostT
 import net.swedz.tesseract.neoforge.compat.mi.machine.blockentity.multiblock.multiplied.AbstractElectricMultipliedCraftingMultiblockBlockEntity;
 import net.swedz.tesseract.neoforge.compat.mi.machine.multiblock.member.PredicateSimpleMember;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -97,7 +97,7 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
 
     @Override
     public List<Component> getTooltips() {
-        List<Component> lines = Lists.newArrayList();
+        List<Component> lines = new ArrayList<>();
         lines.add(IO.text().multiProcessingArrayRecipe());
         lines.add(IO.text().multiProcessingArrayBatchSize());
         if (IO.config().batchingMachines().multiProcessingArrayEU() != 1) {

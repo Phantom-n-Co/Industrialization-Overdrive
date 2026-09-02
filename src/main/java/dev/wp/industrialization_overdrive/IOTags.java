@@ -1,6 +1,5 @@
 package dev.wp.industrialization_overdrive;
 
-import com.google.common.collect.Maps;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -8,10 +7,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class IOTags {
-    private final static Map<TagKey<Item>, String> TRANSLATIONS = Maps.newHashMap();
+    private final static Map<TagKey<Item>, String> TRANSLATIONS = new HashMap<>();
     private static final TagKey<Item> MULTI_PROCESSING_ARRAY_BLACKLIST = item("multi_processing_array_blacklist", "Multi Processing Array Blacklist");
 
     public static Map<TagKey<Item>, String> translations() {

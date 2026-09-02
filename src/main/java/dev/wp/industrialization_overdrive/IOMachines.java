@@ -4,7 +4,6 @@ import aztech.modern_industrialization.MI;
 import aztech.modern_industrialization.compat.rei.machines.ReiMachineRecipes;
 import aztech.modern_industrialization.compat.rei.machines.SteamMode;
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType;
-import com.google.common.collect.Maps;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.MultiProcessingArrayBlockEntity;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
 import dev.wp.industrialization_overdrive.machines.recipe.PyrolyseOvenRecipeType;
@@ -12,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MachineRecipeTypesMIHookContext;
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MultiblockMachinesMIHookContext;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -31,7 +31,7 @@ public final class IOMachines {
     public static final class RecipeTypes {
         public static MachineRecipeType PYROLYSE_OVEN;
 
-        private static final Map<MachineRecipeType, String> RECIPE_TYPE_NAMES = Maps.newHashMap();
+        private static final Map<MachineRecipeType, String> RECIPE_TYPE_NAMES = new HashMap<>();
 
         public static Map<MachineRecipeType, String> getNames() {
             return RECIPE_TYPE_NAMES;

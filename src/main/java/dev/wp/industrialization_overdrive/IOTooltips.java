@@ -1,6 +1,5 @@
 package dev.wp.industrialization_overdrive;
 
-import com.google.common.collect.Lists;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
 import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
@@ -13,6 +12,7 @@ import net.swedz.tesseract.neoforge.tooltip.BiParser;
 import net.swedz.tesseract.neoforge.tooltip.Parser;
 import net.swedz.tesseract.neoforge.tooltip.TooltipAttachment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IOTooltips {
@@ -38,7 +38,7 @@ public class IOTooltips {
     public static final TooltipAttachment MULTIBLOCK_BUILDER = TooltipAttachment.multilines(
             IOItems.MULTIBLOCK_BUILDER,
             (flags, ctx, stack, item) -> {
-                List<Component> tooltip = Lists.newArrayList();
+                List<Component> tooltip = new ArrayList<>();
                 Component mode = switch (stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, MultiblockBuilder.Mode.BUILD)) {
                     case BUILD -> IO.text().multiblockBuilderModeBuild();
                     case COPY_PASTE -> IO.text().multiblockBuilderModeCopyPaste();

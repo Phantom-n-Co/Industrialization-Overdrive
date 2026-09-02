@@ -1,7 +1,6 @@
 package dev.wp.industrialization_overdrive.datagen.client.provider;
 
 import aztech.modern_industrialization.MI;
-import com.google.common.collect.Sets;
 import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOItems;
 import dev.wp.industrialization_overdrive.IOTags;
@@ -11,10 +10,11 @@ import net.swedz.tesseract.neoforge.datagen.mi.MIDatagenHooks;
 import net.swedz.tesseract.neoforge.lang.LangInstance;
 import net.swedz.tesseract.neoforge.registry.holder.ItemHolder;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public final class LanguageDatagenProvider extends LanguageProvider {
-    private static final Set<LangInstance<?>> INSTANCES = Sets.newHashSet();
+    private static final Set<LangInstance<?>> INSTANCES = new HashSet<>();
 
     public static void include(LangInstance<?> instance) {
         INSTANCES.add(instance);

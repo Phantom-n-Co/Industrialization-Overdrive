@@ -1,6 +1,5 @@
 package dev.wp.industrialization_overdrive;
 
-import com.google.common.collect.Sets;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -13,6 +12,7 @@ import net.swedz.tesseract.neoforge.registry.SortOrder;
 import net.swedz.tesseract.neoforge.registry.holder.BlockHolder;
 import net.swedz.tesseract.neoforge.registry.holder.BlockWithItemHolder;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -21,7 +21,7 @@ public final class IOBlocks {
     public static final class Registry {
         public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(IO.ID);
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, IO.ID);
-        private static final Set<BlockHolder> HOLDERS = Sets.newHashSet();
+        private static final Set<BlockHolder> HOLDERS = new HashSet<>();
 
         private static void init(IEventBus bus) {
             BLOCKS.register(bus);

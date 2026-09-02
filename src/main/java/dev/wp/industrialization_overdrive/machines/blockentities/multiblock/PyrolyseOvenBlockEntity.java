@@ -12,8 +12,6 @@ import aztech.modern_industrialization.machines.multiblocks.HatchTypes;
 import aztech.modern_industrialization.machines.multiblocks.ShapeTemplate;
 import aztech.modern_industrialization.machines.multiblocks.SimpleMember;
 import aztech.modern_industrialization.machines.recipe.MachineRecipeType;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOMachines;
 import dev.wp.industrialization_overdrive.datamap.PyrolyseOvenTier;
@@ -25,8 +23,10 @@ import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostT
 import net.swedz.tesseract.neoforge.compat.mi.helper.CommonGuiComponents;
 import net.swedz.tesseract.neoforge.compat.mi.machine.blockentity.multiblock.multiplied.AbstractElectricMultipliedCraftingMultiblockBlockEntity;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -75,7 +75,7 @@ public final class PyrolyseOvenBlockEntity extends AbstractElectricMultipliedCra
     }
 
     private static List<Tier> TIERS = List.of();
-    private static Map<ResourceLocation, Tier> TIERS_BY_COIL = Collections.unmodifiableMap(Maps.newHashMap());
+    private static Map<ResourceLocation, Tier> TIERS_BY_COIL = Collections.unmodifiableMap(new HashMap<>());
     private static ShapeTemplate[] SHAPE_TEMPLATES = new ShapeTemplate[0];
 
     public static List<Tier> getTiers() {
@@ -97,7 +97,7 @@ public final class PyrolyseOvenBlockEntity extends AbstractElectricMultipliedCra
     }
 
     public static void initTiers() {
-        List<Tier> tiers = Lists.newArrayList();
+        List<Tier> tiers = new ArrayList<>();
         PyrolyseOvenTier.getAll().forEach((block, tier) ->
                 tiers.add(new Tier(block.location(), tier.batchSize(), tier.euCostMultiplier())));
         tiers.sort(Comparator.comparingInt(Tier::batchSize));

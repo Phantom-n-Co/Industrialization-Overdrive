@@ -1,6 +1,5 @@
 package dev.wp.industrialization_overdrive;
 
-import com.google.common.collect.Sets;
 import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
 import dev.wp.industrialization_overdrive.item.Vajra;
 import net.minecraft.tags.ItemTags;
@@ -12,13 +11,14 @@ import net.swedz.tesseract.neoforge.registry.common.CommonModelBuilders;
 import net.swedz.tesseract.neoforge.registry.common.MICommonCapabitilies;
 import net.swedz.tesseract.neoforge.registry.holder.ItemHolder;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
 public final class IOItems {
     public static final class Registry {
         public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(IO.ID);
-        private static final Set<ItemHolder> HOLDERS = Sets.newHashSet();
+        private static final Set<ItemHolder> HOLDERS = new HashSet<>();
 
         private static void init(IEventBus bus) {
             ITEMS.register(bus);
