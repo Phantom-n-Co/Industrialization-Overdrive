@@ -43,18 +43,18 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
                 .stacksTo(1)
                 .rarity(Rarity.EPIC)
                 .component(IOComponents.HIDE_BAR, false)
-                .component(IOComponents.SILK_TOUCH, false)
+                .component(MIComponents.SILK_TOUCH, false)
                 .component(IOComponents.VAJRA_SPEED, Speed.NORMAL)
                 .component(MIComponents.ENERGY, 0L)
         );
     }
 
     private static boolean isSilkTouch(ItemStack stack) {
-        return stack.getOrDefault(IOComponents.SILK_TOUCH, false);
+        return stack.getOrDefault(MIComponents.SILK_TOUCH, false);
     }
 
     private static void setSilkTouch(ItemStack stack, boolean silkTouch) {
-        stack.set(IOComponents.SILK_TOUCH, silkTouch);
+        stack.set(MIComponents.SILK_TOUCH, silkTouch);
     }
 
     public static Speed getToolSpeed(ItemStack stack) {

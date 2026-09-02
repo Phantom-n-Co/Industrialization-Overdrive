@@ -69,7 +69,6 @@ public final class IOComponents {
         }
     }
 
-    public static final Supplier<DataComponentType<Boolean>> SILK_TOUCH = create("silk_touch", Codec.BOOL, ByteBufCodecs.BOOL);
     public static final Supplier<DataComponentType<Vajra.Speed>> VAJRA_SPEED = create(
             "vajra/speed",
             Codec.STRING.xmap(Vajra.Speed::valueOf, Enum::name),
