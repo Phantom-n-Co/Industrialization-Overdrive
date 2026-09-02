@@ -33,16 +33,18 @@ import java.util.List;
 public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
     private final long maxEnergy = CableTier.HV.getEu() * 10000;
     private final long energyUsagePerBlock = maxEnergy / 6000;
-    public static final int MIN_SPEED = 1;
-    public static final int MAX_SPEED = 4;
+
+    public enum Speed {
+        SLOW, NORMAL, FAST, INSTANT
+    }
 
     public Vajra(Properties properties) {
         super(properties
                 .stacksTo(1)
                 .rarity(Rarity.EPIC)
                 .component(IOComponents.HIDE_BAR, false)
-                .component(IOComponents.VAJRA_SPEED, 2)
                 .component(IOComponents.SILK_TOUCH, false)
+                .component(IOComponents.VAJRA_SPEED, Speed.NORMAL)
                 .component(MIComponents.ENERGY, 0L)
         );
     }
@@ -55,12 +57,11 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
         stack.set(IOComponents.SILK_TOUCH, silkTouch);
     }
 
-    public static int getToolSpeed(ItemStack stack) {
-        return stack.getOrDefault(IOComponents.VAJRA_SPEED, 2);
+    public static Speed getToolSpeed(ItemStack stack) {
+        return stack.getOrDefault(IOComponents.VAJRA_SPEED, Speed.NORMAL);
     }
 
-    public static void setToolSpeed(ItemStack stack, int speed) {
-        speed = Math.clamp(speed, MIN_SPEED, MAX_SPEED);
+    public static void setToolSpeed(ItemStack stack, Speed speed) {
         stack.set(IOComponents.VAJRA_SPEED, speed);
     }
 
@@ -174,10 +175,10 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
         if (baseSpeed <= 0) return super.getDestroySpeed(stack, state);
 
         switch (getToolSpeed(stack)) {
-            case 1 -> baseSpeed *= 4f;
-            case 2 -> baseSpeed *= 7.5f;
-            case 3 -> baseSpeed *= 29f;
-            case 4 -> baseSpeed = Float.MAX_VALUE;
+            case SLOW -> baseSpeed *= 4f;
+            case NORMAL -> baseSpeed *= 7.5f;
+            case FAST -> baseSpeed *= 29f;
+            case INSTANT -> baseSpeed = Float.MAX_VALUE;
         }
         return baseSpeed;
     }
@@ -221,10 +222,10 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext ctx, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         Component speed = null;
         switch (getToolSpeed(stack)) {
-            case 1 -> speed = IO.text().vajraSpeedSlow();
-            case 2 -> speed = IO.text().vajraSpeedNormal();
-            case 3 -> speed = IO.text().vajraSpeedFast();
-            case 4 -> speed = IO.text().vajraSpeedInstant();
+            case SLOW -> speed = IO.text().vajraSpeedSlow();
+            case NORMAL -> speed = IO.text().vajraSpeedNormal();
+            case FAST -> speed = IO.text().vajraSpeedFast();
+            case INSTANT -> speed = IO.text().vajraSpeedInstant();
         }
 
         tooltip.add(IO.text().vajraSpeedInfo(speed));
@@ -232,6 +233,5 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
         tooltip.add(IO.text().energyInfo(stack.getOrDefault(MIComponents.ENERGY, 0L), getEnergyCapacity(stack)));
     }
 }
-
 
 

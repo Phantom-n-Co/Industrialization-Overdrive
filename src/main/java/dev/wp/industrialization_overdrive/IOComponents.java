@@ -3,6 +3,7 @@ package dev.wp.industrialization_overdrive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
+import dev.wp.industrialization_overdrive.item.Vajra;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -69,7 +70,10 @@ public final class IOComponents {
     }
 
     public static final Supplier<DataComponentType<Boolean>> SILK_TOUCH = create("silk_touch", Codec.BOOL, ByteBufCodecs.BOOL);
-    public static final Supplier<DataComponentType<Integer>> VAJRA_SPEED = create("vajra_speed", Codec.INT, ByteBufCodecs.INT);
+    public static final Supplier<DataComponentType<Vajra.Speed>> VAJRA_SPEED = create(
+            "vajra/speed",
+            Codec.STRING.xmap(Vajra.Speed::valueOf, Enum::name),
+            ByteBufCodecs.VAR_INT.map(index -> Vajra.Speed.values()[index], Vajra.Speed::ordinal));
     public static final Supplier<DataComponentType<Boolean>> HIDE_BAR = create("hide_bar", Codec.BOOL, ByteBufCodecs.BOOL);
     public static final Supplier<DataComponentType<MultiblockBuilder.Mode>> MULTI_BUILDER_MODE = create(
             "multibuilder/mode",

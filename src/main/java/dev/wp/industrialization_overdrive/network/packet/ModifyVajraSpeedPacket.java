@@ -21,21 +21,19 @@ public record ModifyVajraSpeedPacket(boolean increase) implements IOCustomPacket
         var stack = player.getMainHandItem();
 
         if (stack.getItem() instanceof Vajra item) {
-            int origSpeed = item.getToolSpeed(stack);
-
-            int speed = origSpeed;
-            speed += increase ? 1 : -1;
-            speed = Math.clamp(speed, Vajra.MIN_SPEED, Vajra.MAX_SPEED);
+            Vajra.Speed origSpeed = item.getToolSpeed(stack);
+            int speedIndex = Math.clamp(origSpeed.ordinal() + (increase ? 1 : -1), 0, Vajra.Speed.values().length - 1);
+            Vajra.Speed speed = Vajra.Speed.values()[speedIndex];
 
             if (speed != origSpeed) {
                 item.setToolSpeed(stack, speed);
 
                 Component vajraSpeed = null;
                 switch (speed) {
-                    case 1 -> vajraSpeed = IO.text().vajraSpeedSlow();
-                    case 2 -> vajraSpeed = IO.text().vajraSpeedNormal();
-                    case 3 -> vajraSpeed = IO.text().vajraSpeedFast();
-                    case 4 -> vajraSpeed = IO.text().vajraSpeedInstant();
+                    case SLOW -> vajraSpeed = IO.text().vajraSpeedSlow();
+                    case NORMAL -> vajraSpeed = IO.text().vajraSpeedNormal();
+                    case FAST -> vajraSpeed = IO.text().vajraSpeedFast();
+                    case INSTANT -> vajraSpeed = IO.text().vajraSpeedInstant();
                 }
 
                 player.displayClientMessage(IO.text().vajraSpeedChanged(vajraSpeed), true);

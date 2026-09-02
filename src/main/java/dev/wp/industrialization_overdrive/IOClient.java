@@ -65,8 +65,8 @@ public final class IOClient {
                 var stack = player.getMainHandItem();
                 if (stack.getItem() == IOItems.VAJRA.get()) {
                     boolean increase = event.getScrollDeltaY() > 0;
-                    int speed = Vajra.getToolSpeed(stack);
-                    if (increase ? speed < Vajra.MAX_SPEED : speed > Vajra.MIN_SPEED) {
+                    Vajra.Speed speed = Vajra.getToolSpeed(stack);
+                    if (increase ? speed != Vajra.Speed.INSTANT : speed != Vajra.Speed.SLOW) {
                         new ModifyVajraSpeedPacket(increase).sendToServer();
                     }
 
