@@ -4,6 +4,7 @@ import aztech.modern_industrialization.MI;
 import com.google.common.collect.Sets;
 import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOItems;
+import dev.wp.industrialization_overdrive.IOTags;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.swedz.tesseract.neoforge.datagen.mi.MIDatagenHooks;
@@ -32,6 +33,8 @@ public final class LanguageDatagenProvider extends LanguageProvider {
         for (ItemHolder item : IOItems.values()) {
             this.add(item.asItem(), item.identifier().englishName());
         }
+
+        IOTags.translations().forEach(this::add);
 
         MIDatagenHooks.Client.withLanguageHook(this, IO.ID);
 

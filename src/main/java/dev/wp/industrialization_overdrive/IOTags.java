@@ -7,14 +7,19 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class IOTags {
-
     private final static Map<TagKey<Item>, String> TRANSLATIONS = Maps.newHashMap();
+    private static final TagKey<Item> MULTI_PROCESSING_ARRAY_BLACKLIST = item("multi_processing_array_blacklist", "Multi Processing Array Blacklist");
+
+    public static Map<TagKey<Item>, String> translations() {
+        return Collections.unmodifiableMap(TRANSLATIONS);
+    }
 
     public final static class Items {
-        public final static TagKey<Item> MULTI_PROCESSING_ARRAY_BLACKLIST = item("multi_processing_array_blacklist", "Multi Processing Array Blacklist");
+        public final static TagKey<Item> MULTI_PROCESSING_ARRAY_BLACKLIST = IOTags.MULTI_PROCESSING_ARRAY_BLACKLIST;
     }
 
     public static TagKey<Item> item(String path, String englishName) {

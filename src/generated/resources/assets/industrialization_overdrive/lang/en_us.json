@@ -9,6 +9,7 @@
   "pyro_tier.industrialization_overdrive.modern_industrialization.cupronickel_coil": "Cupronickel",
   "pyro_tier.industrialization_overdrive.modern_industrialization.kanthal_coil": "Kanthal",
   "rei_categories.industrialization_overdrive.pyrolyse_oven": "Pyrolyse Oven",
+  "tag.item.industrialization_overdrive.multi_processing_array_blacklist": "Multi Processing Array Blacklist",
   "text.industrialization_overdrive.coils_pyro_tier": "Runs Pyrolyse Oven in batches of up to %d at %s the EU cost.",
   "text.industrialization_overdrive.disabled": "Disabled",
   "text.industrialization_overdrive.enabled": "Enabled",
