@@ -55,20 +55,45 @@ public final class UpgradeHolder extends Item {
         if (contents == null || contents.count() <= 0) {
             return InteractionResultHolder.pass(stack);
         }
-        if (!level.isClientSide()) {
-            int remaining = contents.count();
-            Inventory inv = player.getInventory();
-            while (remaining > 0) {
-                int give = Math.min(remaining, contents.upgradeType().getDefaultMaxStackSize());
-                ItemStack giveStack = new ItemStack(contents.upgradeType(), give);
-                if (!inv.add(giveStack)) {
-                    player.drop(giveStack, false);
-                }
-                remaining -= give;
+
+        if (player.isShiftKeyDown()) {
+            if (!level.isClientSide()) {
+                giveContentsToPlayer(stack, contents, player);
             }
-            stack.remove(IOComponents.UPGRADE_HOLDER_CONTENTS.get());
+            return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+        }
+
+        if (!level.isClientSide()) {
+            int space = MAX_STORED - contents.count();
+            int added = 0;
+            for (ItemStack inventoryStack : player.getInventory().items) {
+                if (space <= 0) break;
+                if (inventoryStack.getItem() != contents.upgradeType()) continue;
+                int toAdd = Math.min(inventoryStack.getCount(), space);
+                inventoryStack.shrink(toAdd);
+                added += toAdd;
+                space -= toAdd;
+            }
+            if (added > 0) {
+                stack.set(IOComponents.UPGRADE_HOLDER_CONTENTS.get(),
+                        new IOComponents.UpgradeHolderContents(contents.upgradeType(), contents.count() + added));
+            }
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+    }
+
+    private static void giveContentsToPlayer(ItemStack stack, IOComponents.UpgradeHolderContents contents, Player player) {
+        int remaining = contents.count();
+        Inventory inv = player.getInventory();
+        while (remaining > 0) {
+            int give = Math.min(remaining, contents.upgradeType().getDefaultMaxStackSize());
+            ItemStack giveStack = new ItemStack(contents.upgradeType(), give);
+            if (!inv.add(giveStack)) {
+                player.drop(giveStack, false);
+            }
+            remaining -= give;
+        }
+        stack.remove(IOComponents.UPGRADE_HOLDER_CONTENTS.get());
     }
 
     @Override
