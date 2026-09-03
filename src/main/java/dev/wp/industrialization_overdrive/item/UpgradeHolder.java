@@ -23,7 +23,7 @@ public final class UpgradeHolder extends Item {
     static final int MAX_STORED = 4096;
 
     public UpgradeHolder(Properties properties) {
-        super(properties);
+        super(properties.stacksTo(1));
     }
 
     @Override
