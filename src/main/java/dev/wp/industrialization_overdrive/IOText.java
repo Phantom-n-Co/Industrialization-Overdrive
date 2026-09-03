@@ -158,7 +158,7 @@ public interface IOText {
 
     @LangKey(text = "- %sx %s")
     MutableComponent multiblockBuilderRequiredItem(int count, String item);
-    @LangKey(text = "You can insert upgrades into  this item to use more than 64 upgrades in a batch crafting multiblock.")
+    @LangKey(text = "You can insert upgrades into this item to use more than 64 upgrades in a batch crafting multiblock.")
     @WithStyle("tooltip")
     MutableComponent upgradeHolderInfo1();
 
