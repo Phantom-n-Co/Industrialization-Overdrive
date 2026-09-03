@@ -4,7 +4,9 @@
   "package": "dev.wp.industrialization_overdrive.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "AbstractElectricMultipliedCraftingMultiblockMixin"
+    "AbstractElectricMultipliedCraftingMultiblockMixin",
+    "SlotPanelAccessor",
+    "SlotPanelUpgradeHolderMixin"
   ],
   "injectors": {
     "defaultRequire": 1
