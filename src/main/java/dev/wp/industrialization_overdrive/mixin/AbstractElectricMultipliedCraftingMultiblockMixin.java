@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.swedz.tesseract.neoforge.compat.mi.machine.blockentity.multiblock.multiplied.AbstractElectricMultipliedCraftingMultiblockBlockEntity;
-import net.swedz.tesseract.neoforge.compat.mi.machine.blockentity.multiblock.multiplied.AbstractMultipliedCraftingMultiblockBlockEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,7 +32,8 @@ public abstract class AbstractElectricMultipliedCraftingMultiblockMixin {
             cir.setReturnValue(0L);
             return;
         }
-        int batchCount = Math.max(1, ((AbstractMultipliedCraftingMultiblockBlockEntity) (Object) this).getMaxMultiplier());
+        int batchCount = Math.max(1,
+                ((AbstractMultipliedCraftingMultiblockAccessor) this).io_getCrafter().getRecipeMultiplier());
         long effective = Math.min(contents.count(), 64L * batchCount);
         cir.setReturnValue(effective * UpgradeComponent.getExtraEu(contents.upgradeType()));
     }
