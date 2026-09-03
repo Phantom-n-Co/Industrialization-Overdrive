@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(targets = "aztech.modern_industrialization.machines.guicomponents.SlotPanel$1", remap = false)
 public abstract class SlotPanelUpgradeHolderMixin {
-    @Shadow @Final private SlotPanel this$0;
-    @Shadow @Final private SlotPanel.SlotType val$type;
+    @Shadow @Final SlotPanel this$0;
+    @Shadow @Final SlotPanel.SlotType val$type;
 
     @Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
     private void io_allowUpgradeHolder(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
