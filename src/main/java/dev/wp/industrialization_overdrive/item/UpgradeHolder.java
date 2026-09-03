@@ -43,6 +43,7 @@ public final class UpgradeHolder extends Item {
         int toAdd = Math.min(other.getCount(), space);
         thisStack.set(IOComponents.UPGRADE_HOLDER_CONTENTS.get(),
                 new IOComponents.UpgradeHolderContents(other.getItem(), currentCount + toAdd));
+        slot.set(thisStack);
         other.shrink(toAdd);
         return true;
     }
