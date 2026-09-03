@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.wp.industrialization_overdrive.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AbstractElectricMultipliedCraftingMultiblockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

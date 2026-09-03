@@ -158,4 +158,23 @@ public interface IOText {
 
     @LangKey(text = "- %sx %s")
     MutableComponent multiblockBuilderRequiredItem(int count, String item);
+    @LangKey(text = "You can insert upgrades into  this item to use more than 64 upgrades in a batch crafting multiblock.")
+    @WithStyle("tooltip")
+    MutableComponent upgradeHolderInfo1();
+
+    @LangKey(text = "Applies up-to 64 of the held upgrades per batch a machine can do.")
+    @WithStyle("tooltip")
+    MutableComponent upgradeHolderInfo2();
+
+    @LangKey(text = "Empty")
+    @WithStyle("tooltip")
+    MutableComponent empty();
+
+    @LangKey(text = "Contains: %s x %s")
+    @WithStyle("tooltip")
+    MutableComponent contains(@WithStyle("highlighted") int count, @WithStyle("highlighted") String type);
+
+    @LangKey(text = "Total EU: %s")
+    @WithStyle("tooltip")
+    MutableComponent totalEuForX(@WithStyle("highlighted") long amount);
 }

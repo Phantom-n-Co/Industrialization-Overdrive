@@ -46,6 +46,17 @@ public final class CommonRecipesServerDatagenProvider extends RecipesServerDatag
                 output
         );
 
+        addBasicCraftingRecipes(
+                "shaped", "upgrade_batch", false,
+                IOItems.UPGRADE_HOLDER, 1,
+                (r) -> r
+                        .pattern("III")
+                        .pattern("I I")
+                        .pattern("III")
+                        .define('I', Tags.Items.INGOTS_IRON),
+                output
+        );
+
         addMachineRecipe(
                 "assembler", "vajra", MIMachineRecipeTypes.ASSEMBLER,
                 32, 20 * 10,
