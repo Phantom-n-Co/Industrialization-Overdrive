@@ -6,6 +6,7 @@ import dev.wp.industrialization_overdrive.IOItems;
 import dev.wp.industrialization_overdrive.IOTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -28,6 +29,15 @@ public final class ItemTagDatagenProvider extends ItemTagsProvider {
                 );
     }
 
+    private void removeEnchantableTags(ItemHolder itemHolder) {
+        var item = itemHolder.asItem();
+        this.tag(ItemTags.DURABILITY_ENCHANTABLE).remove(item);
+        this.tag(ItemTags.MINING_ENCHANTABLE).remove(item);
+        this.tag(ItemTags.MINING_LOOT_ENCHANTABLE).remove(item);
+        this.tag(ItemTags.SWORD_ENCHANTABLE).remove(item);
+        this.tag(ItemTags.SHARP_WEAPON_ENCHANTABLE).remove(item);
+    }
+
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         for (ItemHolder<?> item : IOItems.values().stream().sorted(Comparator.comparing((item) -> item.identifier().id())).toList()) {
@@ -36,6 +46,7 @@ public final class ItemTagDatagenProvider extends ItemTagsProvider {
             }
         }
         this.addMPABlacklistTag();
+        removeEnchantableTags(IOItems.VAJRA);
     }
 
     @Override
