@@ -1,9 +1,7 @@
 package dev.wp.industrialization_overdrive.item;
 
 import aztech.modern_industrialization.machines.components.UpgradeComponent;
-import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.SlotAccess;
@@ -13,16 +11,12 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.jspecify.annotations.NonNull;
 
-import java.util.List;
-
-public final class UpgradeHolder extends Item {
+public final class UpgradeStacker extends Item {
     static final int MAX_STORED = 4096;
 
-    public UpgradeHolder(Properties properties) {
+    public UpgradeStacker(Properties properties) {
         super(properties.stacksTo(1));
     }
 
@@ -32,7 +26,7 @@ public final class UpgradeHolder extends Item {
         if (other.isEmpty()) return false;
         if (UpgradeComponent.getExtraEu(other.getItem()) <= 0) return false;
 
-        IOComponents.UpgradeHolderContents contents = thisStack.get(IOComponents.UPGRADE_HOLDER_CONTENTS.get());
+        IOComponents.UpgradeStackerContents contents = thisStack.get(IOComponents.UPGRADE_STACKER_CONTENTS.get());
 
         if (contents != null && contents.upgradeType() != other.getItem()) return false;
 
@@ -41,8 +35,8 @@ public final class UpgradeHolder extends Item {
         if (space <= 0) return false;
 
         int toAdd = Math.min(other.getCount(), space);
-        thisStack.set(IOComponents.UPGRADE_HOLDER_CONTENTS.get(),
-                new IOComponents.UpgradeHolderContents(other.getItem(), currentCount + toAdd));
+        thisStack.set(IOComponents.UPGRADE_STACKER_CONTENTS.get(),
+                new IOComponents.UpgradeStackerContents(other.getItem(), currentCount + toAdd));
         slot.set(thisStack);
         other.shrink(toAdd);
         return true;
@@ -51,7 +45,7 @@ public final class UpgradeHolder extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        IOComponents.UpgradeHolderContents contents = stack.get(IOComponents.UPGRADE_HOLDER_CONTENTS.get());
+        IOComponents.UpgradeStackerContents contents = stack.get(IOComponents.UPGRADE_STACKER_CONTENTS.get());
         if (contents == null || contents.count() <= 0) {
             return InteractionResultHolder.pass(stack);
         }
@@ -75,14 +69,14 @@ public final class UpgradeHolder extends Item {
                 space -= toAdd;
             }
             if (added > 0) {
-                stack.set(IOComponents.UPGRADE_HOLDER_CONTENTS.get(),
-                        new IOComponents.UpgradeHolderContents(contents.upgradeType(), contents.count() + added));
+                stack.set(IOComponents.UPGRADE_STACKER_CONTENTS.get(),
+                        new IOComponents.UpgradeStackerContents(contents.upgradeType(), contents.count() + added));
             }
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 
-    private static void giveContentsToPlayer(ItemStack stack, IOComponents.UpgradeHolderContents contents, Player player) {
+    private static void giveContentsToPlayer(ItemStack stack, IOComponents.UpgradeStackerContents contents, Player player) {
         int remaining = contents.count();
         Inventory inv = player.getInventory();
         while (remaining > 0) {
@@ -93,21 +87,7 @@ public final class UpgradeHolder extends Item {
             }
             remaining -= give;
         }
-        stack.remove(IOComponents.UPGRADE_HOLDER_CONTENTS.get());
+        stack.remove(IOComponents.UPGRADE_STACKER_CONTENTS.get());
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, @NonNull TooltipContext ctx, List<Component> tooltip, @NonNull TooltipFlag flag) {
-        IOComponents.UpgradeHolderContents contents = stack.get(IOComponents.UPGRADE_HOLDER_CONTENTS.get());
-
-        tooltip.add(IO.text().upgradeHolderInfo1());
-        tooltip.add(IO.text().upgradeHolderInfo2());
-
-        if (contents == null || contents.count() <= 0) {
-            tooltip.add(IO.text().empty());
-        } else {
-            tooltip.add(IO.text().contains(contents.count(), contents.upgradeType().getDescription().getString()));
-            tooltip.add(IO.text().totalEuForX(UpgradeComponent.getExtraEu(contents.upgradeType()) * contents.count()));
-        }
-    }
 }

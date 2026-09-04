@@ -7,7 +7,7 @@
     "AbstractElectricMultipliedCraftingMultiblockMixin",
     "AbstractMultipliedCraftingMultiblockAccessor",
     "SlotPanelAccessor",
-    "SlotPanelUpgradeHolderMixin"
+    "SlotPanelUpgradeStackerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

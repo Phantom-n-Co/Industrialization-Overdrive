@@ -47,8 +47,8 @@ public final class CommonRecipesServerDatagenProvider extends RecipesServerDatag
         );
 
         addBasicCraftingRecipes(
-                "shaped", "upgrade_batch", false,
-                IOItems.UPGRADE_HOLDER, 1,
+                "shaped", "upgrade_stacker", false,
+                IOItems.UPGRADE_STACKER, 1,
                 (r) -> r
                         .pattern("III")
                         .pattern("I I")

@@ -1,6 +1,7 @@
 package dev.wp.industrialization_overdrive;
 
 import aztech.modern_industrialization.MIText;
+import aztech.modern_industrialization.MITooltips;
 import aztech.modern_industrialization.util.TextHelper;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
 import dev.wp.industrialization_overdrive.datagen.client.provider.LanguageDatagenProvider;
@@ -9,6 +10,7 @@ import dev.wp.industrialization_overdrive.network.IOPackets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -113,6 +115,7 @@ public final class IO {
                     return MIText.Eu.text(amount.digit(), amount.unit());
                 })
                 .parser(EuCostTransformer.class, () -> MIParser.EU_COST_TRANSFORMER_PARSER)
+                .parser(Item.class, () -> MITooltips.ITEM_PARSER::parse)
                 .parser("block_pos", BlockPos.class, () -> Parser.BLOCK_POS)
                 .parser("keybind", String.class, () -> Parser.KEYBIND)
                 .build(IOText.class)

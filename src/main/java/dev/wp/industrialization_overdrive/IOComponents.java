@@ -17,6 +17,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.nbt.CompoundTag;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,21 +82,21 @@ public final class IOComponents {
     public static final Supplier<DataComponentType<Template>> MULTI_BUILDER_TEMPLATE = create("multibuilder/template",
             Template.CODEC, Template.STREAM_CODEC);
 
-    public record UpgradeHolderContents(Item upgradeType, int count) {
-        public static final Codec<UpgradeHolderContents> CODEC = RecordCodecBuilder.create(i -> i.group(
-                BuiltInRegistries.ITEM.byNameCodec().fieldOf("upgrade_type").forGetter(UpgradeHolderContents::upgradeType),
-                Codec.INT.fieldOf("count").forGetter(UpgradeHolderContents::count)
-        ).apply(i, UpgradeHolderContents::new));
+    public record UpgradeStackerContents(Item upgradeType, int count) {
+        public static final Codec<UpgradeStackerContents> CODEC = RecordCodecBuilder.create(i -> i.group(
+                BuiltInRegistries.ITEM.byNameCodec().fieldOf("upgrade_type").forGetter(UpgradeStackerContents::upgradeType),
+                Codec.INT.fieldOf("count").forGetter(UpgradeStackerContents::count)
+        ).apply(i, UpgradeStackerContents::new));
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, UpgradeHolderContents> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.registry(Registries.ITEM), UpgradeHolderContents::upgradeType,
-                ByteBufCodecs.INT, UpgradeHolderContents::count,
-                UpgradeHolderContents::new
+        public static final StreamCodec<RegistryFriendlyByteBuf, UpgradeStackerContents> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.registry(Registries.ITEM), UpgradeStackerContents::upgradeType,
+                ByteBufCodecs.INT, UpgradeStackerContents::count,
+                UpgradeStackerContents::new
         );
     }
 
-    public static final Supplier<DataComponentType<UpgradeHolderContents>> UPGRADE_HOLDER_CONTENTS =
-            create("upgrade_holder_contents", UpgradeHolderContents.CODEC, UpgradeHolderContents.STREAM_CODEC);
+    public static final Supplier<DataComponentType<UpgradeStackerContents>> UPGRADE_STACKER_CONTENTS =
+            create("upgrade_stacker_contents", UpgradeStackerContents.CODEC, UpgradeStackerContents.STREAM_CODEC);
 
     public static void init(IEventBus bus) {
         COMPONENTS.register(bus);

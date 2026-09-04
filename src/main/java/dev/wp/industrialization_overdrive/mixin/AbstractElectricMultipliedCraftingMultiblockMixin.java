@@ -2,8 +2,8 @@ package dev.wp.industrialization_overdrive.mixin;
 
 import aztech.modern_industrialization.machines.MachineBlockEntity;
 import aztech.modern_industrialization.machines.components.UpgradeComponent;
+import dev.wp.industrialization_overdrive.item.UpgradeStacker;
 import dev.wp.industrialization_overdrive.IOComponents;
-import dev.wp.industrialization_overdrive.item.UpgradeHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -26,8 +26,8 @@ public abstract class AbstractElectricMultipliedCraftingMultiblockMixin {
     @Inject(method = "getMaxRecipeEuBonus", at = @At("HEAD"), cancellable = true)
     private void io_batchUpgradeEuBonus(CallbackInfoReturnable<Long> cir) {
         ItemStack slot = upgrades.getDrop();
-        if (!(slot.getItem() instanceof UpgradeHolder)) return;
-        IOComponents.UpgradeHolderContents contents = slot.get(IOComponents.UPGRADE_HOLDER_CONTENTS.get());
+        if (!(slot.getItem() instanceof UpgradeStacker)) return;
+        IOComponents.UpgradeStackerContents contents = slot.get(IOComponents.UPGRADE_STACKER_CONTENTS.get());
         if (contents == null || contents.count() <= 0) {
             cir.setReturnValue(0L);
             return;
@@ -42,7 +42,7 @@ public abstract class AbstractElectricMultipliedCraftingMultiblockMixin {
     private void io_batchUpgradeInsertion(Player player, InteractionHand hand, Direction face,
                                           CallbackInfoReturnable<ItemInteractionResult> cir) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!(stack.getItem() instanceof UpgradeHolder)) return;
+        if (!(stack.getItem() instanceof UpgradeStacker)) return;
         MachineBlockEntity be = (MachineBlockEntity) (Object) this;
         Level level = be.getLevel();
         if (!upgrades.getDrop().isEmpty()) {
