@@ -42,11 +42,21 @@ public final class IOClient {
 
     public IOClient(IEventBus bus) {
         bus.addListener(RegisterKeyMappingsEvent.class, event -> event.register(MULTIBLOCK_BUILDER_MODE_SWITCH));
-        bus.addListener(FMLClientSetupEvent.class, event -> event.enqueueWork(() -> ItemProperties.register(
-                IOItems.MULTIBLOCK_BUILDER.get(),
-                IO.id("mode"),
-                (stack, level, entity, seed) -> stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, MultiblockBuilder.Mode.BUILD).ordinal()
-        )));
+        bus.addListener(FMLClientSetupEvent.class, event -> event.enqueueWork(() -> {
+            ItemProperties.register(
+                    IOItems.MULTIBLOCK_BUILDER.get(),
+                    IO.id("mode"),
+                    (stack, level, entity, seed) -> stack.getOrDefault(IOComponents.MULTI_BUILDER_MODE, MultiblockBuilder.Mode.BUILD).ordinal()
+            );
+            ItemProperties.register(
+                    IOItems.UPGRADE_STACKER.get(),
+                    IO.id("filled"),
+                    (stack, level, entity, seed) -> {
+                        var contents = stack.get(IOComponents.UPGRADE_STACKER_CONTENTS.get());
+                        return contents != null && contents.count() > 0 ? 1.0f : 0.0f;
+                    }
+            );
+        }));
         NeoForge.EVENT_BUS.addListener(RenderLevelStageEvent.class, MultiblockBuilderRenderer::render);
 
         NeoForge.EVENT_BUS.addListener(InputEvent.Key.class, (event) -> {

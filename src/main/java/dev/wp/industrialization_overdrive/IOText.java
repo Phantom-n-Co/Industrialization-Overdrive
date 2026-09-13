@@ -3,6 +3,7 @@ package dev.wp.industrialization_overdrive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.Item;
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformer;
 import net.swedz.tesseract.neoforge.lang.annotation.LangKey;
 import net.swedz.tesseract.neoforge.lang.annotation.Parsed;
@@ -158,4 +159,40 @@ public interface IOText {
 
     @LangKey(text = "- %sx %s")
     MutableComponent multiblockBuilderRequiredItem(int count, String item);
+
+    @LangKey(text = "- %s: store all matching upgrades from your inventory")
+    @WithStyle("tooltip")
+    MutableComponent upgradeStackerStore(
+            @Parsed("keybind") @WithStyle("highlighted") String use
+    );
+
+    @LangKey(text = "- %s + %s: take all upgrades out")
+    @WithStyle("tooltip")
+    MutableComponent upgradeStackerTakeAll(
+            @Parsed("keybind") @WithStyle("highlighted") String sneak,
+            @Parsed("keybind") @WithStyle("highlighted") String use
+    );
+
+    @LangKey(text = "Stores more than %s upgrades of one type for batching machines.")
+    @WithStyle("tooltip")
+    MutableComponent upgradeStackerInfo(
+            @WithStyle("highlighted") int count
+    );
+
+    @LangKey(text = "Empty")
+    @WithStyle("gray")
+    MutableComponent empty();
+
+    @LangKey(text = "Contains %s %s")
+    @WithStyle("tooltip")
+    MutableComponent contains(
+            @WithStyle("highlighted") int count,
+            @WithStyle("highlighted") Item upgradeType
+    );
+
+    @LangKey(text = "Total EU/t: %s")
+    @WithStyle("tooltip")
+    MutableComponent totalEuPerTick(
+            @Parsed("eu_per_tick") @WithStyle("highlighted") long amount
+    );
 }

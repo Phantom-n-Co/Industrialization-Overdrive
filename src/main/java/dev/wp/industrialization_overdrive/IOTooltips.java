@@ -1,7 +1,9 @@
 package dev.wp.industrialization_overdrive;
 
+import aztech.modern_industrialization.machines.components.UpgradeComponent;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
 import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
+import dev.wp.industrialization_overdrive.item.UpgradeStacker;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -56,6 +58,29 @@ public class IOTooltips {
                 tooltip.add(IOUtil.isAE2Loaded ? IO.text().multiblockBuilderHelp2Alt() : IO.text().multiblockBuilderHelp2());
                 return tooltip;
             }
+    );
+
+    public static final TooltipAttachment UPGRADE_STACKER_CONTENTS = TooltipAttachment.multilines(
+            UpgradeStacker.class,
+            (flags, ctx, stack, item) -> {
+                IOComponents.UpgradeStackerContents contents = stack.get(IOComponents.UPGRADE_STACKER_CONTENTS.get());
+                if (contents == null || contents.count() <= 0) {
+                    return List.of(IO.text().empty());
+                }
+                return List.of(
+                        IO.text().contains(contents.count(), contents.upgradeType()),
+                        IO.text().totalEuPerTick(UpgradeComponent.getExtraEu(contents.upgradeType()) * contents.count())
+                );
+            }
+    ).noShiftRequired();
+
+    public static final TooltipAttachment UPGRADE_STACKER_INFO = TooltipAttachment.multilines(
+            UpgradeStacker.class,
+            List.of(
+                    IO.text().upgradeStackerInfo(64),
+                    IO.text().upgradeStackerStore("use"),
+                    IO.text().upgradeStackerTakeAll("sneak", "use")
+            )
     );
 
     public static void init() {

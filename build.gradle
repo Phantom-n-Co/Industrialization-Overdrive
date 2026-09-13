@@ -82,6 +82,8 @@ dependencies {
     //compileOnly "net.swedz:mi-tweaks:${mi_tweaks_version}-${minecraft_version}"
     //runtimeOnly "net.swedz:mi-tweaks:${mi_tweaks_version}-${minecraft_version}"
 
+    runtimeOnly "curse.maven:kotlin-for-forge-351264:8335665"
+    runtimeOnly "curse.maven:yet-another-industrialization-1358516:8657774"
     runtimeOnly "org.appliedenergistics:appliedenergistics2:${ae2_version}"
     runtimeOnly "net.swedz:extended-industrialization:${extended_industrialization_version}-${minecraft_version}"
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}"

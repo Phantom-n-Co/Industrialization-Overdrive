@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:plates/aluminum"
+    },
+    "C": {
+      "tag": "c:chests/wooden"
+    },
+    "E": {
+      "item": "modern_industrialization:electronic_circuit"
+    },
+    "G": {
+      "tag": "c:glass_panes"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "ECA",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "industrialization_overdrive:upgrade_stacker"
+  }
+}

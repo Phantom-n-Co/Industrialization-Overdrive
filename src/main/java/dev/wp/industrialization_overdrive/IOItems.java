@@ -1,6 +1,7 @@
 package dev.wp.industrialization_overdrive;
 
 import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
+import dev.wp.industrialization_overdrive.item.UpgradeStacker;
 import dev.wp.industrialization_overdrive.item.Vajra;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -34,6 +35,7 @@ public final class IOItems {
     }
 
     public static final ItemHolder<MultiblockBuilder> MULTIBLOCK_BUILDER = create("terminal", "Multiblock Builder", MultiblockBuilder::new, IOSortOrder.GEAR).withModelBuilder(CommonModelBuilders::generated).register();
+    public static final ItemHolder<UpgradeStacker> UPGRADE_STACKER = create("upgrade_stacker", "Upgrade Stacker", UpgradeStacker::new, IOSortOrder.GEAR).withModelBuilder(CommonModelBuilders::generated).register();
     public static final ItemHolder<Vajra> VAJRA = create("vajra", "Vajra", Vajra::new, IOSortOrder.GEAR)
             .tag(ItemTags.PICKAXES, ItemTags.AXES, ItemTags.SHOVELS, ItemTags.HOES)
             .withModelBuilder(CommonModelBuilders::handheld)
