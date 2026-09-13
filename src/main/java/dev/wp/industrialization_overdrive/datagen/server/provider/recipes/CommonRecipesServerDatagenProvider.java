@@ -35,7 +35,7 @@ public final class CommonRecipesServerDatagenProvider extends RecipesServerDatag
     @Override
     protected void buildRecipes(@NotNull RecipeOutput output) {
         addBasicCraftingRecipes(
-                "shaped", "terminal", true,
+                "shaped", "terminal", false,
                 IOItems.MULTIBLOCK_BUILDER, 1,
                 (r) -> r
                         .pattern("SGS")
@@ -50,10 +50,13 @@ public final class CommonRecipesServerDatagenProvider extends RecipesServerDatag
                 "shaped", "upgrade_stacker", false,
                 IOItems.UPGRADE_STACKER, 1,
                 (r) -> r
-                        .pattern("III")
-                        .pattern("I I")
-                        .pattern("III")
-                        .define('I', Tags.Items.INGOTS_IRON),
+                        .pattern("GGG")
+                        .pattern("ECA")
+                        .pattern("AAA")
+                        .define('G', Tags.Items.GLASS_PANES)
+                        .define('E', MIItem.ELECTRONIC_CIRCUIT)
+                        .define('A', "#c:plates/aluminum")
+                        .define('C', Tags.Items.CHESTS_WOODEN),
                 output
         );
 

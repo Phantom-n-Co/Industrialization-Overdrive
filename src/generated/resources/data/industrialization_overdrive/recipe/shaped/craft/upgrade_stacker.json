@@ -2,14 +2,23 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
+    "A": {
+      "tag": "c:plates/aluminum"
+    },
+    "C": {
+      "tag": "c:chests/wooden"
+    },
+    "E": {
+      "item": "modern_industrialization:electronic_circuit"
+    },
+    "G": {
+      "tag": "c:glass_panes"
     }
   },
   "pattern": [
-    "III",
-    "I I",
-    "III"
+    "GGG",
+    "ECA",
+    "AAA"
   ],
   "result": {
     "count": 1,
