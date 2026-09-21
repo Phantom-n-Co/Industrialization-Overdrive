@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
@@ -52,6 +53,7 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
     static {
         NeoForge.EVENT_BUS.addListener(Vajra::pickupDrops);
         NeoForge.EVENT_BUS.addListener(Vajra::pickupSpawnedDrop);
+        NeoForge.EVENT_BUS.addListener(Vajra::overrideBreakSpeed);
     }
 
     public Vajra(Properties properties) {
@@ -101,6 +103,14 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
         if (totalDrops != null) {
             totalDrops.add(drop.getItem().copy());
             event.setCanceled(true);
+        }
+    }
+
+    // override break speed to always be the same, no matter if other effects increase/decrease it.
+    private static void overrideBreakSpeed(PlayerEvent.BreakSpeed event) {
+        ItemStack stack = event.getEntity().getMainHandItem();
+        if (stack.getItem() instanceof Vajra vajra) {
+            event.setNewSpeed(vajra.getDestroySpeed(stack, event.getState()));
         }
     }
 
