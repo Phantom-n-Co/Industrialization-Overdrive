@@ -267,8 +267,8 @@ publishMods {
 
     def shared = { platform ->
         platform.minecraftVersions.add(minecraft_version)
-        platform.requires("modern-industrialization", "guideme")
-        platform.optional("extended-industrialization", "emi", "jade", "yet-another-industrialization", "almostunified")
+        platform.requires("modern-industrialization")
+        platform.optional("extended-industrialization", "almostunified")
     }
 
     curseforge {
