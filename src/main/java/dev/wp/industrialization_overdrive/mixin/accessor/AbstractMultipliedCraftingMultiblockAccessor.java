@@ -1,4 +1,4 @@
-package dev.wp.industrialization_overdrive.mixin;
+package dev.wp.industrialization_overdrive.mixin.accessor;
 
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.MultipliedCrafterComponent;
 import net.swedz.tesseract.neoforge.compat.mi.machine.blockentity.multiblock.multiplied.AbstractMultipliedCraftingMultiblockBlockEntity;

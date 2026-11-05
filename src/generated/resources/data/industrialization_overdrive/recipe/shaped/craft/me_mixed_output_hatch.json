@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "ae2"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "industrialization_overdrive:me_item_output_hatch"
+    },
+    {
+      "item": "industrialization_overdrive:me_fluid_output_hatch"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "industrialization_overdrive:me_mixed_output_hatch"
+  }
+}

@@ -2,9 +2,7 @@ plugins {
     id 'java-library'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '1.0.17'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id 'com.modrinth.minotaur' version '2.+'
+    id 'net.neoforged.moddev' version '2.0.147'
 }
 
 version = "${mod_version}+${minecraft_version}"
@@ -14,9 +12,12 @@ base {
 }
 
 repositories {
+    mavenLocal()
+    mavenCentral()
+
     maven {
-        name "Modmaven"
-        url "https://modmaven.dev"
+        name = "Modmaven"
+        url = "https://modmaven.dev"
         content {
             // GrandPower
             includeGroup "dev.technici4n"
@@ -30,7 +31,7 @@ repositories {
     }
     maven {
         name = "shedaniel"
-        url "https://maven.shedaniel.me"
+        url = "https://maven.shedaniel.me"
         content {
             includeGroup "me.shedaniel.cloth"
         }
@@ -44,58 +45,56 @@ repositories {
         }
     }
     maven {
-        url "https://www.cursemaven.com"
+        url = "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
         }
     }
 
     maven {
-        url "https://maven.latvian.dev/releases"
-        content {
-            includeGroup "dev.latvian.mods"
-            includeGroup "dev.latvian.apps"
-        }
-    }
-
-    maven {
-        url 'https://jitpack.io'
+        url = 'https://jitpack.io'
         content {
             includeGroup "com.github.rtyley"
         }
     }
-
-    mavenLocal()
-    mavenCentral()
 }
 
 dependencies {
-    implementation "aztech:Modern-Industrialization:${modern_industrialization_version}"
-    implementation "dev.technici4n:GrandPower:${grandpower_version}"
-    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-    implementation "net.swedz:tesseract-api-neoforge:${tesseract_version}-${minecraft_version}"
-    implementation "org.appliedenergistics:guideme:${guideme_version}"
-    compileOnly "net.swedz:extended-industrialization:${extended_industrialization_version}-${minecraft_version}"
-    compileOnly "org.appliedenergistics:appliedenergistics2:${ae2_version}:api"
-    compileOnly "com.almostreliable.mods:almostunified-neoforge:${project.minecraft_version}-${project.au_version}:api"
+    implementation("aztech:Modern-Industrialization:${modern_industrialization_version}")
+    implementation("dev.technici4n:GrandPower:${grandpower_version}")
+    implementation("me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}")
+    implementation("net.swedz:tesseract-api-neoforge:${tesseract_version}-${minecraft_version}")
+    implementation("org.appliedenergistics:guideme:${guideme_version}")
+    compileOnly("net.swedz:extended-industrialization:${extended_industrialization_version}-${minecraft_version}")
+    compileOnly("org.appliedenergistics:appliedenergistics2:${ae2_version}")
+    compileOnly("com.almostreliable.mods:almostunified-neoforge:${project.minecraft_version}-${project.au_version}:api")
+    compileOnly("curse.maven:yet-another-industrialization-1358516:8869989")
 
-    //compileOnly "net.swedz:mi-tweaks:${mi_tweaks_version}-${minecraft_version}"
-    //runtimeOnly "net.swedz:mi-tweaks:${mi_tweaks_version}-${minecraft_version}"
+    //compileOnly("net.swedz:mi-tweaks:${mi_tweaks_version}-${minecraft_version}")
+    //runtimeOnly("net.swedz:mi-tweaks:${mi_tweaks_version}-${minecraft_version}")
 
-    runtimeOnly "curse.maven:kotlin-for-forge-351264:8335665"
-    runtimeOnly "curse.maven:yet-another-industrialization-1358516:8657774"
-    runtimeOnly "org.appliedenergistics:appliedenergistics2:${ae2_version}"
-    runtimeOnly "net.swedz:extended-industrialization:${extended_industrialization_version}-${minecraft_version}"
-    runtimeOnly "dev.emi:emi-neoforge:${emi_version}+${minecraft_version}"
-    runtimeOnly "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
-    runtimeOnly "curse.maven:jade-324717:5639932"
+    runtimeOnly("net.swedz:extended-industrialization:${extended_industrialization_version}-${minecraft_version}")
+    runtimeOnly("org.appliedenergistics:appliedenergistics2:${ae2_version}")
+    runtimeOnly("dev.emi:emi-neoforge:${emi_version}+${minecraft_version}")
+    runtimeOnly("curse.maven:better-advanced-tooltips-1637623:8576077")
+    runtimeOnly("curse.maven:jade-324717:8591319")
+    runtimeOnly("curse.maven:kotlin-for-forge-351264:8335665") // YAI uses kotlin.... >:(
+    runtimeOnly("curse.maven:yet-another-industrialization-1358516:8869989")
+
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.named('jar') {
     from "LICENSE"
 }
 
-task sourceJar(type: Jar) {
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}
+
+tasks.register('sourceJar', Jar) {
     archiveClassifier.set("sources")
     from sourceSets.main.allJava
     from "LICENSE"
@@ -130,10 +129,9 @@ publishing {
 neoForge {
     version = project.neo_version
 
-    mods {
-        "${mod_id}" {
-            sourceSet sourceSets.main
-        }
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
     }
 
     validateAccessTransformers = true
@@ -143,7 +141,6 @@ neoForge {
 
     runs {
         configureEach {
-            mods = [neoForge.mods."${mod_id}"]
             systemProperty 'forge.logging.markers', 'REGISTRIES'
             systemProperty 'forge.logging.console.level', 'debug'
 
@@ -154,8 +151,6 @@ neoForge {
             client()
 
             gameDirectory.set(project.getLayout().getProjectDirectory().dir('runs/client'))
-
-            programArguments.addAll '--username', 'White_Phant0m', '--uuid', 'f83bd929-fbf0-4186-becb-658d676fcc42'
 
             systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
 
@@ -184,6 +179,12 @@ neoForge {
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
     }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -210,6 +211,7 @@ tasks.withType(ProcessResources).configureEach {
             modern_industrialization_version_range: modern_industrialization_version_range,
             tesseract_version_range               : tesseract_version_range,
             guideme_version_range                 : guideme_version_range,
+            ae2_version_range                     : ae2_version_range
     ]
     inputs.properties replaceProperties
 

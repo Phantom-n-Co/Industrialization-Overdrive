@@ -8,6 +8,7 @@ import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.Mult
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
 import dev.wp.industrialization_overdrive.machines.recipe.PyrolyseOvenRecipeType;
 import net.minecraft.resources.ResourceLocation;
+import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.HatchMIHookContext;
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MachineRecipeTypesMIHookContext;
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MultiblockMachinesMIHookContext;
 
@@ -50,6 +51,11 @@ public final class IOMachines {
 
     public static void recipeTypes(MachineRecipeTypesMIHookContext hook) {
         RecipeTypes.PYROLYSE_OVEN = RecipeTypes.create(hook, "Pyrolyse Oven", "pyrolyse_oven", PyrolyseOvenRecipeType::new).withFluidInputs().withFluidOutputs().withItemInputs().withItemOutputs();
+    }
+
+    public static void hatches(HatchMIHookContext hook) {
+        IOHatchTypes.init();
+        IOMEMachines.hatches(hook);
     }
 
     public static void multiblocks(MultiblockMachinesMIHookContext hook) {

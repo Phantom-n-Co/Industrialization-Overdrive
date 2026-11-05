@@ -23,6 +23,26 @@ public interface IOConfig {
     @SubSection
     BatchingMachines batchingMachines();
 
+    @ConfigKey("me_hatches")
+    @SubSection
+    MEHatches meHatches();
+
+    interface MEHatches {
+        @ConfigKey("transfer_interval_ticks")
+        @ConfigComment("How many ticks newly placed ME hatches wait between transfers with the ME network; each hatch can change it in its screen. 1 transfers every tick")
+        @Range.Integer(min = 1, max = 1200)
+        default int transferIntervalTicks() {
+            return 40;
+        }
+
+        @ConfigKey("smart_pull_hold_intervals")
+        @ConfigComment("How many transfer intervals ME input hatches keep stocking for the last recipe after the multiblock stops running it, so a short stall does not return the stock to the network")
+        @Range.Integer(min = 0, max = 100)
+        default int smartPullHoldIntervals() {
+            return 3;
+        }
+    }
+
     interface BatchingMachines {
         @ConfigKey("multi_processing_array_eu")
         @ConfigComment("The multiplier to use for the EU cost of the Multi Processing Array")

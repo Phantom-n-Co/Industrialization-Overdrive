@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "ae2"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "modern_industrialization:advanced_fluid_input_hatch"
+    },
+    "I": {
+      "item": "ae2:interface"
+    }
+  },
+  "pattern": [
+    " I ",
+    "IHI",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "industrialization_overdrive:me_fluid_input_hatch"
+  }
+}

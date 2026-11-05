@@ -37,7 +37,7 @@ public final class MultiProcessingArrayMachineSlot implements GuiComponentServer
     public static boolean isMachine(Item item) {
         if (item instanceof BlockItem blockItem &&
                 blockItem.getBlock() instanceof MachineBlock machineBlock &&
-                machineBlock.getBlockEntityInstance() instanceof AbstractElectricCraftingMultiblockBlockEntity blockEntity) {
+                machineBlock.getBlockEntityInstance() instanceof AbstractElectricCraftingMultiblockBlockEntity) {
             return !RegistryHelper.holder(BuiltInRegistries.ITEM, item).is(IOTags.Items.MULTI_PROCESSING_ARRAY_BLACKLIST);
         }
         return false;

@@ -4,6 +4,7 @@ import aztech.modern_industrialization.machines.MachineBlockEntity;
 import aztech.modern_industrialization.machines.components.UpgradeComponent;
 import dev.wp.industrialization_overdrive.IOComponents;
 import dev.wp.industrialization_overdrive.item.UpgradeStacker;
+import dev.wp.industrialization_overdrive.mixin.accessor.AbstractMultipliedCraftingMultiblockAccessor;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;

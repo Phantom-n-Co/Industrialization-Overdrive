@@ -19,6 +19,7 @@ import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcess
 import dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot.MultiProcessingArrayMachineSlot;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformer;
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformers;
@@ -96,7 +97,7 @@ public final class MultiProcessingArrayBlockEntity extends AbstractElectricMulti
     }
 
     @Override
-    public List<Component> getTooltips() {
+    public List<Component> getTooltips(Item.TooltipContext ctx) {
         List<Component> lines = new ArrayList<>();
         lines.add(IO.text().multiProcessingArrayRecipe());
         lines.add(IO.text().multiProcessingArrayBatchSize());

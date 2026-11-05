@@ -2,6 +2,7 @@ package dev.wp.industrialization_overdrive.mixin;
 
 import aztech.modern_industrialization.machines.guicomponents.SlotPanel;
 import dev.wp.industrialization_overdrive.item.UpgradeStacker;
+import dev.wp.industrialization_overdrive.mixin.accessor.SlotPanelAccessor;
 import net.minecraft.world.item.ItemStack;
 import net.swedz.tesseract.neoforge.compat.mi.machine.blockentity.multiblock.multiplied.AbstractElectricMultipliedCraftingMultiblockBlockEntity;
 import org.spongepowered.asm.mixin.Final;

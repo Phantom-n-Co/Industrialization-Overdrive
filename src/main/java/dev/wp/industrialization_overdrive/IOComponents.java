@@ -81,6 +81,9 @@ public final class IOComponents {
             ByteBufCodecs.VAR_INT.map(index -> MultiblockBuilder.Mode.values()[index], MultiblockBuilder.Mode::ordinal));
     public static final Supplier<DataComponentType<Template>> MULTI_BUILDER_TEMPLATE = create("multibuilder/template",
             Template.CODEC, Template.STREAM_CODEC);
+    /** ME hatch channel configuration saved on an Extended Industrialization machine config card. */
+    public static final Supplier<DataComponentType<CompoundTag>> ME_HATCH_CARD_CONFIG = create("me_hatch_card_config",
+            CompoundTag.CODEC, ByteBufCodecs.COMPOUND_TAG);
 
     public record UpgradeStackerContents(Item upgradeType, int count) {
         public static final Codec<UpgradeStackerContents> CODEC = RecordCodecBuilder.create(i -> i.group(

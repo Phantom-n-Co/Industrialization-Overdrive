@@ -243,7 +243,7 @@ public class Vajra extends Item implements DynamicToolItem, ISimpleEnergyItem {
     public float getDestroySpeed(ItemStack stack, BlockState state) {
         if (!canUse(stack)) return 0;
 
-        var baseSpeed = state.getDestroySpeed(null, null);
+        var baseSpeed = state.getBlock().defaultDestroyTime();
         if (baseSpeed <= 0) return super.getDestroySpeed(stack, state);
 
         switch (getToolSpeed(stack)) {
