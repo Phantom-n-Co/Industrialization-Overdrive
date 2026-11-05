@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.147'
+    id 'me.modmuss50.mod-publish-plugin' version '2.2.1'
 }
 
 version = "${mod_version}+${minecraft_version}"
@@ -245,5 +246,48 @@ tasks.jar {
 
     from('guidebook') {
         into('assets/modern_industrialization/mi_guidebook')
+    }
+}
+
+def releaseType = "stable"
+if (mod_version.toLowerCase().contains("alpha")) {
+    releaseType = "alpha"
+} else if (mod_version.toLowerCase().contains("beta")) {
+    releaseType = "beta"
+}
+
+publishMods {
+    file = tasks.named("jar").flatMap { it.archiveFile }
+    version = project.version
+    changelog = providers.environmentVariable("CHANGELOG").orElse("See ${mod_github}/releases")
+    type = me.modmuss50.mpp.ReleaseType.of(releaseType)
+    displayName = "${mod_name} ${project.version}"
+    modLoaders.add("neoforge")
+    dryRun = providers.gradleProperty("publishDryRun").isPresent()
+
+    def shared = { platform ->
+        platform.minecraftVersions.add(minecraft_version)
+        platform.requires("modern-industrialization", "guideme")
+        platform.optional("extended-industrialization", "emi", "jade", "yet-another-industrialization")
+    }
+
+    curseforge {
+        projectId = curseforge_project
+        accessToken = providers.environmentVariable("CURSEFORGE_API_KEY")
+        javaVersions.add(JavaVersion.VERSION_21)
+        client = true
+        server = true
+        shared it
+        // Slugs differ from Modrinth's
+        requires("tesseract-api-neoforge")
+        optional("applied-energistics-2", "almost-unified")
+    }
+
+    modrinth {
+        projectId = modrinth_project
+        accessToken = providers.environmentVariable("MODRINTH_API_KEY")
+        shared it
+        requires("tesseract-api")
+        optional("ae2", "almostunified")
     }
 }
