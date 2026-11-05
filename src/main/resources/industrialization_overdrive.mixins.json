@@ -2,12 +2,28 @@
   "required": true,
   "minVersion": "0.8",
   "package": "dev.wp.industrialization_overdrive.mixin",
+  "plugin": "dev.wp.industrialization_overdrive.IOMixinPlugin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "accessor.AbstractConfigurableStackAccessor",
+    "accessor.ConfigurableItemStackAccessor",
+    "accessor.SlotPanelAccessor",
+    "accessor.AbstractMultipliedCraftingMultiblockAccessor",
+    "accessor.CrafterRecipeEnergyAccessor",
     "AbstractElectricMultipliedCraftingMultiblockMixin",
-    "AbstractMultipliedCraftingMultiblockAccessor",
-    "SlotPanelAccessor",
+    "ConfigurableItemStackCapacityMixin",
+    "CrafterComponentHelperUncappedOutputMixin",
+    "CrafterComponentUncappedOutputMixin",
+    "CrafterOutputLockCheckMixin",
+    "ConfigurableScreenHandlerMEHatchMixin",
+    "ConfigurableStackPlayerLockMixin",
+    "HatchFlagsMixin",
+    "MultipliedCrafterComponentRecipeLockMixin",
+    "ShapeMatcherControllerLinkMixin",
     "SlotPanelUpgradeStackerMixin"
+  ],
+  "client": [
+    "client.MachineScreenMEHatchMixin"
   ],
   "injectors": {
     "defaultRequire": 1

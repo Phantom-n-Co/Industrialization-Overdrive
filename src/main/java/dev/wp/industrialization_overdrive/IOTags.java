@@ -13,6 +13,7 @@ import java.util.Map;
 public class IOTags {
     private final static Map<TagKey<Item>, String> TRANSLATIONS = new HashMap<>();
     private static final TagKey<Item> MULTI_PROCESSING_ARRAY_BLACKLIST = item("multi_processing_array_blacklist", "Multi Processing Array Blacklist");
+    private static final TagKey<Item> ME_OUTPUT_HATCH_CELL_BLACKLIST = item("me_output_hatch_cell_blacklist", "ME Output Hatch Cell Blacklist");
 
     public static Map<TagKey<Item>, String> translations() {
         return Collections.unmodifiableMap(TRANSLATIONS);
@@ -20,6 +21,8 @@ public class IOTags {
 
     public final static class Items {
         public final static TagKey<Item> MULTI_PROCESSING_ARRAY_BLACKLIST = IOTags.MULTI_PROCESSING_ARRAY_BLACKLIST;
+        /** Storage cells an ME output hatch refuses as its buffer; empty by default. */
+        public final static TagKey<Item> ME_OUTPUT_HATCH_CELL_BLACKLIST = IOTags.ME_OUTPUT_HATCH_CELL_BLACKLIST;
     }
 
     public static TagKey<Item> item(String path, String englishName) {

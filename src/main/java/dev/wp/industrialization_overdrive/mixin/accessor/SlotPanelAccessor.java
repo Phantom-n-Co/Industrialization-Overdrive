@@ -1,4 +1,4 @@
-package dev.wp.industrialization_overdrive.mixin;
+package dev.wp.industrialization_overdrive.mixin.accessor;
 
 import aztech.modern_industrialization.machines.MachineBlockEntity;
 import aztech.modern_industrialization.machines.guicomponents.SlotPanel;

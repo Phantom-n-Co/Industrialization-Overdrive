@@ -1,6 +1,7 @@
 package dev.wp.industrialization_overdrive;
 
 import aztech.modern_industrialization.client.machines.MachineBlockEntityRenderer;
+import appeng.init.client.InitScreens;
 import aztech.modern_industrialization.client.machines.multiblocks.MultiblockMachineBER;
 import aztech.modern_industrialization.client.machines.multiblocks.MultiblockTankBER;
 import aztech.modern_industrialization.machines.MachineBlock;
@@ -10,6 +11,9 @@ import aztech.modern_industrialization.machines.multiblocks.MultiblockMachineBlo
 import dev.wp.industrialization_overdrive.client.MultiblockBuilderRenderer;
 import dev.wp.industrialization_overdrive.item.MultiblockBuilder;
 import dev.wp.industrialization_overdrive.item.Vajra;
+import dev.wp.industrialization_overdrive.machines.guicomponents.mehatch.MEHatchAmountMenu;
+import dev.wp.industrialization_overdrive.machines.guicomponents.mehatch.MEHatchAmountScreen;
+import dev.wp.industrialization_overdrive.machines.guicomponents.mehatch.MEHatchScreenInput;
 import dev.wp.industrialization_overdrive.network.packet.ModifyMultiblockBuilderModePacket;
 import dev.wp.industrialization_overdrive.network.packet.ModifyVajraSpeedPacket;
 import net.minecraft.client.KeyMapping;
@@ -27,6 +31,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -42,6 +47,10 @@ public final class IOClient {
 
     public IOClient(IEventBus bus) {
         bus.addListener(RegisterKeyMappingsEvent.class, event -> event.register(MULTIBLOCK_BUILDER_MODE_SWITCH));
+        // AE2's own registration helper, so the screen gets AE2's style for its "set stock amount" dialog.
+        bus.addListener(RegisterMenuScreensEvent.class, event -> {
+            if (IOUtil.isAE2Loaded) registerMEHatchScreens(event);
+        });
         bus.addListener(FMLClientSetupEvent.class, event -> event.enqueueWork(() -> {
             ItemProperties.register(
                     IOItems.MULTIBLOCK_BUILDER.get(),
@@ -58,6 +67,7 @@ public final class IOClient {
             );
         }));
         NeoForge.EVENT_BUS.addListener(RenderLevelStageEvent.class, MultiblockBuilderRenderer::render);
+        if (IOUtil.isAE2Loaded) MEHatchScreenInput.register();
 
         NeoForge.EVENT_BUS.addListener(InputEvent.Key.class, (event) -> {
             var player = Minecraft.getInstance().player;
@@ -84,6 +94,11 @@ public final class IOClient {
                 }
             }
         });
+    }
+
+    private static void registerMEHatchScreens(RegisterMenuScreensEvent event) {
+        InitScreens.<MEHatchAmountMenu, MEHatchAmountScreen>register(
+                event, MEHatchAmountMenu.TYPE, MEHatchAmountScreen::new, MEHatchAmountScreen.STYLE);
     }
 
     @EventBusSubscriber(value = Dist.CLIENT, modid = IO.ID)

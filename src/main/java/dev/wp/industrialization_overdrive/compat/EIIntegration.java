@@ -2,14 +2,11 @@ package dev.wp.industrialization_overdrive.compat;
 
 import aztech.modern_industrialization.machines.MachineBlockEntity;
 import dev.wp.industrialization_overdrive.IOComponents;
-import dev.wp.industrialization_overdrive.machines.components.craft.MultiProcessingArrayMachineComponent;
-import dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot.MultiProcessingArrayMachineSlot;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.swedz.extended_industrialization.item.machineconfig.MachineConfigPanel;
 import net.swedz.extended_industrialization.EITags;
 import net.swedz.extended_industrialization.machines.blockentity.MachineChainerMachineBlockEntity;
 import net.swedz.extended_industrialization.machines.component.chainer.ChainerComponent;
@@ -25,16 +22,6 @@ import java.util.function.Function;
 
 public final class EIIntegration {
     private EIIntegration() {
-    }
-
-    public static void registerMachineConfigPanel() {
-        MachineConfigPanel.register("multi_processing_array_machines", MultiProcessingArrayMachineComponent.class,
-                (player, target, component, holder, slotItem, item, simulation) -> {
-                    if (MultiProcessingArrayMachineSlot.isMachine(item)) {
-                        return MachineConfigPanel.ComponentTypeHandler.insertStack(player, target, component, slotItem, item, simulation);
-                    }
-                    return false;
-                });
     }
 
     public static void writeSettings(MachineBlockEntity machine, CompoundTag tag, HolderLookup.Provider registries) {

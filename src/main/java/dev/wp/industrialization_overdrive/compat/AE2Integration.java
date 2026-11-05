@@ -18,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -56,20 +55,19 @@ public class AE2Integration {
      * Tries to fulfill the required items from the ME system for any missing items in the player's inventory.
      * Returns a map of items and their amounts that can be provided by the ME system.
      */
-    public static Map<Item, Integer> getMissingFromME(Player player, Level level, Map<Item, Integer> inventoryCount, Map<Item, Integer> requiredBlocks) {
-        Map<Item, Integer> meProvided = new HashMap<>();
+    public static Map<ItemStack, Integer> getMissingFromME(Player player, Level level, Map<ItemStack, Integer> inventoryCount, Map<ItemStack, Integer> requiredBlocks) {
+        Map<ItemStack, Integer> meProvided = MultiblockBuilder.stackCounts();
         MEStorage networkInv = getMEStorage(player, level);
         if (networkInv == null) return meProvided;
 
         for (var entry : requiredBlocks.entrySet()) {
-            Item item = entry.getKey();
+            ItemStack item = entry.getKey();
             int required = entry.getValue();
             int inInv = inventoryCount.getOrDefault(item, 0);
             int missing = required - inInv;
 
             if (missing > 0) {
-                ItemStack testStack = new ItemStack(item, missing);
-                var key = AEItemKey.of(testStack);
+                var key = AEItemKey.of(item);
                 long extracted = networkInv.extract(key, missing, Actionable.SIMULATE, IActionSource.ofPlayer(player));
                 if (extracted > 0) meProvided.put(item, (int) extracted);
             }
@@ -77,17 +75,28 @@ public class AE2Integration {
         return meProvided;
     }
 
+    /** Every variant of {@code item} the ME system holds (each with its own components), with its count. */
+    public static Map<ItemStack, Integer> countInME(Player player, Level level, Item item) {
+        Map<ItemStack, Integer> found = MultiblockBuilder.stackCounts();
+        MEStorage networkInv = getMEStorage(player, level);
+        if (networkInv == null) return found;
+        for (var entry : networkInv.getAvailableStacks()) {
+            if (entry.getKey() instanceof AEItemKey key && key.getItem() == item) {
+                found.merge(key.toStack(), (int) Math.min(Integer.MAX_VALUE, entry.getLongValue()), Integer::sum);
+            }
+        }
+        return found;
+    }
+
     /**
      * Actually extract items from the ME system.
      */
-    public static void extractFromME(Player player, Level level, Map<Item, Integer> toExtract) {
+    public static void extractFromME(Player player, Level level, Map<ItemStack, Integer> toExtract) {
         MEStorage networkInv = getMEStorage(player, level);
         if (networkInv == null) return;
         for (var entry : toExtract.entrySet()) {
-            Item item = entry.getKey();
             int needed = entry.getValue();
-            ItemStack testStack = new ItemStack(item, needed);
-            var key = AEItemKey.of(testStack);
+            var key = AEItemKey.of(entry.getKey());
             networkInv.extract(key, needed, Actionable.MODULATE, IActionSource.ofPlayer(player));
         }
     }

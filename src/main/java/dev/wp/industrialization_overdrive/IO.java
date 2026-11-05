@@ -5,7 +5,9 @@ import aztech.modern_industrialization.MITooltips;
 import aztech.modern_industrialization.util.TextHelper;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
 import dev.wp.industrialization_overdrive.datagen.client.provider.LanguageDatagenProvider;
+import dev.wp.industrialization_overdrive.machines.blockentities.hatches.MEHatchBlockEntity;
 import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
+import dev.wp.industrialization_overdrive.machines.blockentities.hatches.MEHatchCellHost;
 import dev.wp.industrialization_overdrive.network.IOPackets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -20,6 +22,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.datamaps.DataMapsUpdatedEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
@@ -56,6 +59,7 @@ public final class IO {
         setupText();
 
         TesseractMI.init(ID);
+        if (IOUtil.isAE2Loaded) MEHatchCellHost.init();
         IOComponents.init(bus);
         IOItems.init(bus);
         IOBlocks.init(bus);
@@ -75,6 +79,8 @@ public final class IO {
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, DataMapsUpdatedEvent.class, (event) -> {
             event.ifRegistry(Registries.BLOCK, (registry) -> PyrolyseOvenBlockEntity.initTiers());
         });
+
+        if (IOUtil.isAE2Loaded) NeoForge.EVENT_BUS.addListener(BlockEvent.BreakEvent.class, MEHatchBlockEntity::onBreak);
     }
 
     private static IOConfig CONFIG;

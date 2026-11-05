@@ -4,6 +4,9 @@ import aztech.modern_industrialization.compat.rei.machines.ReiMachineRecipes;
 import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOMachines;
 import dev.wp.industrialization_overdrive.IOTooltips;
+import dev.wp.industrialization_overdrive.IOUtil;
+import dev.wp.industrialization_overdrive.machines.guicomponents.mehatch.MEHatchGui;
+import dev.wp.industrialization_overdrive.machines.guicomponents.mehatch.MEHatchGuiClient;
 import dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot.MultiProcessingArrayMachineSlot;
 import dev.wp.industrialization_overdrive.machines.guicomponents.multiprocessingarraymachineslot.MultiProcessingArrayMachineSlotClient;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.swedz.tesseract.neoforge.compat.mi.hook.MIHookEntrypoint;
 import net.swedz.tesseract.neoforge.compat.mi.hook.MIHookListener;
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.ClientGuiComponentsMIHookContext;
+import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.HatchMIHookContext;
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MachineRecipeTypesMIHookContext;
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.MultiblockMachinesMIHookContext;
 import net.swedz.tesseract.neoforge.compat.mi.hook.context.listener.ViewerSetupMIHookContext;
@@ -21,12 +25,18 @@ public class IOMIHookListener implements MIHookListener {
     @Override
     public void clientGuiComponents(ClientGuiComponentsMIHookContext hook) {
         hook.register(MultiProcessingArrayMachineSlot.TYPE, MultiProcessingArrayMachineSlotClient::new);
+        if (IOUtil.isAE2Loaded) hook.register(MEHatchGui.TYPE, MEHatchGuiClient::new);
     }
 
 //    @Override
 //    public void machineCasings(MachineCasingsMIHookContext hook) {
 //        IOMachines.casings(hook);
 //    }
+
+    @Override
+    public void hatches(HatchMIHookContext hook) {
+        IOMachines.hatches(hook);
+    }
 
     @Override
     public void machineRecipeTypes(MachineRecipeTypesMIHookContext hook) {

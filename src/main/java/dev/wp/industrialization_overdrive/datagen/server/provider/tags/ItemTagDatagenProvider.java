@@ -46,6 +46,8 @@ public final class ItemTagDatagenProvider extends ItemTagsProvider {
             }
         }
         this.addMPABlacklistTag();
+        // Empty, but generated so packs can add to it without creating the file themselves.
+        this.tag(IOTags.Items.ME_OUTPUT_HATCH_CELL_BLACKLIST);
         removeEnchantableTags(IOItems.VAJRA);
     }
 

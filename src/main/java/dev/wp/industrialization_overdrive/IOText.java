@@ -195,4 +195,206 @@ public interface IOText {
     MutableComponent totalEuPerTick(
             @Parsed("eu_per_tick") @WithStyle("highlighted") long amount
     );
+
+    @LangKey(text = "Mixed Input Hatch")
+    MutableComponent mixedInputHatch();
+
+    @LangKey(text = "Mixed Output Hatch")
+    MutableComponent mixedOutputHatch();
+
+    // ME hatch transfer interval
+
+    @LangKey(text = "Interval")
+    MutableComponent meHatchIntervalLabel();
+
+    @LangKey(text = "t")
+    MutableComponent meHatchIntervalUnit();
+
+    @LangKey(text = "Ticks between transfers with the ME network")
+    @WithStyle("tooltip")
+    MutableComponent meHatchIntervalDescription();
+
+    @LangKey(text = "Type a value and press Enter to apply")
+    @WithStyle("gray")
+    MutableComponent meHatchIntervalControlType();
+
+    @LangKey(text = "Scroll: adjust by 1, +Shift: by 20")
+    @WithStyle("gray")
+    MutableComponent meHatchIntervalControlScroll();
+
+    @LangKey(text = "Disabled in Storage mode: outputs go into the cells as they land.")
+    @WithStyle("red")
+    MutableComponent meHatchIntervalStorageMode();
+
+    // ME output hatch cell slots
+
+    @LangKey(text = "Item Storage Cell: buffers the hatch's item outputs")
+    @WithStyle("tooltip")
+    MutableComponent meHatchItemCellSlot();
+
+    @LangKey(text = "Fluid Storage Cell: buffers the hatch's fluid outputs")
+    @WithStyle("tooltip")
+    MutableComponent meHatchFluidCellSlot();
+
+    // ME output hatch storage mode and priority
+
+    @LangKey(text = "Storage")
+    MutableComponent meHatchStorageModeLabel();
+
+    @LangKey(text = "Storage mode: %s")
+    @WithStyle("tooltip")
+    MutableComponent meHatchStorageModeState(Component state);
+
+    @LangKey(text = "Offers the installed storage cells to the network to take from, instead of pushing their contents.")
+    @WithStyle("gray")
+    MutableComponent meHatchStorageModeDescription();
+
+    @LangKey(text = "The network cannot insert into them; only this hatch's machine fills them.")
+    @WithStyle("gray")
+    MutableComponent meHatchStorageModeExtractOnly();
+
+    @LangKey(text = "Needs a storage cell: without one, the hatch accepts no outputs.")
+    @WithStyle("red")
+    MutableComponent meHatchStorageModeNeedsCell();
+
+    @LangKey(text = "Priority: %s")
+    @WithStyle("tooltip")
+    MutableComponent meHatchPriority(@WithStyle("highlighted") int priority);
+
+    @LangKey(text = "The network takes from the lowest priority first: lower it to have these outputs used before other storage.")
+    @WithStyle("gray")
+    MutableComponent meHatchPriorityDescription();
+
+    @LangKey(text = "Applies in Storage mode.")
+    @WithStyle("gray")
+    MutableComponent meHatchPriorityStorageOnly();
+
+    @LangKey(text = "Higher priority stocks first: lower-priority input hatches on the network leave what this one still needs.")
+    @WithStyle("gray")
+    MutableComponent meHatchPriorityInputDescription();
+
+    // ME hatch smart pull
+
+    @LangKey(text = "Smart pull")
+    MutableComponent meHatchSmartPullLabel();
+
+    @LangKey(text = "Smart pull: %s")
+    @WithStyle("tooltip")
+    MutableComponent meHatchSmartPullState(Component state);
+
+    @LangKey(text = "Stocks enough for the multiblock's running recipe to keep crafting until the next transfer.")
+    @WithStyle("gray")
+    MutableComponent meHatchSmartPullDescription();
+
+    @LangKey(text = "Configured amounts stay the minimum.")
+    @WithStyle("gray")
+    MutableComponent meHatchSmartPullMinimum();
+
+    @LangKey(text = "Raised by smart pull from %s")
+    @WithStyle("gray")
+    MutableComponent meHatchSmartPullRaised(Component configured);
+
+    // ME hatch configuration cell
+
+    @LangKey(text = "No item set")
+    @WithStyle("tooltip")
+    MutableComponent meHatchNoItemSet();
+
+    @LangKey(text = "No fluid set")
+    @WithStyle("tooltip")
+    MutableComponent meHatchNoFluidSet();
+
+    @LangKey(text = "Click or drag in a resource to set it")
+    @WithStyle("tooltip")
+    MutableComponent meHatchSetHint();
+
+    @LangKey(text = "Keeps %s stocked")
+    @WithStyle("tooltip")
+    MutableComponent meHatchKeepsStocked(@WithStyle("highlighted") Component amount);
+
+    @LangKey(text = "Only this can be output here")
+    @WithStyle("tooltip")
+    MutableComponent meHatchOutputOnlyThis();
+
+    @LangKey(text = "Hold Shift for controls")
+    @WithStyle("tooltip")
+    MutableComponent meHatchHoldShiftForControls();
+
+    @LangKey(text = "Scroll: adjust amount")
+    @WithStyle("tooltip")
+    MutableComponent meHatchControlScroll();
+
+    @LangKey(text = "  +Shift: x16, +Ctrl: double/halve, +both: x64")
+    @WithStyle("tooltip")
+    MutableComponent meHatchControlScrollModifiers();
+
+    @LangKey(text = "%s or #: enter amount")
+    @WithStyle("tooltip")
+    MutableComponent meHatchControlEnterAmount(@Parsed("keybind") @WithStyle("highlighted") String key);
+
+    @LangKey(text = "Click with a resource: replace")
+    @WithStyle("tooltip")
+    MutableComponent meHatchControlReplace();
+
+    @LangKey(text = "Right-click: clear")
+    @WithStyle("tooltip")
+    MutableComponent meHatchControlClear();
+
+    // ME hatch stock slot
+
+    @LangKey(text = "Empty")
+    @WithStyle("tooltip")
+    MutableComponent meHatchStockEmpty();
+
+    @LangKey(text = "Stocked from the ME network")
+    @WithStyle("tooltip")
+    MutableComponent meHatchStockedFromNetwork();
+
+    @LangKey(text = "Sent to the ME network")
+    @WithStyle("tooltip")
+    MutableComponent meHatchSentToNetwork();
+
+    @LangKey(text = "Stocks nothing until set above")
+    @WithStyle("tooltip")
+    MutableComponent meHatchInputUnconfigured();
+
+    @LangKey(text = "Accepts no output until set above")
+    @WithStyle("tooltip")
+    MutableComponent meHatchOutputUnconfigured();
+
+    @LangKey(text = "Accepts any output")
+    @WithStyle("tooltip")
+    MutableComponent meHatchOutputOpen();
+
+    @LangKey(text = "%s %s")
+    MutableComponent meHatchNameWithAmount(Component name, @WithStyle("tooltip") Component amount);
+
+    @LangKey(text = "×%s")
+    MutableComponent meHatchItemCount(Component amount);
+
+    @LangKey(text = "Reserved for the running recipe")
+    @WithStyle("yellow")
+    MutableComponent meHatchReservedForRecipe();
+
+    @LangKey(text = "This ME hatch still holds resources and its network cannot take them. Break it again while sneaking to destroy them.")
+    @WithStyle("red")
+    MutableComponent meHatchBreakWouldLoseStock();
+
+    // ME hatch block tooltip
+
+    @LangKey(text = "Keeps each configured resource stocked from the ME network, up to its set amount.")
+    @WithStyle("tooltip")
+    MutableComponent meHatchInputDescription();
+
+    @LangKey(text = "Sends machine outputs to the ME network.")
+    @WithStyle("tooltip")
+    MutableComponent meHatchOutputDescription();
+
+    @LangKey(text = "Accepts any output until a channel is configured, then only configured ones.")
+    @WithStyle("tooltip")
+    MutableComponent meHatchOutputFiltering();
+
+    @LangKey(text = "Connects to the ME network through its output face.")
+    @WithStyle("tooltip")
+    MutableComponent meHatchConnectionFace();
 }

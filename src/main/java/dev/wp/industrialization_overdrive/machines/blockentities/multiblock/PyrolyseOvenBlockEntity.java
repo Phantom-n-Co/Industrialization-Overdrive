@@ -17,6 +17,7 @@ import dev.wp.industrialization_overdrive.IOMachines;
 import dev.wp.industrialization_overdrive.datamap.PyrolyseOvenTier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.swedz.tesseract.neoforge.compat.mi.TesseractMI;
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformer;
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformers;
@@ -67,7 +68,7 @@ public final class PyrolyseOvenBlockEntity extends AbstractElectricMultipliedCra
     }
 
     @Override
-    public List<Component> getTooltips() {
+    public List<Component> getTooltips(Item.TooltipContext ctx) {
         return List.of(
                 TesseractMI.text().machineBatcherRecipe(true, MIMachineRecipeTypes.COKE_OVEN),
                 IO.text().machineBatcherCoils()

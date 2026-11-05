@@ -79,7 +79,7 @@ public final class MultiblockBuilderRenderer {
                     ModelData modelData = modelData(level, preview);
                     if (modelData == null) {
                         dispatcher.renderSingleBlock(preview.state, poseStack,
-                                tintedSource(buffers, preview.tint), 0xF000F0, 0);
+                                tintedSource(buffers, preview.tint), 0xF000F0, 0, ModelData.EMPTY, null);
                     } else {
                         dispatcher.renderBatched(preview.state, preview.pos, level, poseStack,
                                 tinted(buffers.getBuffer(RenderType.translucent()), preview.tint), false,
@@ -119,7 +119,7 @@ public final class MultiblockBuilderRenderer {
 
         Rotation rotation = MultiblockBuilder.getPasteRotation(template.get(BlockPos.ZERO).settings(), player.getDirection().getOpposite());
         BlockPos pasteTarget = player.isShiftKeyDown() ? hit.getBlockPos() : hit.getBlockPos().relative(hit.getDirection());
-        BlockPos anchor = MultiblockBuilder.pastePosition(pasteTarget, template, rotation);
+        BlockPos anchor = MultiblockBuilder.pastePosition(pasteTarget, template);
         List<Preview> result = new ArrayList<>();
         for (var entry : template.entrySet()) {
             Block block = Block.byItem(entry.getValue().item());
@@ -135,7 +135,7 @@ public final class MultiblockBuilderRenderer {
         ShapeMatcher matcher = machine.createShapeMatcher();
         List<Preview> result = new ArrayList<>();
         for (BlockPos pos : matcher.getPositions()) {
-            if (!level.hasChunkAt(pos) || alreadyValid(matcher, level, pos)) continue;
+            if (!level.isLoaded(pos) || alreadyValid(matcher, level, pos)) continue;
             var member = matcher.getSimpleMember(pos);
             addPreview(level, result, pos, ShapeMatcher.toWorldState(level, pos,
                     member.getPreviewState(), matcher.controllerDirection), null);
@@ -144,7 +144,7 @@ public final class MultiblockBuilderRenderer {
     }
 
     private static void addPreview(ClientLevel level, List<Preview> result, BlockPos pos, BlockState state, CompoundTag settings) {
-        if (!level.hasChunkAt(pos) || state.isAir()) return;
+        if (!level.isLoaded(pos) || state.isAir()) return;
         BlockState current = level.getBlockState(pos);
         if (current.equals(state)) return;
         result.add(new Preview(pos, state, current.canBeReplaced() ? GREEN : RED, settings));
