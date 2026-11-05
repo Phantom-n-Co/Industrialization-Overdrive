@@ -268,7 +268,7 @@ publishMods {
     def shared = { platform ->
         platform.minecraftVersions.add(minecraft_version)
         platform.requires("modern-industrialization", "guideme")
-        platform.optional("extended-industrialization", "emi", "jade", "yet-another-industrialization")
+        platform.optional("extended-industrialization", "emi", "jade", "yet-another-industrialization", "almostunified")
     }
 
     curseforge {
@@ -280,7 +280,7 @@ publishMods {
         shared it
         // Slugs differ from Modrinth's
         requires("tesseract-api-neoforge")
-        optional("applied-energistics-2", "almost-unified")
+        optional("applied-energistics-2")
     }
 
     modrinth {
@@ -288,6 +288,6 @@ publishMods {
         accessToken = providers.environmentVariable("MODRINTH_API_KEY")
         shared it
         requires("tesseract-api")
-        optional("ae2", "almostunified")
+        optional("ae2")
     }
 }

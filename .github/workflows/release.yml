@@ -3,6 +3,17 @@ name: Release
 on:
   release:
     types: [published]
+  # Re-publish an existing release, e.g. after one platform failed. Builds the selected branch.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag"
+        required: true
+      target:
+        description: "Where to publish"
+        type: choice
+        options: [all, curseforge, modrinth]
+        default: all
 
 permissions:
   contents: write
@@ -11,7 +22,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      TAG: ${{ github.event.release.tag_name }}
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      TARGET: ${{ inputs.target || 'all' }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout repository
@@ -44,11 +56,19 @@ jobs:
         run: ./gradlew build sourceJar
 
       - name: Attach jars to GitHub release
+        if: env.TARGET == 'all'
         run: gh release upload "$TAG" build/libs/*.jar --repo "$GITHUB_REPOSITORY" --clobber
 
       - name: Publish to CurseForge and Modrinth
         env:
-          CHANGELOG: ${{ github.event.release.body }}
           CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
           MODRINTH_API_KEY: ${{ secrets.MODRINTH_API_KEY }}
-        run: ./gradlew publishMods
+        run: |
+          case "$TARGET" in
+            curseforge) TASK=publishCurseforge ;;
+            modrinth) TASK=publishModrinth ;;
+            *) TASK=publishMods ;;
+          esac
+          CHANGELOG=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json body --jq .body)
+          export CHANGELOG
+          ./gradlew "$TASK"
