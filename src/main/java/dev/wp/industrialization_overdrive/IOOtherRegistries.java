@@ -2,10 +2,12 @@ package dev.wp.industrialization_overdrive;
 
 import dev.technici4n.grandpower.api.ISimpleEnergyItem;
 import dev.wp.industrialization_overdrive.compat.EIMachineConfigCardCompat;
+import dev.wp.industrialization_overdrive.machines.blocks.MEHatchBlock;
 import dev.wp.industrialization_overdrive.machines.guicomponents.mehatch.MEHatchAmountMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -39,6 +41,9 @@ public final class IOOtherRegistries {
                 IOItems.values().stream()
                         .sorted(compareBySortOrder.thenComparing(compareByName))
                         .forEach((item) -> {
+                            if (item.get() instanceof BlockItem bItem && bItem.getBlock() instanceof MEHatchBlock && !IOUtil.isAE2Loaded)
+                                return;
+
                             output.accept(item);
 
                             if (item.get() instanceof ISimpleEnergyItem energyItem) {
