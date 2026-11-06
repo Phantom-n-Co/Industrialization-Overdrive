@@ -41,9 +41,8 @@ public final class IOOtherRegistries {
                 IOItems.values().stream()
                         .sorted(compareBySortOrder.thenComparing(compareByName))
                         .forEach((item) -> {
-                            if (item.get() instanceof BlockItem bItem)
-                                if (bItem.getBlock() instanceof  MEHatchBlock meHatchBlock)
-                                    if (!IOUtil.isAE2Loaded) return;
+                            if (item.get() instanceof BlockItem bItem && bItem.getBlock() instanceof MEHatchBlock && !IOUtil.isAE2Loaded)
+                                return;
 
                             output.accept(item);
 
