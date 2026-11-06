@@ -160,7 +160,7 @@ neoForge {
             systemProperty 'mixin.debug.export', 'true'
             systemProperty 'mixin.debug.verbose', 'true'
 
-            systemProperty 'guideme.modern_industrialization.book.sources', file("guidebook").absolutePath
+            systemProperty "guideme.${project.mod_id}.guide.sources", file("guidebook").absolutePath
         }
 
         server {
@@ -245,7 +245,7 @@ tasks.jar {
     exclude("**/datagen/**")
 
     from('guidebook') {
-        into('assets/modern_industrialization/mi_guidebook')
+        into("assets/${project.mod_id}/guide")
     }
 }
 

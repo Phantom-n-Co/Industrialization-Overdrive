@@ -1,9 +1,11 @@
 ---
 navigation:
   title: "Industrialization Overdrive"
-  icon: "industrialization_overdrive:terminal"
-  position: 99
+  icon: "terminal"
+  position: 0
 ---
+
+<MarginFloatingImage src="assets/logo.png" left="0" right="10" />
 
 # Industrialization Overdrive
 

@@ -2,13 +2,16 @@ package dev.wp.industrialization_overdrive;
 
 import aztech.modern_industrialization.MIText;
 import aztech.modern_industrialization.MITooltips;
+import aztech.modern_industrialization.guidebook.MultiblockShapeCompiler;
 import aztech.modern_industrialization.util.TextHelper;
 import dev.wp.industrialization_overdrive.compat.AE2Integration;
 import dev.wp.industrialization_overdrive.datagen.client.provider.LanguageDatagenProvider;
 import dev.wp.industrialization_overdrive.machines.blockentities.hatches.MEHatchBlockEntity;
-import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
 import dev.wp.industrialization_overdrive.machines.blockentities.hatches.MEHatchCellHost;
+import dev.wp.industrialization_overdrive.machines.blockentities.multiblock.PyrolyseOvenBlockEntity;
 import dev.wp.industrialization_overdrive.network.IOPackets;
+import guideme.Guide;
+import guideme.scene.element.SceneElementTagCompiler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +31,9 @@ import net.neoforged.neoforge.registries.datamaps.DataMapsUpdatedEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import net.swedz.tesseract.api.Assert;
 import net.swedz.tesseract.config.ConfigManager;
+import net.swedz.tesseract.neoforge.Tesseract;
 import net.swedz.tesseract.neoforge.capabilities.CapabilitiesListeners;
+import net.swedz.tesseract.neoforge.compat.guideme.tags.TesseractGuideMETags;
 import net.swedz.tesseract.neoforge.compat.mi.TesseractMI;
 import net.swedz.tesseract.neoforge.compat.mi.component.craft.multiplied.EuCostTransformer;
 import net.swedz.tesseract.neoforge.compat.mi.tooltip.MIParser;
@@ -57,6 +62,7 @@ public final class IO {
     public IO(IEventBus bus, ModContainer container) {
         setupConfig(bus, container);
         setupText();
+        setupGuide();
 
         TesseractMI.init(ID);
         if (IOUtil.isAE2Loaded) MEHatchCellHost.init();
@@ -129,5 +135,12 @@ public final class IO {
         if (DatagenModLoader.isRunningDataGen())
             LanguageDatagenProvider.include(instance);
         TEXT = instance.lang();
+    }
+
+    private static void setupGuide() {
+        var guide = Guide.builder(IO.id("guide"))
+                .extension(SceneElementTagCompiler.EXTENSION_POINT, new MultiblockShapeCompiler());
+        TesseractGuideMETags.includeIn(guide);
+        guide.build();
     }
 }

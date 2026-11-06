@@ -1,9 +1,9 @@
 ---
 navigation:
   title: "Pyrolyse Oven"
-  icon: "industrialization_overdrive:pyrolyse_oven"
-  parent: "io_guide.md"
-  position: 1
+  icon: "pyrolyse_oven"
+  parent: "machines/machines-index.md"
+  position: 2
 item_ids:
   - industrialization_overdrive:pyrolyse_oven
 ---
@@ -18,7 +18,7 @@ item_ids:
 
 <Recipe id="industrialization_overdrive:machines/pyrolyse_oven/craft" />
 
-The Pyrolyse oven is an upgrade to the [**Coke Oven**](../steam_age/coke_oven.md) which runs on electricity instead of
+The Pyrolyse oven is an upgrade to the <ItemLink id="modern_industrialization:coke_oven"/> which runs on electricity instead of
 steam.
 
 It is capable of processing the same recipes as the Coke Oven, but it can also overclock which allows it to run much

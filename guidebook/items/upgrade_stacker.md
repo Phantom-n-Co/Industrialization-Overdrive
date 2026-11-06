@@ -1,16 +1,16 @@
 ---
 navigation:
   title: "Upgrade Stacker"
-  icon: "industrialization_overdrive:upgrade_stacker"
-  parent: "io_guide.md"
-  position: 4
+  icon: "upgrade_stacker"
+  parent: "items/items-index.md"
+  position: 2
 item_ids:
-  - industrialization_overdrive:upgrade_stacker
+  - upgrade_stacker
 ---
 
 # Upgrade Stacker
 
-<RecipesFor id="industrialization_overdrive:upgrade_stacker" />
+<RecipesFor id="upgrade_stacker" />
 
 The Upgrade Stacker is a batching multiblock exclusive upgrade that stores a large amount of a single type of
 machine upgrade in one item, letting you supply far more upgrades than a single upgrade slot can hold.
@@ -25,8 +25,8 @@ inventory into it. Sneak and press <KeyBind id="key.use" /> to take all stored u
 
 ## Using In Machines
 
-Right-click a batching machine, such as the [Pyrolyse Oven](pyrolyse_oven.md) or the
-[Multi Processing Array](multi_processing_array.md), to place the stacker in its upgrade slot. You can also put it
+Right-click a batching machine, such as the [Pyrolyse Oven](../machines/pyrolyse_oven.md) or the
+[Multi Processing Array](../machines/multi_processing_array.md), to place the stacker in its upgrade slot. You can also put it
 in the upgrade slot of the machine's screen directly.
 
 Each stored upgrade adds its usual EU/t bonus, up to a maximum of 64 upgrades per batch. Since batching machines
