@@ -14,7 +14,7 @@ item_ids:
 ---
 
 # ME Hatches
-
+<OptionalSection modId="ae2">
 <ItemGrid>
     <ItemIcon id="industrialization_overdrive:me_item_input_hatch"/>
     <ItemIcon id="industrialization_overdrive:me_fluid_input_hatch"/>
@@ -114,3 +114,8 @@ again while sneaking to destroy the remaining stock. Installed cells always drop
 
 When something other than a player removes the hatch, such as an explosion, stock the network cannot take is not
 protected: each item channel drops at most 27 stacks, and the rest of it is lost, along with any fluid.
+</OptionalSection>
+
+<OptionalSection modId="!ae2">
+## Applied Energistics 2 isn't currently installed, these hatches will not work.
+</OptionalSection>
