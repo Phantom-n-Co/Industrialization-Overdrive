@@ -1,27 +1,27 @@
 ---
 navigation:
   title: "ME Hatches"
-  icon: "industrialization_overdrive:me_mixed_output_hatch"
-  parent: "io_guide.md"
-  position: 5
+  icon: "me_mixed_output_hatch"
+  parent: "machines/machines-index.md"
+  position: 1
 item_ids:
-  - industrialization_overdrive:me_item_input_hatch
-  - industrialization_overdrive:me_fluid_input_hatch
-  - industrialization_overdrive:me_mixed_input_hatch
-  - industrialization_overdrive:me_item_output_hatch
-  - industrialization_overdrive:me_fluid_output_hatch
-  - industrialization_overdrive:me_mixed_output_hatch
+  - me_item_input_hatch
+  - me_fluid_input_hatch
+  - me_mixed_input_hatch
+  - me_item_output_hatch
+  - me_fluid_output_hatch
+  - me_mixed_output_hatch
 ---
 
 # ME Hatches
 <OptionalSection modId="ae2">
 <ItemGrid>
-    <ItemIcon id="industrialization_overdrive:me_item_input_hatch"/>
-    <ItemIcon id="industrialization_overdrive:me_fluid_input_hatch"/>
-    <ItemIcon id="industrialization_overdrive:me_mixed_input_hatch"/>
-    <ItemIcon id="industrialization_overdrive:me_item_output_hatch"/>
-    <ItemIcon id="industrialization_overdrive:me_fluid_output_hatch"/>
-    <ItemIcon id="industrialization_overdrive:me_mixed_output_hatch"/>
+    <ItemIcon id="me_item_input_hatch"/>
+    <ItemIcon id="me_fluid_input_hatch"/>
+    <ItemIcon id="me_mixed_input_hatch"/>
+    <ItemIcon id="me_item_output_hatch"/>
+    <ItemIcon id="me_fluid_output_hatch"/>
+    <ItemIcon id="me_mixed_output_hatch"/>
 </ItemGrid>
 
 ME hatches connect Modern Industrialization multiblocks directly to an Applied Energistics 2 network, much like an ME
@@ -104,7 +104,7 @@ other storage to have the network use the hatch's outputs before anything else.
 
 ## Copying Settings
 
-Extended Industrialization's Machine Config Card and the [Multiblock Builder](multiblock_builder.md) copy the configured channels, interval,
+Extended Industrialization's <ItemLink id="extended_industrialization:machine_config_card"/> and the [Multiblock Builder](../items/multiblock_builder.md) copy the configured channels, interval,
 smart pull, mode and priority. They never copy installed cells.
 
 ## Breaking A Hatch

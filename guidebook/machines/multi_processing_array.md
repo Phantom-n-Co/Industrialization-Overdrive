@@ -1,11 +1,11 @@
 ---
 navigation:
   title: "Multi Processing Array"
-  icon: "industrialization_overdrive:multi_processing_array"
-  parent: "io_guide.md"
-  position: 2
+  icon: "multi_processing_array"
+  parent: "machines/machines-index.md"
+  position: 3
 item_ids:
-  - industrialization_overdrive:multi_processing_array
+  - multi_processing_array
 ---
 
 # Multi Processing Array
@@ -13,11 +13,11 @@ item_ids:
 ## Multi Processing Array
 
 <GameScene zoom="1" interactive={true} fullWidth={true}>
-    <MultiblockShape controller="industrialization_overdrive:multi_processing_array" />
-    <MultiblockShape controller="industrialization_overdrive:multi_processing_array" x="-6" useBigShape={true} />
+    <MultiblockShape controller="multi_processing_array" />
+    <MultiblockShape controller="multi_processing_array" x="-6" useBigShape={true} />
 </GameScene>
 
-<Recipe id="industrialization_overdrive:machines/multi_processing_array/craft" />
+<Recipe id="machines/multi_processing_array/craft" />
 
 The Multi Processing Array is a multiblock machine that allows you to run almost any multiblocks recipes in batches,
 depending on the size of the machine.
