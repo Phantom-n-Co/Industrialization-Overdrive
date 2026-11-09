@@ -228,6 +228,11 @@ public final class MultiblockBuilder extends Item {
             BlockState state = level.getBlockState(targetPos);
             Item item = entry.getValue().item();
 
+            if (level.isOutsideBuildHeight(targetPos)) {
+                player.sendSystemMessage(IO.text().multiblockBuilderOutsideBuildHeight(targetPos));
+                return InteractionResult.SUCCESS;
+            }
+
             if (state.getBlock().asItem().equals(item)) continue;
 
             if (!state.canBeReplaced()) {
@@ -449,6 +454,13 @@ public final class MultiblockBuilder extends Item {
 
     private InteractionResult handleMultiblockUse(Level level, BlockPos pos, Player player, MultiblockMachineBlockEntity multiblock) {
         ShapeMatcher shapeMatcher = multiblock.createShapeMatcher();
+        for (BlockPos memberPos : shapeMatcher.getPositions()) {
+            // setBlock silently refuses out-of-bounds positions, so the build must not start or charge for them.
+            if (level.isOutsideBuildHeight(memberPos)) {
+                player.sendSystemMessage(IO.text().multiblockBuilderOutsideBuildHeight(memberPos));
+                return InteractionResult.SUCCESS;
+            }
+        }
         if (player.isCreative()) {
             buildMultiblock(level, pos, player, shapeMatcher);
             return InteractionResult.SUCCESS;
