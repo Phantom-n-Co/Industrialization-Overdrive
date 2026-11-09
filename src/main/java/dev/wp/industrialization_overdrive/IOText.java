@@ -153,6 +153,10 @@ public interface IOText {
     @WithStyle("red")
     MutableComponent multiblockBuilderBlockNotPart(@Parsed("block_pos") BlockPos location);
 
+    @LangKey(text = "Block at %s is outside the build height limit and cannot be placed.")
+    @WithStyle("red")
+    MutableComponent multiblockBuilderOutsideBuildHeight(@Parsed("block_pos") BlockPos location);
+
     @LangKey(text = "Required items:")
     @WithStyle("highlighted")
     MutableComponent multiblockBuilderRequiredItems();

@@ -96,6 +96,7 @@
   "text.industrialization_overdrive.multiblock_builder_mode_copy_paste": "Copy/Paste",
   "text.industrialization_overdrive.multiblock_builder_mode_tear_down": "Tear Down",
   "text.industrialization_overdrive.multiblock_builder_no_template": "No template stored in Multiblock Builder.",
+  "text.industrialization_overdrive.multiblock_builder_outside_build_height": "Block at %s is outside the build height limit and cannot be placed.",
   "text.industrialization_overdrive.multiblock_builder_paste_success": "Successfully pasted multiblock structure.",
   "text.industrialization_overdrive.multiblock_builder_required_item": "- %sx %s",
   "text.industrialization_overdrive.multiblock_builder_required_items": "Required items:",
