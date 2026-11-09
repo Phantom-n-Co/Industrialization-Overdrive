@@ -31,7 +31,6 @@ import net.neoforged.neoforge.registries.datamaps.DataMapsUpdatedEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import net.swedz.tesseract.api.Assert;
 import net.swedz.tesseract.config.ConfigManager;
-import net.swedz.tesseract.neoforge.Tesseract;
 import net.swedz.tesseract.neoforge.capabilities.CapabilitiesListeners;
 import net.swedz.tesseract.neoforge.compat.guideme.tags.TesseractGuideMETags;
 import net.swedz.tesseract.neoforge.compat.mi.TesseractMI;

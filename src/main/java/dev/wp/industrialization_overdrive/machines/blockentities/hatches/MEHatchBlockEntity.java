@@ -37,7 +37,6 @@ import dev.wp.industrialization_overdrive.IO;
 import dev.wp.industrialization_overdrive.IOHatchTypes;
 import dev.wp.industrialization_overdrive.machines.guicomponents.mehatch.MEHatchGui;
 import dev.wp.industrialization_overdrive.machines.components.MEHatchConfigComponent;
-import aztech.modern_industrialization.thirdparty.fabrictransfer.api.fluid.FluidVariant;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -53,13 +52,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.swedz.tesseract.neoforge.compat.mi.guicomponent.slotpanel.ModularSlotPanel;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -70,7 +65,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Function;
 
 public class MEHatchBlockEntity extends HatchBlockEntity implements IGridConnectedBlockEntity, IPriorityHost,
         IStorageProvider {
